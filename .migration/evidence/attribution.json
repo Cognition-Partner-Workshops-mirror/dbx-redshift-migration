@@ -1,0 +1,102 @@
+{
+  "unit": "attribution",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
+  "started_at": "2026-11-05T23:49:56+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/attribution/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "attribution",
+      "golden": "golden/attribution/attribution.csv",
+      "target": "gold.attribution",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "campaign_id": "STRING",
+            "touch_channel": "STRING",
+            "touches": "LONG",
+            "customers_reached": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 100,
+          "target": 100
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "campaign_id",
+            "touch_channel"
+          ],
+          "matched_rows": 100,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/attribution/report.csv",
+      "target": "databricks/units/attribution/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "campaign_id": "STRING",
+            "touches": "LONG",
+            "customers_reached": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 20,
+          "target": 20
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "campaign_id"
+          ],
+          "matched_rows": 20,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:01+00:00"
+}
