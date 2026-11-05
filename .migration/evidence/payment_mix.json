@@ -1,0 +1,103 @@
+{
+  "unit": "payment_mix",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "a082d2771fd3c4cd6efbe32e2e4b5866db037a33",
+  "started_at": "2026-11-05T23:51:03+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/payment_mix/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "payment_mix",
+      "golden": "golden/payment_mix/payment_mix.csv",
+      "target": "gold.payment_mix",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "method": "STRING",
+            "method_family": "STRING",
+            "method_status": "STRING",
+            "payment_count": "LONG",
+            "amount_total": "DECIMAL",
+            "amount_share": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 5,
+          "target": 5
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "method"
+          ],
+          "matched_rows": 5,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/payment_mix/report.csv",
+      "target": "databricks/units/payment_mix/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "method_family": "STRING",
+            "payment_count": "LONG",
+            "amount_total": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "method_family"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:51:07+00:00"
+}
