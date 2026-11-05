@@ -11,7 +11,7 @@ outcome and the fix that made `make validate` pass.
 | daily_revenue | DATE_TRUNC/TRUNC, SUM GROUP BY | clean | | |
 | customer_ltv | CHAR(4) padding carried into output, AVG on NUMERIC(12,2) scale | mismatch | | |
 | geo_rollup | GROUPING SETS, GROUPING() id column | clean | | |
-| churn_flags | plpgsql procedure, FOR loop, temp table, CALL | rejected | | |
+| churn_flags | plpgsql procedure, FOR loop, temp table, CALL | rejected | Drafts generated, but 2 EXPLAIN validation errors: ETL extra CREATE after DROP; report unresolved mart.churn_flags. Draft retained core/mart names, emitted invalid ZORDER BY/procedure/loop syntax, and kept date subtraction and fractional AVG. | Set-based LEFT JOIN/MAX plus recency CTE and CASE; explicit BIGINT/DATE/INT/VARCHAR(16) target, datediff against DATE '2025-12-31', strict >180/>90 thresholds and NULL preservation; BIGINT SUM DIV NULLIF(COUNT,0) for Redshift integer AVG; unqualified silver/gold; no session state. Golden validation PASS 2/2 outputs. |
 | product_perf | LISTAGG(...) WITHIN GROUP (ORDER BY ...), ::casts | mismatch | | |
 | store_weekly | DATE_TRUNC('week'), DATEADD, DATEDIFF(week) | clean | | |
 | category_mix | RATIO_TO_REPORT | clean | | |
