@@ -1,0 +1,9 @@
+[90m23:36:55[0m [1m[32m    INFO[0m [1m[databricks.sdk] loading DEFAULT profile from ~/.databrickscfg: host, auth_type, client_id, audience, oidc_token_filepath, databricks_id_token_filepath[0m
+[90m23:36:56[0m [1m[32m    INFO[0m [1m[d.labs.lakebridge] Lakebridge will use the Bladebridge transpiler.[0m
+[90m23:36:57[0m [1m[32m    INFO[0m [1m[d.l.l.helpers.db_sql] Using SQL backend with warehouse_id: 6dc4b80538621b7b[0m
+[90m23:36:57[0m [1m[32m    INFO[0m [1m[d.l.l.transpiler.execute] SQL Backend used for query validation: StatementExecutionBackend[0m
+[90m23:37:01[0m [1m[32m    INFO[0m [1m[d.l.l.transpiler.execute] SQL validation errors: 2[0m
+[90m23:37:01[0m [1m[32m    INFO[0m [1m[d.l.l.transpiler.execute] Done transpiling.[0m
+[90m23:37:01[0m [1m[33m WARNING[0m [1m[d.labs.lakebridge] legacy/redshift/99_orchestration/exec_summary/etl.sql: 1  found[0m
+[90m23:37:01[0m [1m[33m WARNING[0m [1m[d.labs.lakebridge] legacy/redshift/99_orchestration/exec_summary/report.sql: 1  found[0m
+[{"total_files_processed": 2, "total_queries_processed": 2, "analysis_error_count": 0, "parsing_error_count": 0, "validation_error_count": 2, "generation_error_count": 0, "error_log_file": ".migration/lakebridge/errors/orchestration.log"}]

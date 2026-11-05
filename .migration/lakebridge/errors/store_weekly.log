@@ -1,0 +1,38 @@
+TranspileError(code=VALIDATION_ERROR, kind=VALIDATION, severity=WARNING, path='legacy/redshift/units/store_weekly/etl.sql', message='
+[PARSE_SYNTAX_ERROR] Syntax error at or near 'CREATE': extra input 'CREATE'. SQLSTATE: 42601 (line 3, pos 0)
+
+== SQL ==
+EXPLAIN -- store_weekly: weekly revenue per store.
+DROP TABLE IF EXISTS mart.store_weekly;
+CREATE OR REPLACE TABLE mart.store_weekly
+^^^
+
+ZORDER BY(store_id)
+AS
+SELECT o.store_id,
+       DATE_TRUNC('week', o.order_ts)::CURRENT_DATE                        AS week_start,
+       DATEADD(day, 6, DATE_TRUNC('week', o.order_ts))::CURRENT_DATE       AS week_end,
+       FLOOR(FLOOR(DATEDIFF($3, CURRENT_DATE '2025-01-01') / 7) / 7)             AS week_number,
+       COUNT(DISTINCT o.order_id)                                 AS order_count,
+       SUM(oi.quantity * (oi.unit_price - oi.discount))            AS revenue
+FROM   core.orders o
+JOIN   core.order_items oi ON oi.order_id = o.order_id
+GROUP  BY o.store_id, DATE_TRUNC('week', o.order_ts)
+ORDER  BY o.store_id, week_start;
+')
+TranspileError(code=VALIDATION_ERROR, kind=VALIDATION, severity=WARNING, path='legacy/redshift/units/store_weekly/report.sql', message='
+[PARSE_SYNTAX_ERROR] Syntax error at or near '('. SQLSTATE: 42601 (line 4, pos 27)
+
+== SQL ==
+EXPLAIN -- BI report: store weekly totals and span.
+SELECT s.store_id,
+       s.region,
+       FLOOR(FLOOR(DATEDIFF($3, MIN(w.week_start)) / 7) / 7) + 1 AS active_weeks,
+---------------------------^^^
+       SUM(w.order_count)                                        AS order_count,
+       SUM(w.revenue)                                            AS revenue
+FROM   mart.store_weekly w
+JOIN   core.stores s ON s.store_id = w.store_id
+GROUP  BY s.store_id, s.region
+ORDER  BY s.store_id;
+')

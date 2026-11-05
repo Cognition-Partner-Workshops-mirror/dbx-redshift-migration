@@ -1,0 +1,557 @@
+{
+   "inventory" : [
+      {
+         "complexityLevel" : "LOW",
+         "lineCount" : 4,
+         "name" : "01_schemas.sql",
+         "procAndFunctionCount" : 0,
+         "scriptCategories" : [
+            "UNKNOWN"
+         ],
+         "scriptType" : "SQL",
+         "sourceFile" : "00_foundation/01_schemas.sql",
+         "statementCount" : 2
+      },
+      {
+         "complexityLevel" : "LOW",
+         "functionCall" : {
+            "DISTKEY" : 8,
+            "NUMERIC" : 5,
+            "SORTKEY" : 10
+         },
+         "lineCount" : 107,
+         "name" : "02_core_tables.sql",
+         "objectRel" : [
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.campaign_touches"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.customers"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.order_items"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.orders"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.payments"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.products"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.returns"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.shipments"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.stores"
+            },
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "core.web_events"
+            }
+         ],
+         "procAndFunctionCount" : 0,
+         "scriptCategories" : [
+            "TABLE_DDL"
+         ],
+         "scriptType" : "SQL",
+         "sourceFile" : "00_foundation/02_core_tables.sql",
+         "statementCount" : 10
+      },
+      {
+         "complexityLevel" : "LOW",
+         "functionCall" : {
+            "EXTRACT" : 1,
+            "REGEXP_REPLACE" : 1
+         },
+         "lineCount" : 17,
+         "name" : "03_udfs.sql",
+         "procAndFunctionCount" : 2,
+         "scriptCategories" : [
+            "PROGRAM_DECLARATION"
+         ],
+         "scriptType" : "ETL",
+         "sourceFile" : "00_foundation/03_udfs.sql",
+         "statementCount" : 2
+      },
+      {
+         "complexityLevel" : "LOW",
+         "functionCall" : {
+            "::NUMERIC" : 2,
+            "::VARCHAR" : 1,
+            "AVG" : 1,
+            "SUM" : 6
+         },
+         "lineCount" : 18,
+         "name" : "etl.sql",
+         "objectRel" : [
+            {
+               "action" : "create",
+               "count" : 1,
+               "object" : "mart.exec_summary"
+            },
+            {
+               "action" : "drop",
+               "count" : 1,
+               "object" : "mart.exec_summary"
+            }
+         ],
+         "procAndFunctionCount" : 0,
+         "scriptCategories" : [
+            "TABLE_DDL_AS_SELECT",
+            "TABLE_DROP"
+         ],
+         "scriptType" : "SQL",
+         "sourceFile" : "99_orchestration/exec_summary/etl.sql",
+         "statementCount" : 2
+      },
+      {
+         "complexityLevel" : "LOW",
+         "lineCount" : 5,
+         "name" : "report.sql",
+         "objectRel" : [
+            {
+               "action" : "read",
+               "count" : 1,
+               "object" : "mart.exec_summary"
+            }
+         ],
+         "procAndFunctionCount" : 0,
+         "scriptCategories" : [
+            "READ_DML"
+         ],
+         "scriptType" : "SQL",
+         "sourceFile" : "99_orchestration/exec_summary/report.sql",
+         "statementCount" : 1
+      },
+      {
+         "complexityLevel" : "LOW",
+         "lineCount" : 39,
+         "name" : "refresh_schedule.yaml",
+         "procAndFunctionCount" : 0,
+         "scriptCategories" : [
+            "UNKNOWN"
+         ],
+         "scriptType" : "SQL",
+         "sourceFile" : "99_orchestration/refresh_schedule.yaml",
+         "statementCount" : 1
+      },
+      {
+         "complexityLevel" : "LOW",
+         "functionCall" : {
+            "UNLOAD" : 1
+         },
+         "lineCount" : 8,
+         "name" : "export.sql",
+         "objectRel" : [
+            {
+               "action" : "read",
+               "count" : 1,
+               "object" : "mart.finance_monthly"
+            }
+         ],
+         "procAndFunctionCount" : 0,
+         "scriptCategories" : [
+            "UNKNOWN"
+         ],
+         "scriptType" : "SQL",
+         "sourceFile" : "units/finance_export/export.sql",
+         "statementCount" : 1
+      }
+   ],
+   "object_lineage" : [
+      {
+         "reads" : [
+            "units/product_perf/etl.sql"
+         ],
+         "target" : "agg"
+      },
+      {
+         "reads" : [
+            "units/attribution/etl.sql"
+         ],
+         "target" : "core.campaign_touches"
+      },
+      {
+         "reads" : [
+            "units/churn_flags/etl.sql",
+            "units/customer_ltv/etl.sql",
+            "units/rfm_segments/etl.sql"
+         ],
+         "target" : "core.customers"
+      },
+      {
+         "reads" : [
+            "units/basket_affinity/etl.sql",
+            "units/category_mix/etl.sql",
+            "units/customer_ltv/etl.sql",
+            "units/daily_revenue/etl.sql",
+            "units/finance_export/etl.sql",
+            "units/geo_rollup/etl.sql",
+            "units/inventory_snapshot/etl.sql",
+            "units/product_perf/etl.sql",
+            "units/promo_lift/etl.sql",
+            "units/returns_rate/etl.sql",
+            "units/rfm_segments/etl.sql",
+            "units/store_weekly/etl.sql"
+         ],
+         "target" : "core.order_items"
+      },
+      {
+         "reads" : [
+            "units/churn_flags/etl.sql",
+            "units/customer_ltv/etl.sql",
+            "units/daily_revenue/etl.sql",
+            "units/finance_export/etl.sql",
+            "units/geo_rollup/etl.sql",
+            "units/product_perf/etl.sql",
+            "units/promo_lift/etl.sql",
+            "units/rfm_segments/etl.sql",
+            "units/store_weekly/etl.sql"
+         ],
+         "target" : "core.orders"
+      },
+      {
+         "reads" : [
+            "units/payment_mix/etl.sql"
+         ],
+         "target" : "core.payments"
+      },
+      {
+         "reads" : [
+            "units/category_mix/etl.sql",
+            "units/inventory_snapshot/etl.sql",
+            "units/product_perf/etl.sql",
+            "units/returns_rate/etl.sql"
+         ],
+         "target" : "core.products"
+      },
+      {
+         "reads" : [
+            "units/returns_rate/etl.sql"
+         ],
+         "target" : "core.returns"
+      },
+      {
+         "reads" : [
+            "units/shipping_sla/etl.sql"
+         ],
+         "target" : "core.shipments"
+      },
+      {
+         "reads" : [
+            "units/geo_rollup/etl.sql",
+            "units/product_perf/etl.sql"
+         ],
+         "target" : "core.stores"
+      },
+      {
+         "reads" : [
+            "units/sessionization/etl.sql"
+         ],
+         "target" : "core.web_events"
+      },
+      {
+         "reads" : [
+            "units/sessionization/etl.sql"
+         ],
+         "target" : "flagged"
+      },
+      {
+         "target" : "mart.attribution",
+         "writes" : [
+            {
+               "file" : "units/attribution/etl.sql",
+               "sources" : [
+                  "core.campaign_touches",
+                  "t.payload.touches"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.basket_affinity",
+         "writes" : [
+            {
+               "file" : "units/basket_affinity/etl.sql",
+               "sources" : [
+                  "core.order_items"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.category_mix",
+         "writes" : [
+            {
+               "file" : "units/category_mix/etl.sql",
+               "sources" : [
+                  "core.order_items",
+                  "core.products"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.cohort_retention",
+         "writes" : [
+            {
+               "file" : "units/cohort_retention/etl.sql",
+               "sources" : [
+                  "tmp_activity",
+                  "tmp_cohorts"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.customer_ltv",
+         "writes" : [
+            {
+               "file" : "units/customer_ltv/etl.sql",
+               "sources" : [
+                  "core.customers",
+                  "core.order_items",
+                  "core.orders"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.daily_revenue",
+         "writes" : [
+            {
+               "file" : "units/daily_revenue/etl.sql",
+               "sources" : [
+                  "core.order_items",
+                  "core.orders"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.finance_monthly",
+         "writes" : [
+            {
+               "file" : "units/finance_export/etl.sql",
+               "sources" : [
+                  "core.order_items",
+                  "core.orders"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.geo_rollup",
+         "writes" : [
+            {
+               "file" : "units/geo_rollup/etl.sql",
+               "sources" : [
+                  "core.order_items",
+                  "core.orders",
+                  "core.stores"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.inventory_snapshot",
+         "writes" : [
+            {
+               "file" : "units/inventory_snapshot/etl.sql",
+               "sources" : [
+                  "core.products",
+                  "stg_inventory"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.payment_mix",
+         "writes" : [
+            {
+               "file" : "units/payment_mix/etl.sql",
+               "sources" : [
+                  "core.payments"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.product_perf",
+         "writes" : [
+            {
+               "file" : "units/product_perf/etl.sql",
+               "sources" : [
+                  "agg",
+                  "core.order_items",
+                  "core.orders",
+                  "core.products",
+                  "core.stores"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.promo_lift",
+         "writes" : [
+            {
+               "file" : "units/promo_lift/etl.sql",
+               "sources" : [
+                  "core.order_items",
+                  "core.orders",
+                  "order_totals"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.returns_rate",
+         "writes" : [
+            {
+               "file" : "units/returns_rate/etl.sql",
+               "sources" : [
+                  "core.order_items",
+                  "core.products",
+                  "core.returns"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.rfm_segments",
+         "writes" : [
+            {
+               "file" : "units/rfm_segments/etl.sql",
+               "sources" : [
+                  "core.customers",
+                  "core.order_items",
+                  "core.orders",
+                  "metrics"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.shipping_sla",
+         "writes" : [
+            {
+               "file" : "units/shipping_sla/etl.sql",
+               "sources" : [
+                  "core.shipments"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.store_weekly",
+         "writes" : [
+            {
+               "file" : "units/store_weekly/etl.sql",
+               "sources" : [
+                  "core.order_items",
+                  "core.orders"
+               ]
+            }
+         ]
+      },
+      {
+         "target" : "mart.web_sessions",
+         "writes" : [
+            {
+               "file" : "units/sessionization/etl.sql",
+               "sources" : [
+                  "core.web_events",
+                  "flagged"
+               ]
+            }
+         ]
+      },
+      {
+         "reads" : [
+            "units/rfm_segments/etl.sql"
+         ],
+         "target" : "metrics"
+      },
+      {
+         "reads" : [
+            "units/promo_lift/etl.sql"
+         ],
+         "target" : "order_totals"
+      },
+      {
+         "reads" : [
+            "units/inventory_snapshot/etl.sql"
+         ],
+         "target" : "stg_inventory",
+         "writes" : [
+            {
+               "file" : "units/inventory_snapshot/etl.sql",
+               "sources" : [
+                  "core.order_items"
+               ]
+            }
+         ]
+      },
+      {
+         "reads" : [
+            "units/attribution/etl.sql"
+         ],
+         "target" : "t.payload.touches"
+      },
+      {
+         "reads" : [
+            "units/cohort_retention/etl.sql"
+         ],
+         "target" : "tmp_activity"
+      },
+      {
+         "reads" : [
+            "units/cohort_retention/etl.sql"
+         ],
+         "target" : "tmp_cohorts"
+      },
+      {
+         "target" : "tmp_last_orders",
+         "writes" : [
+            {
+               "file" : "units/churn_flags/etl.sql",
+               "sources" : [
+                  "core.customers",
+                  "core.orders"
+               ]
+            }
+         ]
+      }
+   ],
+   "runInfo" : {
+      "inputFolder" : "/home/ubuntu/repos/dbx-redshift-migration/legacy/redshift",
+      "reportName" : "/home/ubuntu/repos/dbx-redshift-migration/.migration/lakebridge/analyze.xlsx",
+      "runDurationSeconds" : 1,
+      "sourceTechnology" : "SQL",
+      "startTime" : "2026-11-05T23:35:29Z"
+   }
+}

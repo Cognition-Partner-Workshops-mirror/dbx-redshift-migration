@@ -1,0 +1,15 @@
+{
+  "run_branch": "migration-run-2",
+  "catalog": "demo_redshift",
+  "profile": "DEFAULT",
+  "warehouse_id": "6dc4b80538621b7b",
+  "lakebridge_version": "0.13.0",
+  "transpiler": "Bladebridge 0.3.0",
+  "analyze_source": "legacy/redshift",
+  "source_tech": "Redshift",
+  "transpile_source_dialect": "redshift",
+  "skip_validation": false,
+  "invocation": "python -m databricks.labs.lakebridge.cli (official CLI JSON payload entrypoint)",
+  "installation_notes": "Labs installer failed with GitHub 403; installed official v0.13.0 source in a separate virtualenv. Morpheus Maven metadata returned 429; Bladebridge installed successfully. Migration harness dependencies use a separate virtualenv because Lakebridge pins an older SDK.",
+  "observed": "All 20 units were transpiled live. All 42 SQL files generated drafts with EXPLAIN validation errors. Drafts retain source namespaces and may contain unsupported constructs; they are not parity evidence. See each unit's error and console logs."
+}
