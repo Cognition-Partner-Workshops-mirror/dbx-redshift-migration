@@ -11,10 +11,11 @@ WITH per_store AS (
     JOIN   silver.stores s ON s.store_id = o.store_id
     GROUP  BY oi.product_id, s.region
 ),
+-- Redshift default NULL ordering: NULLs sort as the largest value.
 ranked AS (
     SELECT product_id, region, units,
            ROW_NUMBER() OVER (PARTITION BY product_id
-                              ORDER BY units DESC, region) AS rn
+                              ORDER BY units DESC NULLS FIRST, region ASC NULLS LAST) AS rn
     FROM   per_store
 ),
 top_stores AS (
