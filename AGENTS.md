@@ -4,8 +4,11 @@ These rules apply to every Devin session working in this repository.
 
 Run-specific approved exceptions for `migration-run-2` are recorded in
 `.migration/06_decisions.md`: use only catalog `demo_redshift` via profile
-`DEFAULT` (never access `mig_redshift_dev`); the orchestrator may integrate
-child PRs into this run branch after review/checks, but never into `main`.
+`DEFAULT` (never access `mig_redshift_dev`). Mason's latest instruction
+supersedes the earlier merge exception: do not merge any PR or branch.
+Start from main and leave all child PRs open for human review. Full-run
+verification may assemble file copies in a disposable checkout, without
+merging or committing child contributions into the run branch.
 
 - `legacy/`, `golden/`, `data/seed/` and `validation/` are **read-only** for
   migration sessions. Reconciliation failures are fixed in converted code only.
