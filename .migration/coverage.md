@@ -23,7 +23,7 @@ outcome and the fix that made `make validate` pass.
 | payment_mix | DECODE, NVL, NVL2 | mismatch | | |
 | returns_rate | integer division on INTs, :: casts | mismatch | | |
 | attribution | SUPER / PartiQL unnesting (t, t.payload.touches tc) | rejected | | |
-| inventory_snapshot | plpgsql upsert: staging + DELETE/INSERT | rejected | | |
+| inventory_snapshot | plpgsql upsert: staging + DELETE/INSERT | rejected | Lakebridge 0.13.0 + Bladebridge 0.3.0: etl.sql draft failed EXPLAIN (PARSE_SYNTAX_ERROR at the second statement) and was wrapped in an exception block: kept `mart.*`/`core.*`, turned SORTKEY into `ZORDER BY(product_id)` glued to the next statement, emitted a `LANGUAGE SQL` procedure whose `BEGIN` became `THEN` ... `END IF`, kept the plpgsql temp table, `::` casts and `CALL ...::DATE`. report.sql translated unchanged but failed validation with TABLE_OR_VIEW_NOT_FOUND on `mart.inventory_snapshot`. | Hand-rewritten: `CREATE OR REPLACE TABLE gold.inventory_snapshot` (typed DDL, CLUSTER BY product_id) + SQL scripting `BEGIN ... END` block with reusable `DECLARE p_snapshot DATE DEFAULT DATE'2025-12-31'`; staging temp table -> CTE; DELETE/INSERT upsert -> Delta `MERGE ... ON product_id` (MATCHED UPDATE / NOT MATCHED INSERT); `::` -> CAST (SUM BIGINT, GREATEST INT). Report reads `gold.*` with explicit `NULLS LAST` (Redshift ASC default). `make validate UNIT=inventory_snapshot` PASS 2/2 outputs (300 + 50 rows, 0 mismatches) on attempt 1. |
 | finance_export | UNLOAD TO s3 IAM_ROLE (export skipped at capture) | rejected | | |
 | cohort_retention | TEMP TABLE steps, DATEDIFF(month) matrix | rejected | | |
 | orchestration | cross-mart joins, refresh_schedule.yaml → Lakeflow job | clean | | |
