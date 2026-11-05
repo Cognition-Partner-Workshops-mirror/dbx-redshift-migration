@@ -20,7 +20,7 @@ outcome and the fix that made `make validate` pass.
 | shipping_sla | DATEDIFF(hour) boundary counting, CONVERT_TIMEZONE | mismatch | | |
 | rfm_segments | NTILE(5), NULL ordering on NULL metrics | mismatch | | |
 | promo_lift | MEDIAN, PERCENTILE_CONT WITHIN GROUP | mismatch | | |
-| payment_mix | DECODE, NVL, NVL2 | mismatch | | |
+| payment_mix | DECODE, NVL, NVL2 | mismatch | Lakebridge 0.13.0 + Bladebridge 0.3.0: etl.sql draft failed EXPLAIN (PARSE_SYNTAX_ERROR at the second statement, DROP + CREATE in one EXPLAIN) and was wrapped in an exception comment block; it kept `core.payments`/`mart.payment_mix`, made CREATE OR REPLACE, NVL->COALESCE, kept DECODE/NVL2, left `SUM/SUM(SUM) OVER()` share as plain decimal division. report.sql passed through unchanged with `mart.payment_mix` (EXPLAIN warning TABLE_OR_VIEW_NOT_FOUND). | Removed wrapper and DROP; `core`->`silver`, `mart`->`gold`; dropped ORDER BY in CTAS. DECODE/NVL2/COALESCE kept (native). Redshift NUMERIC(38,2)/NUMERIC(38,2) truncates to scale 4 while Databricks decimal division rounds (gift_card 0.14574 ok, cash 0.14726 would round to 0.1473 vs golden 0.1472), so share = `CAST(FLOOR(x, 4) AS DECIMAL(38,4))`. `make validate UNIT=payment_mix` PASS 2/2 outputs on attempt 1. |
 | returns_rate | integer division on INTs, :: casts | mismatch | | |
 | attribution | SUPER / PartiQL unnesting (t, t.payload.touches tc) | rejected | | |
 | inventory_snapshot | plpgsql upsert: staging + DELETE/INSERT | rejected | | |
