@@ -17,7 +17,7 @@ outcome and the fix that made `make validate` pass.
 | category_mix | RATIO_TO_REPORT | clean | | |
 | basket_affinity | self-join pairs, HAVING support >= threshold | clean | | |
 | sessionization | LAG, 30-min gap, running SUM session id | clean | | |
-| shipping_sla | DATEDIFF(hour) boundary counting, CONVERT_TIMEZONE | mismatch | | |
+| shipping_sla | DATEDIFF(hour) boundary counting, CONVERT_TIMEZONE | mismatch | Lakebridge 0.13.0 + Bladebridge 0.3.0: draft failed EXPLAIN (PARSE_SYNTAX_ERROR at the second statement, DROP + CREATE OR REPLACE in one file) and kept `mart.*`/`core.*`. Translation was also semantically wrong: DATEDIFF(hour) became `(UNIX_TIMESTAMP(d)-UNIX_TIMESTAMP(s))/3600` (elapsed fractional hours, not hour boundaries crossed), so AVG/MAX/on_time_96h would drift; AVG lost Redshift's integer truncation before `::NUMERIC(10,2)`; CONVERT_TIMEZONE became from_utc_timestamp(to_utc_timestamp(...)) relying on session time zone. | Hand-fixed: `silver.shipments`→`gold.shipping_sla` via single CREATE OR REPLACE TABLE AS; hour-boundary DATEDIFF = `div(timestampdiff(SECOND, TIMESTAMP_NTZ'1970-01-01', ts), 3600)` difference (TIMESTAMP_NTZ, session-tz independent); `CAST(CAST(AVG(h) AS BIGINT) AS DECIMAL(10,2))` reproduces Redshift integer AVG (71.00/72.00); `convert_timezone('UTC','America/Los_Angeles', delivered_ts)` + `hour()` for local hour. `make validate UNIT=shipping_sla` PASS 2/2 outputs on attempt 1. |
 | rfm_segments | NTILE(5), NULL ordering on NULL metrics | mismatch | | |
 | promo_lift | MEDIAN, PERCENTILE_CONT WITHIN GROUP | mismatch | | |
 | payment_mix | DECODE, NVL, NVL2 | mismatch | | |
