@@ -1,0 +1,102 @@
+{
+  "unit": "inventory_snapshot",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "67b05538e64702c93c2146b4d179391e1c0f99f4",
+  "started_at": "2026-11-05T23:51:11+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/inventory_snapshot/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "inventory_snapshot",
+      "golden": "golden/inventory_snapshot/inventory_snapshot.csv",
+      "target": "gold.inventory_snapshot",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "product_id": "INT",
+            "snapshot_date": "DATE",
+            "units_sold": "LONG",
+            "on_hand": "INT"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 300,
+          "target": 300
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "product_id"
+          ],
+          "matched_rows": 300,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/inventory_snapshot/report.csv",
+      "target": "databricks/units/inventory_snapshot/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "product_id": "INT",
+            "snapshot_date": "DATE",
+            "units_sold": "LONG",
+            "on_hand": "INT"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 50,
+          "target": 50
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "product_id"
+          ],
+          "matched_rows": 50,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:51:16+00:00"
+}
