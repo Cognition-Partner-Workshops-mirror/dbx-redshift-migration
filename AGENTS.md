@@ -2,6 +2,11 @@
 
 These rules apply to every Devin session working in this repository.
 
+Run-specific approved exceptions for `migration-run-2` are recorded in
+`.migration/06_decisions.md`: use only catalog `demo_redshift` via profile
+`DEFAULT` (never access `mig_redshift_dev`); the orchestrator may integrate
+child PRs into this run branch after review/checks, but never into `main`.
+
 - `legacy/`, `golden/`, `data/seed/` and `validation/` are **read-only** for
   migration sessions. Reconciliation failures are fixed in converted code only.
 - One unit per child session. A child writes only `databricks/units/<unit>/`
@@ -10,8 +15,8 @@ These rules apply to every Devin session working in this repository.
 - Never edit goldens, tolerances, or legacy SQL. Tolerance or scope changes
   happen only with a human-approved row recorded in `.migration/06_decisions.md`.
 - Write only to catalogs listed in `.migration/allowed_targets.json`
-  (`mig_redshift_dev` for dev/validation, `mig_redshift` for merged prod
-  deployments). Never create or modify objects in any other catalog.
+  (`demo_redshift` for this isolated run). Never create or modify objects
+  in any other catalog; do not access the prior dev catalog.
 - Never print, commit or paste tokens or passwords; reference env var names
   only.
 - Never merge to `main`. Child PRs target `migration-run-N`; the orchestrator
