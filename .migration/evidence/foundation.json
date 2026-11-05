@@ -1,0 +1,463 @@
+{
+  "unit": "foundation",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "15b3528a54b3d10e01ddcab39a6e805383fdadcf",
+  "started_at": "2026-11-05T23:46:27+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/foundation/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "customers",
+      "golden": "golden/foundation/customers.csv",
+      "target": "silver.customers",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "customer_id": "LONG",
+            "email": "STRING",
+            "first_name": "STRING",
+            "last_name": "STRING",
+            "phone": "STRING",
+            "region": "STRING",
+            "preferred_store_id": "INT",
+            "signup_date": "DATE",
+            "is_business": "BOOLEAN"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1500,
+          "target": 1500
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "customer_id"
+          ],
+          "matched_rows": 1500,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "stores",
+      "golden": "golden/foundation/stores.csv",
+      "target": "silver.stores",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "store_id": "INT",
+            "region": "STRING",
+            "store_name": "STRING",
+            "city": "STRING",
+            "state": "STRING"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 40,
+          "target": 40
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "store_id"
+          ],
+          "matched_rows": 40,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "products",
+      "golden": "golden/foundation/products.csv",
+      "target": "silver.products",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "product_id": "INT",
+            "sku": "STRING",
+            "product_name": "STRING",
+            "category": "STRING",
+            "subcategory": "STRING",
+            "unit_price": "DECIMAL",
+            "cost": "DECIMAL",
+            "active": "BOOLEAN"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 300,
+          "target": 300
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "product_id"
+          ],
+          "matched_rows": 300,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "orders",
+      "golden": "golden/foundation/orders.csv",
+      "target": "silver.orders",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "order_id": "LONG",
+            "customer_id": "LONG",
+            "store_id": "INT",
+            "order_ts": "TIMESTAMP_NTZ",
+            "sales_channel": "STRING",
+            "status": "STRING"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 20000,
+          "target": 20000
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "order_id"
+          ],
+          "matched_rows": 20000,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "order_items",
+      "golden": "golden/foundation/order_items.csv",
+      "target": "silver.order_items",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "order_item_id": "LONG",
+            "order_id": "LONG",
+            "product_id": "INT",
+            "quantity": "INT",
+            "unit_price": "DECIMAL",
+            "discount": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 40938,
+          "target": 40938
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "order_item_id"
+          ],
+          "matched_rows": 40938,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "payments",
+      "golden": "golden/foundation/payments.csv",
+      "target": "silver.payments",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "payment_id": "LONG",
+            "order_id": "LONG",
+            "method": "STRING",
+            "amount": "DECIMAL",
+            "paid_ts": "TIMESTAMP_NTZ"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 20000,
+          "target": 20000
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "payment_id"
+          ],
+          "matched_rows": 20000,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "returns",
+      "golden": "golden/foundation/returns.csv",
+      "target": "silver.returns",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "return_id": "LONG",
+            "order_item_id": "LONG",
+            "quantity": "INT",
+            "reason": "STRING",
+            "returned_ts": "TIMESTAMP_NTZ"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 2518,
+          "target": 2518
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "return_id"
+          ],
+          "matched_rows": 2518,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "shipments",
+      "golden": "golden/foundation/shipments.csv",
+      "target": "silver.shipments",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "shipment_id": "LONG",
+            "order_id": "LONG",
+            "carrier": "STRING",
+            "ship_ts": "TIMESTAMP_NTZ",
+            "delivered_ts": "TIMESTAMP_NTZ"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 12817,
+          "target": 12817
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "shipment_id"
+          ],
+          "matched_rows": 12817,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "web_events",
+      "golden": "golden/foundation/web_events.csv",
+      "target": "silver.web_events",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "event_id": "LONG",
+            "customer_id": "LONG",
+            "event_ts": "TIMESTAMP_NTZ",
+            "event_type": "STRING",
+            "page_url": "STRING"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 25000,
+          "target": 25000
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "event_id"
+          ],
+          "matched_rows": 25000,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "campaign_touches",
+      "golden": "golden/foundation/campaign_touches.csv",
+      "target": "silver.campaign_touches",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "touch_id": "LONG",
+            "customer_id": "LONG",
+            "payload": "STRING"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 8000,
+          "target": 8000
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "touch_id"
+          ],
+          "matched_rows": 8000,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:47:32+00:00"
+}
