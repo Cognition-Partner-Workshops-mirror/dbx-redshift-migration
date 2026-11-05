@@ -1,0 +1,105 @@
+{
+  "unit": "customer_ltv",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "a2917a8ab57f2aec958c32a080904f6be6e6d888",
+  "started_at": "2026-11-05T23:51:09+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/customer_ltv/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "customer_ltv",
+      "golden": "golden/customer_ltv/customer_ltv.csv",
+      "target": "gold.customer_ltv",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "customer_id": "LONG",
+            "region": "STRING",
+            "clean_phone": "STRING",
+            "order_count": "LONG",
+            "ltv": "DECIMAL",
+            "aov": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1500,
+          "target": 1500
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "customer_id"
+          ],
+          "matched_rows": 1500,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/customer_ltv/report.csv",
+      "target": "databricks/units/customer_ltv/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "region": "STRING",
+            "customers": "LONG",
+            "orders": "LONG",
+            "total_ltv": "DECIMAL",
+            "avg_ltv": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "region"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:51:14+00:00"
+}
