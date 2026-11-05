@@ -1,0 +1,105 @@
+{
+  "unit": "cohort_retention",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "5ff9e1d0ba0a856d81ba1129e8bf171d038a2b59",
+  "started_at": "2026-11-05T23:51:09+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/cohort_retention/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "cohort_retention",
+      "golden": "golden/cohort_retention/cohort_retention.csv",
+      "target": "gold.cohort_retention",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "cohort_month": "DATE",
+            "month_offset": "INT",
+            "cohort_size": "LONG",
+            "active_buyers": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 65,
+          "target": 65
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "cohort_month",
+            "month_offset"
+          ],
+          "matched_rows": 65,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/cohort_retention/report.csv",
+      "target": "databricks/units/cohort_retention/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "cohort_month": "DATE",
+            "month_offset": "INT",
+            "cohort_size": "LONG",
+            "active_buyers": "LONG",
+            "retention_pct": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 65,
+          "target": 65
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "cohort_month",
+            "month_offset"
+          ],
+          "matched_rows": 65,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:51:14+00:00"
+}
