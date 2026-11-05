@@ -1,0 +1,105 @@
+{
+  "unit": "sessionization",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
+  "started_at": "2026-11-05T23:50:07+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/sessionization/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "web_sessions",
+      "golden": "golden/sessionization/web_sessions.csv",
+      "target": "gold.web_sessions",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "customer_id": "LONG",
+            "session_id": "LONG",
+            "session_start_ts": "TIMESTAMP_NTZ",
+            "session_end_ts": "TIMESTAMP_NTZ",
+            "event_count": "LONG",
+            "checkout_events": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 21280,
+          "target": 21280
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "customer_id",
+            "session_id"
+          ],
+          "matched_rows": 21280,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/sessionization/report.csv",
+      "target": "databricks/units/sessionization/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "customer_id": "LONG",
+            "sessions": "LONG",
+            "events": "LONG",
+            "checkout_sessions": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1500,
+          "target": 1500
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "customer_id"
+          ],
+          "matched_rows": 1500,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:13+00:00"
+}
