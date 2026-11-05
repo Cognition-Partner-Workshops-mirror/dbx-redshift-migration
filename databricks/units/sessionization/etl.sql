@@ -1,5 +1,6 @@
 -- sessionization: web sessions per customer, 30-minute gap, running SUM id.
--- DATEDIFF(second, a, b) counts second boundaries: difference of epoch seconds.
+-- DATEDIFF(second, a, b) counts wall-clock second boundaries; wall_sec is computed from
+-- TIMESTAMP_NTZ fields so the session time zone (DST) cannot shift the gap.
 CREATE OR REPLACE TABLE gold.web_sessions
 CLUSTER BY (customer_id, session_id)
 AS
@@ -11,13 +12,16 @@ WITH flagged AS (
            CASE
              WHEN LAG(event_ts) OVER (PARTITION BY customer_id
                                       ORDER BY event_ts, event_id) IS NULL THEN 1
-             WHEN unix_timestamp(event_ts)
-                  - unix_timestamp(LAG(event_ts) OVER (PARTITION BY customer_id
-                                                       ORDER BY event_ts, event_id)) > 1800 THEN 1
+             WHEN wall_sec - LAG(wall_sec) OVER (PARTITION BY customer_id
+                                                 ORDER BY event_ts, event_id) > 1800 THEN 1
              ELSE 0
            END AS new_session
-    FROM   silver.web_events
-    WHERE  customer_id IS NOT NULL
+    FROM   (SELECT *,
+                   CAST(datediff(CAST(event_ts AS DATE), DATE'1970-01-01') AS BIGINT) * 86400
+                   + hour(event_ts) * 3600 + minute(event_ts) * 60
+                   + CAST(floor(second(event_ts)) AS INT) AS wall_sec
+            FROM   silver.web_events
+            WHERE  customer_id IS NOT NULL)
 ),
 numbered AS (
     SELECT customer_id,
