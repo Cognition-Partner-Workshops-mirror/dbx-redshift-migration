@@ -21,7 +21,7 @@ outcome and the fix that made `make validate` pass.
 | rfm_segments | NTILE(5), NULL ordering on NULL metrics | mismatch | | |
 | promo_lift | MEDIAN, PERCENTILE_CONT WITHIN GROUP | mismatch | | |
 | payment_mix | DECODE, NVL, NVL2 | mismatch | | |
-| returns_rate | integer division on INTs, :: casts | mismatch | | |
+| returns_rate | integer division on INTs, :: casts | mismatch | Lakebridge 0.13.0 + Bladebridge 0.3.0: both drafts failed EXPLAIN (2 validation errors). etl.sql was wrapped in an exception block (PARSE_SYNTAX_ERROR at the CREATE after `DROP TABLE IF EXISTS`), kept `core.*`/`mart.*`, made the table CREATE OR REPLACE, mapped `::NUMERIC(14,4)` to `:: DECIMAL(14,4)` but left the INT/INT `/` untouched (Databricks `/` returns DOUBLE, so `return_rate_int` would be 0.05 instead of Redshift 0). report.sql was copied unchanged and failed on `mart.returns_rate` TABLE_OR_VIEW_NOT_FOUND. | Hand-fixed: drop DROP, `core`->`silver`, `mart`->`gold`, `DIV` for Redshift integer division cast to BIGINT; Redshift NUMERIC(14,4)/NUMERIC(14,4) truncates at scale 15 while Databricks rounds at scale 19, so `floor(x, 15) * 100` cast to DECIMAL(38,15) reproduces goldens exactly (e.g. Accessories 5.116959064327400, not ...7500); report reads `gold.returns_rate` with `DESC NULLS FIRST` to keep Redshift NULL ordering. `make validate UNIT=returns_rate` PASS 2/2 outputs on attempt 1. |
 | attribution | SUPER / PartiQL unnesting (t, t.payload.touches tc) | rejected | | |
 | inventory_snapshot | plpgsql upsert: staging + DELETE/INSERT | rejected | | |
 | finance_export | UNLOAD TO s3 IAM_ROLE (export skipped at capture) | rejected | | |
