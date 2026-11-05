@@ -1,0 +1,104 @@
+{
+  "unit": "finance_export",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "6fdb46c86de244a545c5fa5d35c9c73506c33d42",
+  "started_at": "2026-11-05T23:50:27+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/finance_export/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "finance_monthly",
+      "golden": "golden/finance_export/finance_monthly.csv",
+      "target": "gold.finance_monthly",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "month": "DATE",
+            "fiscal_year": "INT",
+            "fiscal_qtr": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 12,
+          "target": 12
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "month"
+          ],
+          "matched_rows": 12,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/finance_export/report.csv",
+      "target": "databricks/units/finance_export/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "fiscal_year": "INT",
+            "fiscal_qtr": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 5,
+          "target": 5
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "fiscal_year",
+            "fiscal_qtr"
+          ],
+          "matched_rows": 5,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:31+00:00"
+}
