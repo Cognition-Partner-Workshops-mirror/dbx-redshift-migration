@@ -2,6 +2,7 @@
 -- Redshift MEDIAN / PERCENTILE_CONT over NUMERIC(38,2) interpolate exactly and
 -- truncate the result to the input scale; Databricks percentile_cont returns
 -- DOUBLE and would round. Interpolate on DECIMAL and truncate to 2 places.
+-- Percentiles ignore NULL totals (rank/count only non-NULL); order_count counts all.
 CREATE OR REPLACE TABLE gold.promo_lift AS
 WITH order_totals AS (
     SELECT o.order_id,
@@ -14,19 +15,20 @@ WITH order_totals AS (
 ranked AS (
     SELECT sales_channel,
            order_total,
-           ROW_NUMBER() OVER (PARTITION BY sales_channel ORDER BY order_total) AS rn,
-           COUNT(*)     OVER (PARTITION BY sales_channel)                      AS n
+           ROW_NUMBER() OVER (PARTITION BY sales_channel ORDER BY order_total NULLS LAST) AS rn,
+           COUNT(order_total) OVER (PARTITION BY sales_channel)                           AS n,
+           COUNT(*)           OVER (PARTITION BY sales_channel)                           AS order_count
     FROM   order_totals
 ),
 positions AS (
-    SELECT sales_channel, order_total, rn, n,
+    SELECT sales_channel, order_total, rn, n, order_count,
            1 + (n - 1) * 0.5 AS pos_50,
            1 + (n - 1) * 0.9 AS pos_90
     FROM   ranked
 ),
 bounds AS (
     SELECT sales_channel,
-           MAX(n)                                                         AS order_count,
+           MAX(order_count)                                               AS order_count,
            MAX(CASE WHEN rn = FLOOR(pos_50)   THEN order_total END)       AS lo_50,
            MAX(CASE WHEN rn = CEIL(pos_50)    THEN order_total END)       AS hi_50,
            MAX(pos_50 - FLOOR(pos_50))                                    AS frac_50,
