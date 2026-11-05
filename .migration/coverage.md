@@ -15,7 +15,7 @@ outcome and the fix that made `make validate` pass.
 | product_perf | LISTAGG(...) WITHIN GROUP (ORDER BY ...), ::casts | mismatch | | |
 | store_weekly | DATE_TRUNC('week'), DATEADD, DATEDIFF(week) | clean | | |
 | category_mix | RATIO_TO_REPORT | clean | | |
-| basket_affinity | self-join pairs, HAVING support >= threshold | clean | | |
+| basket_affinity | self-join pairs, HAVING support >= threshold | clean | Lakebridge 0.13.0 + Bladebridge 0.3.0: etl.sql draft failed EXPLAIN (PARSE_SYNTAX_ERROR at second statement: kept `DROP TABLE IF EXISTS` + `CREATE OR REPLACE TABLE` in one EXPLAIN) and was emitted wrapped in an Exception Start/End comment block with `mart.`/`core.` namespaces; self-join, COUNT(DISTINCT), HAVING and ORDER BY were otherwise passed through unchanged. report.sql draft was unchanged from legacy and failed validation only with TABLE_OR_VIEW_NOT_FOUND `mart`.`basket_affinity`. | Unwrapped the exception block; single `CREATE OR REPLACE TABLE gold.basket_affinity AS` (dropped redundant DROP and the no-op CTAS ORDER BY); `core.`->`silver.`, `mart.`->`gold.`; join/`>` pair predicate, COUNT(DISTINCT order_id), HAVING >= 5 and report `||` concat + ORDER BY pair_orders DESC, ids + LIMIT 50 kept verbatim (deterministic tie-break on keys). `make validate UNIT=basket_affinity` PASS on attempt 1: basket_affinity 50/50, report 50/50 rows, 0 mismatches. |
 | sessionization | LAG, 30-min gap, running SUM session id | clean | | |
 | shipping_sla | DATEDIFF(hour) boundary counting, CONVERT_TIMEZONE | mismatch | | |
 | rfm_segments | NTILE(5), NULL ordering on NULL metrics | mismatch | | |
