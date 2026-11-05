@@ -1,0 +1,109 @@
+{
+  "unit": "shipping_sla",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "3d5b7b18f22211d92c0487819328f2015f83a46f",
+  "started_at": "2026-11-05T23:50:38+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/shipping_sla/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "shipping_sla",
+      "golden": "golden/shipping_sla/shipping_sla.csv",
+      "target": "gold.shipping_sla",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "carrier": "STRING",
+            "shipments": "LONG",
+            "delivered": "LONG",
+            "in_flight": "LONG",
+            "avg_hours_to_deliver": "DECIMAL",
+            "max_hours_to_deliver": "LONG",
+            "on_time_96h": "LONG",
+            "earliest_local_delivery_hour": "INT"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "carrier"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/shipping_sla/report.csv",
+      "target": "databricks/units/shipping_sla/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "carrier": "STRING",
+            "shipments": "LONG",
+            "delivered": "LONG",
+            "in_flight": "LONG",
+            "avg_hours_to_deliver": "DECIMAL",
+            "max_hours_to_deliver": "LONG",
+            "on_time_96h": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "carrier"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:42+00:00"
+}
