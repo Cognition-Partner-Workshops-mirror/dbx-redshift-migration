@@ -14,7 +14,7 @@ outcome and the fix that made `make validate` pass.
 | churn_flags | plpgsql procedure, FOR loop, temp table, CALL | rejected | | |
 | product_perf | LISTAGG(...) WITHIN GROUP (ORDER BY ...), ::casts | mismatch | | |
 | store_weekly | DATE_TRUNC('week'), DATEADD, DATEDIFF(week) | clean | | |
-| category_mix | RATIO_TO_REPORT | clean | | |
+| category_mix | RATIO_TO_REPORT | clean | Lakebridge 0.13.0 + Bladebridge 0.3.0: etl.sql failed EXPLAIN (PARSE_SYNTAX_ERROR at second statement, draft wrapped in exception block); it made the table CREATE OR REPLACE but kept `DROP TABLE`, `mart.*`/`core.*` namespaces and `RATIO_TO_REPORT(revenue) OVER ()` untranslated. report.sql passed through unchanged with `mart.category_mix`. | Hand-fixed: dropped redundant DROP, `core.*`->`silver.*`, `mart.*`->`gold.*`; RATIO_TO_REPORT -> `CAST(revenue AS DOUBLE) / SUM(CAST(revenue AS DOUBLE)) OVER ()` (Redshift returns float8; DECIMAL division would truncate scale); `units_sold` cast to BIGINT (Redshift int8); revenue stays DECIMAL SUM; dropped no-op CTAS ORDER BY. `make validate UNIT=category_mix` PASS 2/2 outputs (attempt 1). |
 | basket_affinity | self-join pairs, HAVING support >= threshold | clean | | |
 | sessionization | LAG, 30-min gap, running SUM session id | clean | | |
 | shipping_sla | DATEDIFF(hour) boundary counting, CONVERT_TIMEZONE | mismatch | | |
