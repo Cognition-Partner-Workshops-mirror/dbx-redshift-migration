@@ -1,0 +1,106 @@
+{
+  "unit": "rfm_segments",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
+  "started_at": "2026-11-05T23:49:59+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/rfm_segments/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "rfm_segments",
+      "golden": "golden/rfm_segments/rfm_segments.csv",
+      "target": "gold.rfm_segments",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "customer_id": "LONG",
+            "recency_days": "LONG",
+            "frequency": "LONG",
+            "monetary": "DECIMAL",
+            "r_tile": "INT",
+            "f_tile": "INT",
+            "m_tile": "INT",
+            "rfm_segment": "STRING"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1500,
+          "target": 1500
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "customer_id"
+          ],
+          "matched_rows": 1500,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/rfm_segments/report.csv",
+      "target": "databricks/units/rfm_segments/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "rfm_segment": "STRING",
+            "customers": "LONG",
+            "total_monetary": "DECIMAL",
+            "avg_frequency": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 103,
+          "target": 103
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "rfm_segment"
+          ],
+          "matched_rows": 103,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:04+00:00"
+}
