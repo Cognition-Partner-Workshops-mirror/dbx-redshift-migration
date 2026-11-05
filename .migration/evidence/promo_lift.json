@@ -1,0 +1,102 @@
+{
+  "unit": "promo_lift",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
+  "started_at": "2026-11-05T23:50:44+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/promo_lift/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "promo_lift",
+      "golden": "golden/promo_lift/promo_lift.csv",
+      "target": "gold.promo_lift",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "median_order_value": "DECIMAL",
+            "p90_order_value": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "sales_channel"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/promo_lift/report.csv",
+      "target": "databricks/units/promo_lift/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "median_order_value": "DECIMAL",
+            "p90_order_value": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "sales_channel"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:49+00:00"
+}
