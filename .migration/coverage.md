@@ -16,7 +16,7 @@ outcome and the fix that made `make validate` pass.
 | store_weekly | DATE_TRUNC('week'), DATEADD, DATEDIFF(week) | clean | | |
 | category_mix | RATIO_TO_REPORT | clean | | |
 | basket_affinity | self-join pairs, HAVING support >= threshold | clean | | |
-| sessionization | LAG, 30-min gap, running SUM session id | clean | | |
+| sessionization | LAG, 30-min gap, running SUM session id | clean | Lakebridge 0.13.0 + Bladebridge 0.3.0: etl.sql draft failed EXPLAIN (PARSE_SYNTAX_ERROR at CREATE: multi-statement DROP+CREATE, `ZORDER BY(customer_id)` in CTAS) and was wrapped in an exception comment; it kept `core.web_events`/`mart.web_sessions` and translated `DATEDIFF(second, LAG(ts), ts)` to a `UNIX_TIMESTAMP` difference, which is session-time-zone dependent on TIMESTAMP_NTZ (DST gap can shift by 1h). report.sql draft was emitted unchanged but still read `mart.web_sessions`. | Hand fixes: one `CREATE OR REPLACE TABLE gold.web_sessions CLUSTER BY (customer_id, session_id) AS` (DROP/ZORDER removed), `core.`->`silver.`, `mart.`->`gold.`; gap computed from time-zone-independent wall-clock seconds `datediff(date, 1970-01-01)*86400 + h*3600 + m*60 + floor(s)` (Redshift second-boundary counting, DST-safe); id/count columns cast to BIGINT; CTAS ORDER BY removed. `make validate UNIT=sessionization` PASS on all 3 attempts (unix_timestamp version x2, wall-clock version x1): 21280 + 1500 rows, 0 mismatches. |
 | shipping_sla | DATEDIFF(hour) boundary counting, CONVERT_TIMEZONE | mismatch | | |
 | rfm_segments | NTILE(5), NULL ordering on NULL metrics | mismatch | | |
 | promo_lift | MEDIAN, PERCENTILE_CONT WITHIN GROUP | mismatch | | |
