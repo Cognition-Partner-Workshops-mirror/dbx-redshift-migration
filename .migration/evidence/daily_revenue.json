@@ -1,0 +1,104 @@
+{
+  "unit": "daily_revenue",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
+  "started_at": "2026-11-05T23:50:25+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/daily_revenue/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "daily_revenue",
+      "golden": "golden/daily_revenue/daily_revenue.csv",
+      "target": "gold.daily_revenue",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "order_date": "DATE",
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1460,
+          "target": 1460
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "order_date",
+            "sales_channel"
+          ],
+          "matched_rows": 1460,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/daily_revenue/report.csv",
+      "target": "databricks/units/daily_revenue/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "order_month": "DATE",
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 48,
+          "target": 48
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "order_month",
+            "sales_channel"
+          ],
+          "matched_rows": 48,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:32+00:00"
+}
