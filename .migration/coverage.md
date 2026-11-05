@@ -12,7 +12,7 @@ outcome and the fix that made `make validate` pass.
 | customer_ltv | CHAR(4) padding carried into output, AVG on NUMERIC(12,2) scale | mismatch | | |
 | geo_rollup | GROUPING SETS, GROUPING() id column | clean | | |
 | churn_flags | plpgsql procedure, FOR loop, temp table, CALL | rejected | | |
-| product_perf | LISTAGG(...) WITHIN GROUP (ORDER BY ...), ::casts | mismatch | | |
+| product_perf | LISTAGG(...) WITHIN GROUP (ORDER BY ...), ::casts | mismatch | Lakebridge 0.13.0 + Bladebridge 0.3.0: etl draft failed EXPLAIN (parse error at the second statement: DROP + CREATE in one EXPLAIN; SORTKEY became `ZORDER BY(product_id)`, DISTKEY dropped). It kept `mart.*`/`core.*` namespaces, kept `LISTAGG ... WITHIN GROUP` with `::` casts (VARCHAR(64)->STRING, NUMERIC(18,2)->DECIMAL(18,2)), and wrapped the file in an exception comment block; report draft was passed through unchanged with `mart.product_perf`. | Hand-fixed: `core.*`->`silver.*`, `mart.*`->`gold.*`, single CREATE OR REPLACE TABLE ... CLUSTER BY (product_id) AS; LISTAGG -> `array_join(transform(array_sort(collect_list(struct(rn, region))), x -> x.region), ',')` over ROW_NUMBER rn<=3 so list order follows the rank (units DESC, region); `rtrim` the CHAR(4) region inside the list because Redshift LISTAGG drops CHAR pad blanks (golden shows `NE`, `SW`); explicit CAST to BIGINT / DECIMAL(18,2) and typed 0 in COALESCE; terminal ORDER BY dropped from CTAS. `make validate UNIT=product_perf` PASS 2/2 outputs (attempt 1). |
 | store_weekly | DATE_TRUNC('week'), DATEADD, DATEDIFF(week) | clean | | |
 | category_mix | RATIO_TO_REPORT | clean | | |
 | basket_affinity | self-join pairs, HAVING support >= threshold | clean | | |
