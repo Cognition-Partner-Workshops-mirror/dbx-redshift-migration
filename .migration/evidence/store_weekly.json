@@ -1,0 +1,106 @@
+{
+  "unit": "store_weekly",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "c7c68fcab4a74e36450e58aee75043cb0c17c7eb",
+  "started_at": "2026-11-05T23:50:33+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/store_weekly/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "store_weekly",
+      "golden": "golden/store_weekly/store_weekly.csv",
+      "target": "gold.store_weekly",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "store_id": "INT",
+            "week_start": "DATE",
+            "week_end": "DATE",
+            "week_number": "LONG",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 2120,
+          "target": 2120
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "store_id",
+            "week_start"
+          ],
+          "matched_rows": 2120,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/store_weekly/report.csv",
+      "target": "databricks/units/store_weekly/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "store_id": "INT",
+            "region": "STRING",
+            "active_weeks": "LONG",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 40,
+          "target": 40
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "store_id"
+          ],
+          "matched_rows": 40,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:50:39+00:00"
+}

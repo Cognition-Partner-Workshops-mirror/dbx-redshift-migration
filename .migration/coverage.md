@@ -13,7 +13,7 @@ outcome and the fix that made `make validate` pass.
 | geo_rollup | GROUPING SETS, GROUPING() id column | clean | | |
 | churn_flags | plpgsql procedure, FOR loop, temp table, CALL | rejected | | |
 | product_perf | LISTAGG(...) WITHIN GROUP (ORDER BY ...), ::casts | mismatch | | |
-| store_weekly | DATE_TRUNC('week'), DATEADD, DATEDIFF(week) | clean | | |
+| store_weekly | DATE_TRUNC('week'), DATEADD, DATEDIFF(week) | clean | Lakebridge 0.13.0 + Bladebridge 0.3.0: both drafts failed EXPLAIN. etl kept `DROP` + `CREATE` as one batch (parse error at CREATE), kept `mart.`/`core.`, turned SORTKEY into `ZORDER BY(store_id)`, rewrote `::DATE` as `::CURRENT_DATE` and `DATE '2025-01-01'` as `CURRENT_DATE '2025-01-01'`, and translated DATEDIFF(week) as `FLOOR(FLOOR(DATEDIFF($3, ...) / 7) / 7)` (placeholder `$3`, divided by 7 twice); report draft hit the same DATEDIFF pattern (parse error). | Hand-fixed: `CREATE OR REPLACE TABLE gold.store_weekly CLUSTER BY (store_id, week_start) AS`, `silver.*` reads, `CAST(DATE_TRUNC('WEEK', ts) AS DATE)` (Monday weeks, as Redshift), `DATE_ADD(..., 6)`; Redshift boundary-counting DATEDIFF(week, a, b) = `DATEDIFF(DATE_TRUNC('WEEK', b), DATE_TRUNC('WEEK', a)) DIV 7` cast BIGINT (2024-12-30 vs 2025-01-01 -> 0). `make validate UNIT=store_weekly` PASS 2/2 outputs on attempt 1; post-PR re-run (attempt 2) PASS. |
 | category_mix | RATIO_TO_REPORT | clean | | |
 | basket_affinity | self-join pairs, HAVING support >= threshold | clean | | |
 | sessionization | LAG, 30-min gap, running SUM session id | clean | | |
