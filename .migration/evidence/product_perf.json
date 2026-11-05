@@ -3,8 +3,8 @@
   "engine": "databricks_sql",
   "catalog": "demo_redshift",
   "warehouse_id": "6dc4b80538621b7b",
-  "git_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
-  "started_at": "2026-11-05T23:49:50+00:00",
+  "git_commit": "54d94901ec6369bdc25df01d1debbda6dfe3a6db",
+  "started_at": "2026-11-05T23:50:30+00:00",
   "build": {
     "status": "PASS",
     "file": "databricks/units/product_perf/etl.sql"
@@ -99,5 +99,5 @@
     }
   ],
   "status": "PASS",
-  "finished_at": "2026-11-05T23:49:57+00:00"
+  "finished_at": "2026-11-05T23:50:34+00:00"
 }
