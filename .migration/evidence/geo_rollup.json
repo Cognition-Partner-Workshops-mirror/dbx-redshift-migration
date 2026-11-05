@@ -1,0 +1,108 @@
+{
+  "unit": "geo_rollup",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "8edc74373e65dea46b19062953ff5af1a1b2aebe",
+  "started_at": "2026-11-05T23:51:05+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/geo_rollup/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "geo_rollup",
+      "golden": "golden/geo_rollup/geo_rollup.csv",
+      "target": "gold.geo_rollup",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "grouping_id": "INT",
+            "region": "STRING",
+            "state": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 21,
+          "target": 21
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "grouping_id",
+            "region",
+            "state"
+          ],
+          "matched_rows": 21,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/geo_rollup/report.csv",
+      "target": "databricks/units/geo_rollup/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "grouping_id": "INT",
+            "region": "STRING",
+            "state": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 21,
+          "target": 21
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "grouping_id",
+            "region",
+            "state"
+          ],
+          "matched_rows": 21,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:51:09+00:00"
+}
