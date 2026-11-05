@@ -1,0 +1,103 @@
+{
+  "unit": "product_perf",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "9f56ede30ac9c841c6489c12bf9fb7fd5c7d9e95",
+  "started_at": "2026-11-05T23:51:41+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/units/product_perf/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "product_perf",
+      "golden": "golden/product_perf/product_perf.csv",
+      "target": "gold.product_perf",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "product_id": "INT",
+            "category": "STRING",
+            "units_sold": "LONG",
+            "revenue": "DECIMAL",
+            "top_stores": "STRING"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 300,
+          "target": 300
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "product_id"
+          ],
+          "matched_rows": 300,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/product_perf/report.csv",
+      "target": "databricks/units/product_perf/report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "category": "STRING",
+            "products": "LONG",
+            "units_sold": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "category"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-05T23:51:45+00:00"
+}
