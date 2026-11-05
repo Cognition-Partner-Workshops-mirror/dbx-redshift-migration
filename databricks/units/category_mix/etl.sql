@@ -3,7 +3,7 @@ CREATE OR REPLACE TABLE gold.category_mix AS
 SELECT category,
        units_sold,
        revenue,
-       CAST(revenue AS DOUBLE) / SUM(CAST(revenue AS DOUBLE)) OVER () AS revenue_share
+       try_divide(CAST(revenue AS DOUBLE), SUM(CAST(revenue AS DOUBLE)) OVER ()) AS revenue_share
 FROM (
     SELECT p.category,
            CAST(SUM(oi.quantity) AS BIGINT)                  AS units_sold,
