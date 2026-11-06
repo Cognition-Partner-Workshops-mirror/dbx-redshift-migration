@@ -84,9 +84,19 @@
     "cohort_retention": "40d213c66e11c6ad9fd858dd2283d069e7a4dcb3"
   },
   "schedule": {
-    "pause_status": "PAUSED",
+    "pause_status": "UNPAUSED",
     "quartz_cron_expression": "0 0 2 * * ?",
     "timezone_id": "UTC"
+  },
+  "schedule_deployment": {
+    "target": "dev",
+    "completed_at_utc": "2026-11-06T00:26:37Z",
+    "configuration": "targets.dev.resources.jobs.nightly_mart_refresh.schedule.pause_status: UNPAUSED",
+    "presets_change": "No preset retained: targets.dev.presets.trigger_pause_status: UNPAUSED was rejected by bundle validation because mode development cannot default triggers to UNPAUSED. Used the documented per-job schedule override under dev instead.",
+    "documentation": "https://docs.databricks.com/aws/en/dev-tools/bundles/deployment-modes",
+    "scheduled_run_status": "No scheduled run has happened yet; jobs list-runs showed four ONE_TIME runs only. No run was started for this schedule-only deployment.",
+    "execution_evidence_run_id": 1117892000201838,
+    "validation": "bundle validate --strict -t dev: PASS; make check: PASS (23 tests); pytest databricks/orchestration/test_run_sql.py: PASS (1 test), with repository root on PYTHONPATH for the pytest console entry point."
   },
   "checks": {
     "bundle_validate_strict_dev": "PASS",

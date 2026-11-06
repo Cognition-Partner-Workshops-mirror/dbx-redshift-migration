@@ -17,6 +17,11 @@ targets:
   dev:
     default: true
     mode: development
+    resources:
+      jobs:
+        nightly_mart_refresh:
+          schedule:
+            pause_status: UNPAUSED
     workspace:
       root_path: ~/.bundle/${bundle.name}/migration-run-2/${bundle.target}
     variables:
