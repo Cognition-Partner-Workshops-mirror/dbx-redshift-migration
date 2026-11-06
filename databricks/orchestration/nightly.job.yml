@@ -1,0 +1,202 @@
+resources:
+  jobs:
+    nightly_mart_refresh:
+      name: nightly_mart_refresh-run-2
+      schedule:
+        quartz_cron_expression: "0 0 2 * * ?"
+        timezone_id: UTC
+      tasks:
+        - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/foundation/etl.sql
+        - task_key: daily_revenue
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/daily_revenue/etl.sql
+        - task_key: customer_ltv
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/customer_ltv/etl.sql
+        - task_key: geo_rollup
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/geo_rollup/etl.sql
+        - task_key: churn_flags
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/churn_flags/etl.sql
+        - task_key: product_perf
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/product_perf/etl.sql
+        - task_key: store_weekly
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/store_weekly/etl.sql
+        - task_key: category_mix
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/category_mix/etl.sql
+        - task_key: basket_affinity
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/basket_affinity/etl.sql
+        - task_key: sessionization
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/sessionization/etl.sql
+        - task_key: shipping_sla
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/shipping_sla/etl.sql
+        - task_key: rfm_segments
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/rfm_segments/etl.sql
+        - task_key: promo_lift
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/promo_lift/etl.sql
+        - task_key: payment_mix
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/payment_mix/etl.sql
+        - task_key: returns_rate
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/returns_rate/etl.sql
+        - task_key: attribution
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/attribution/etl.sql
+        - task_key: inventory_snapshot
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/inventory_snapshot/etl.sql
+        - task_key: finance_export
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/finance_export/etl.sql
+        - task_key: cohort_retention
+          depends_on:
+            - task_key: load_core
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/units/cohort_retention/etl.sql
+        - task_key: exec_summary
+          depends_on:
+            - task_key: daily_revenue
+            - task_key: customer_ltv
+            - task_key: geo_rollup
+            - task_key: churn_flags
+            - task_key: product_perf
+            - task_key: store_weekly
+            - task_key: category_mix
+            - task_key: basket_affinity
+            - task_key: sessionization
+            - task_key: shipping_sla
+            - task_key: rfm_segments
+            - task_key: promo_lift
+            - task_key: payment_mix
+            - task_key: returns_rate
+            - task_key: attribution
+            - task_key: inventory_snapshot
+            - task_key: finance_export
+            - task_key: cohort_retention
+          notebook_task:
+            notebook_path: run_sql.py
+            base_parameters:
+              catalog: ${var.catalog}
+              sql_file: ${workspace.file_path}/orchestration/etl.sql
+        - task_key: finance_export_unload
+          depends_on:
+            - task_key: store_weekly
+            - task_key: category_mix
+            - task_key: basket_affinity
+            - task_key: sessionization
+            - task_key: shipping_sla
+            - task_key: rfm_segments
+            - task_key: promo_lift
+            - task_key: payment_mix
+            - task_key: returns_rate
+            - task_key: attribution
+            - task_key: inventory_snapshot
+            - task_key: finance_export
+            - task_key: cohort_retention
+          notebook_task:
+            notebook_path: finance_export.py
+            base_parameters:
+              catalog: ${var.catalog}

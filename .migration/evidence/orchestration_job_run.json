@@ -1,0 +1,159 @@
+{
+  "job_id": 608845824608525,
+  "run_id": 1117892000201838,
+  "job_url": "https://dbc-c22a0245-3975.cloud.databricks.com/jobs/608845824608525",
+  "run_url": "https://dbc-c22a0245-3975.cloud.databricks.com/?o=7474652505890469#job/608845824608525/run/1117892000201838",
+  "task_states": {
+    "basket_affinity": "SUCCESS",
+    "shipping_sla": "SUCCESS",
+    "promo_lift": "SUCCESS",
+    "returns_rate": "SUCCESS",
+    "cohort_retention": "SUCCESS",
+    "inventory_snapshot": "SUCCESS",
+    "geo_rollup": "SUCCESS",
+    "payment_mix": "SUCCESS",
+    "finance_export": "SUCCESS",
+    "churn_flags": "SUCCESS",
+    "product_perf": "SUCCESS",
+    "finance_export_unload": "SUCCESS",
+    "attribution": "SUCCESS",
+    "customer_ltv": "SUCCESS",
+    "sessionization": "SUCCESS",
+    "rfm_segments": "SUCCESS",
+    "category_mix": "SUCCESS",
+    "daily_revenue": "SUCCESS",
+    "exec_summary": "SUCCESS",
+    "load_core": "SUCCESS",
+    "store_weekly": "SUCCESS"
+  },
+  "export": {
+    "path": "/Volumes/demo_redshift/gold/exports/finance_export/monthly/as_of=2025-12-31/finance_monthly.csv",
+    "local_download": "/home/ubuntu/finance_monthly-run-2.csv",
+    "comparison": "PASS",
+    "row_count": 12,
+    "directory_listing": [
+      {
+        "name": "finance_monthly.csv",
+        "path": "/Volumes/demo_redshift/gold/exports/finance_export/monthly/as_of=2025-12-31/finance_monthly.csv",
+        "size": 457
+      }
+    ],
+    "compared_against": [
+      "SELECT * FROM demo_redshift.gold.finance_monthly ORDER BY month",
+      "golden/finance_export/finance_monthly.csv"
+    ],
+    "sha256": "0789b037bf310ad5f74fd14c193864fad776ba017b900044d860f34b951cfa44"
+  },
+  "idempotency": {
+    "query": "SELECT COUNT(*) AS row_count, SUM(CAST(xxhash64(product_id, snapshot_date, units_sold, on_hand) AS DECIMAL(38,0))) AS checksum FROM gold.inventory_snapshot",
+    "before": [
+      [
+        "300",
+        "-76317121988169098299"
+      ]
+    ],
+    "after": [
+      [
+        "300",
+        "-76317121988169098299"
+      ]
+    ],
+    "result": "PASS",
+    "rerun_id": 1028527790715019,
+    "rerun_url": "https://dbc-c22a0245-3975.cloud.databricks.com/?o=7474652505890469#job/608845824608525/run/1028527790715019",
+    "task_state": "SUCCESS"
+  },
+  "copied_unit_shas": {
+    "daily_revenue": "7e00d04cb574d8612eb230ddf7a86d8a10a74be6",
+    "customer_ltv": "d76824e193bad9159cfcaffa0163b5d4e8b86453",
+    "geo_rollup": "645e22bdcc3292d2fcd0de9894e6159201a7d15a",
+    "churn_flags": "0759193da815d76ba833f19deb222fbeea7d000b",
+    "product_perf": "f5190311d5dadaa8f6afc278bf9c082075f61dd1",
+    "store_weekly": "4c0726efddf91dc7c6938714395c72116f4d2744",
+    "category_mix": "05acdd512aad89282edabc4f6016376cbe64f110",
+    "basket_affinity": "9731022f9e20009f0b0973b4da2bcb886fc20c39",
+    "sessionization": "454679fc548df6230bb224f3b0e09ae1405ea1f6",
+    "shipping_sla": "261d0b63aa2fa7a42db4a9d5ed9494e3fbbb49f3",
+    "rfm_segments": "97cf3e5e0b73507a8eb419e98b450b8d2d59ff95",
+    "promo_lift": "05f9d350776df99f1c33a7ba9d0135c272fffb4f",
+    "payment_mix": "bd64a7318d8356fea9e12e4b8b2fbcd79e1f7923",
+    "returns_rate": "ec7c61ca042d76e60100203324c7149fcd0cc9d7",
+    "attribution": "8e09c948a39da922918c592551227b14457a1a86",
+    "inventory_snapshot": "9216cdecfc76139dd7de97091a3845d61ee283e1",
+    "finance_export": "01b9ccf495e0f48d00888e64810dae6500982dfb",
+    "cohort_retention": "40d213c66e11c6ad9fd858dd2283d069e7a4dcb3"
+  },
+  "schedule": {
+    "pause_status": "UNPAUSED",
+    "quartz_cron_expression": "0 0 2 * * ?",
+    "timezone_id": "UTC"
+  },
+  "schedule_deployment": {
+    "target": "dev",
+    "completed_at_utc": "2026-11-06T00:26:37Z",
+    "configuration": "targets.dev.resources.jobs.nightly_mart_refresh.schedule.pause_status: UNPAUSED",
+    "presets_change": "No preset retained: targets.dev.presets.trigger_pause_status: UNPAUSED was rejected by bundle validation because mode development cannot default triggers to UNPAUSED. Used the documented per-job schedule override under dev instead.",
+    "documentation": "https://docs.databricks.com/aws/en/dev-tools/bundles/deployment-modes",
+    "scheduled_run_status": "No scheduled run has happened yet; jobs list-runs showed four ONE_TIME runs only. No run was started for this schedule-only deployment.",
+    "execution_evidence_run_id": 1117892000201838,
+    "validation": "bundle validate --strict -t dev: PASS; make check: PASS (23 tests); pytest databricks/orchestration/test_run_sql.py: PASS (1 test), with repository root on PYTHONPATH for the pytest console entry point."
+  },
+  "checks": {
+    "bundle_validate_strict_dev": "PASS",
+    "make_validate_orchestration": "PASS",
+    "make_check": "PASS (23 tests)",
+    "runner_splitter_tests": "PASS (1 test)"
+  },
+  "result": "SUCCESS",
+  "tested_tree": {
+    "base_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
+    "description": "Uncommitted working-tree code used by final full run; file SHA256s identify tested code. Unit SQL remains uncommitted and is pinned separately in copied_unit_shas. Evidence is not a claim that the base commit contains this code.",
+    "file_sha256": {
+      "databricks/databricks.yml": "b3c53b72d5114ddea5968bfe1895c6c14a76c3313d8987582ce14e6da3c6cc48",
+      "databricks/orchestration/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "databricks/orchestration/etl.sql": "4ba3064362bf3712c955538aa7257601710d5f90902b2162cbf2efd3e351af1a",
+      "databricks/orchestration/exec_summary_report.sql": "22db196b13a32672eb47f2ff6d68780d412594ebf80ec386a18bdbd65b8d5531",
+      "databricks/orchestration/finance_export.py": "6f27f3a60af2cf0d0afe75d4bc091410427fbf0c82f568c057c0b3de056a8dc4",
+      "databricks/orchestration/nightly.job.yml": "966a4ffa9f4a6b235d6d87ddbc0c1d4b5ba1950b656678d0e5bf3844dd2f8a63",
+      "databricks/orchestration/run_sql.py": "b7f782e1abf26f80b536eb58154ac705ada5e2e8beaf13221387686132a44a8b",
+      "databricks/orchestration/test_run_sql.py": "9998a7b0f9db26aa32ae6cf2f0887842ec2ed84af22845545865a56bd17c52f6",
+      "databricks/foundation/etl.sql": "6da1be5c9333b5d62ba64c25b7bc5450de6494ee9a75f162438e1108fb8b86d2",
+      "databricks/units/attribution/etl.sql": "9b6234943efbc4f90ec0f403a7ece50c0fea403101d791698df9a2644a414671",
+      "databricks/units/attribution/report.sql": "4ecdfc9c554422b19afd2a813b24027c3de1423620e679f717303030289f8823",
+      "databricks/units/basket_affinity/etl.sql": "fc739d7e92c4deb328abee91707b64440a22206dcdcecf0673c4d5e31eea4dc2",
+      "databricks/units/basket_affinity/report.sql": "2e0dd88329184fd885eaae6e3e4a0e671f76d3bc26a9a19a6c52b8e5b6514a56",
+      "databricks/units/category_mix/etl.sql": "d52bee725b0b6dad230f1f30494853f14d625065eb6ed974f2bf954dc5327189",
+      "databricks/units/category_mix/report.sql": "d92b9f1e9025d00848e395adf6fa46cd84f8c5739699e724703e27f273e6fb2a",
+      "databricks/units/churn_flags/etl.sql": "657fa87f479b03cf2210ffa104f14b6ffa282d17bffbbaca95469f32bd8d9554",
+      "databricks/units/churn_flags/report.sql": "21f99b61a2416e9a4fa0a9afb719b73567c1481b12fea4b220fbd5df3fdbef3a",
+      "databricks/units/cohort_retention/etl.sql": "e9a75418d6087a9dbbe17b0467109c2e04bd08c0bd9ba73d37d091e3b60057fd",
+      "databricks/units/cohort_retention/report.sql": "83d500b174c207f92538ae7ffabaa964224e3e5debe1fcad1c61d983ed165ab5",
+      "databricks/units/customer_ltv/etl.sql": "6bbf8be491d19bca8cda61acd239b8c939c38c830ea6c677d609fdbc3d7affe9",
+      "databricks/units/customer_ltv/report.sql": "2b84bdebdd9fbc4498b4bc1fb1b5ef9ab63580f95ca7cef18103d819fa2623f2",
+      "databricks/units/daily_revenue/etl.sql": "3951e0fd8b1202564f080f8e6d24d5b12b395bc52d95554362b3849ecdce6c9d",
+      "databricks/units/daily_revenue/report.sql": "2b06bdb458a7495e079c516b7942ccb13961e7c0aad37c500e307c33a36b3b9f",
+      "databricks/units/finance_export/etl.sql": "66fdfccde807f3281b82abd1452ecbe0e2d04567f20569dcb09467c5b2e32279",
+      "databricks/units/finance_export/report.sql": "c1b1b2206aab3f290661b2daee80bf2933a2a039c43dd63f45d62b3806332dcc",
+      "databricks/units/geo_rollup/etl.sql": "e82ad2b0afc4c12203440cfc7756b535594a83cf3225ca2fdaa083540e98518d",
+      "databricks/units/geo_rollup/report.sql": "23315bc9c2d22c59f429f99ecea7281842903106db7cf8044fae17b02e206eae",
+      "databricks/units/inventory_snapshot/etl.sql": "5a5172a013edd40058ac08397ea9270356b865b6fd0a1fb41d75ac103335e7ce",
+      "databricks/units/inventory_snapshot/report.sql": "7b5d71bad2c3c575193bc1e910504f3c3b01646e15e5ea0ab57b22ac342c9b4f",
+      "databricks/units/payment_mix/etl.sql": "432b91f22ec01323ad164f8b8acdd29f80b6122d2130ddc499f753470ac7a453",
+      "databricks/units/payment_mix/report.sql": "ac67a66e9c4f88a02e24428235b199e0d09b501f06d36f9f9af729dd2acaf5ec",
+      "databricks/units/product_perf/etl.sql": "b0bff7c0cd72e34b9bf167a34e111ca90ae86fefe26e3e25c0087b9a2964bec8",
+      "databricks/units/product_perf/report.sql": "d7dd9c97e3c1dc71fee8084aa9ecffaa951545cd916387941df82ce0905db967",
+      "databricks/units/promo_lift/etl.sql": "9ce751bbf4bd5523cb2acc006dd9afb3af46aa38ea4a0b40aef562e58dd206fd",
+      "databricks/units/promo_lift/report.sql": "646f0b01c3468befc1a43414fc3f3297b3ee8092a127674dc1bc20391a49f293",
+      "databricks/units/returns_rate/etl.sql": "2b785c2e95c9f22fd768c333cea039de625f44e910227fedc91f3f25579536cc",
+      "databricks/units/returns_rate/report.sql": "5736eeb75ee73a8c9c462d373a70b513f75264197bd117d65195b7aca15eae0f",
+      "databricks/units/rfm_segments/etl.sql": "8449c9ac32c38322c59911e50d7745c9466d2823dc2e43946065631435251186",
+      "databricks/units/rfm_segments/report.sql": "2826b6ec6eacdbc17f2c42dd7a0630473f1c9984738df22bd0f9806ab5995391",
+      "databricks/units/sessionization/etl.sql": "c2b3ac6687d3eb1ceb6ccf2d22a4f560e2494203da7134b545b2d9e88141bda5",
+      "databricks/units/sessionization/report.sql": "d784475642bc5797bf95e88015e560575ce8613c71b04dc2f41a9f7246d434d9",
+      "databricks/units/shipping_sla/etl.sql": "ca6018c843841b689b054385b0c5fe2887c2851f735e3da0e55ab22f87265e63",
+      "databricks/units/shipping_sla/report.sql": "059a6628daee27d5028694e1ae285ba450b4ee17ddaa6d6568d49401eba11621",
+      "databricks/units/store_weekly/etl.sql": "61365d4c1ff29c1f99f4c3e1af935e0bf89bdf5e6379deb53a5b2eb7779ff455",
+      "databricks/units/store_weekly/report.sql": "58fd057384eb753c69765021ade251681aa1cb9552099ba208a3af916889e177"
+    }
+  }
+}
