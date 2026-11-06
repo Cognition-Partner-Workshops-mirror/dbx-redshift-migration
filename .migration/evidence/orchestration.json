@@ -1,0 +1,115 @@
+{
+  "unit": "orchestration",
+  "engine": "databricks_sql",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "git_commit": "9ecee6b503ffa9375b494889523b2ff0415a7ad7",
+  "started_at": "2026-11-06T00:11:47+00:00",
+  "build": {
+    "status": "PASS",
+    "file": "databricks/orchestration/etl.sql"
+  },
+  "outputs": [
+    {
+      "output": "exec_summary",
+      "golden": "golden/orchestration/exec_summary.csv",
+      "target": "gold.exec_summary",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "snapshot_label": "STRING",
+            "as_of_date": "DATE",
+            "total_revenue": "DECIMAL",
+            "total_orders": "LONG",
+            "avg_customer_ltv": "DECIMAL",
+            "overall_return_pct": "DECIMAL",
+            "avg_ship_hours": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1,
+          "target": 1
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "snapshot_label"
+          ],
+          "matched_rows": 1,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "output": "report",
+      "golden": "golden/orchestration/report.csv",
+      "target": "databricks/orchestration/exec_summary_report.sql",
+      "tolerance_overrides": {},
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "snapshot_label": "STRING",
+            "as_of_date": "DATE",
+            "total_revenue": "DECIMAL",
+            "total_orders": "LONG",
+            "avg_customer_ltv": "DECIMAL",
+            "overall_return_pct": "DECIMAL",
+            "avg_ship_hours": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1,
+          "target": 1
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "snapshot_label"
+          ],
+          "matched_rows": 1,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "finished_at": "2026-11-06T00:11:52+00:00",
+  "tested_tree": {
+    "description": "git_commit above is the harness HEAD at validation time; SQL was uncommitted. Exact tested file hashes are recorded below and in orchestration_job_run.json.",
+    "file_sha256": {
+      "databricks/orchestration/etl.sql": "4ba3064362bf3712c955538aa7257601710d5f90902b2162cbf2efd3e351af1a",
+      "databricks/orchestration/exec_summary_report.sql": "22db196b13a32672eb47f2ff6d68780d412594ebf80ec386a18bdbd65b8d5531"
+    }
+  }
+}
