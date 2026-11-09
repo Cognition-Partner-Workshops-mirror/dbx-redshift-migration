@@ -9,7 +9,7 @@ The wave plan lives in `.migration/units.yaml` (`waves`: 0 foundation,
 1a width 5, 1b width 13, 2 orchestration). Integration branch:
 `migration-run-N`.
 
-1. Run Lakebridge analyze + per-unit transpile exactly as in
+1. Run Lakebridge per-unit transpile exactly as in
    `demo-ops/ORCHESTRATOR_PROMPT.md` step 2; commit drafts to the run branch.
 2. Run wave 0 (foundation): use the pre-built `databricks/foundation/` if a
    `demo-ops/FOUNDATION_PROMPT.md` session already PR'd it, else build bronze

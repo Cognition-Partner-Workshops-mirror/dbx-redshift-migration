@@ -58,7 +58,7 @@ hypothesis for the demo narrative, never a fact; actuals are recorded in
 
 ## Demo flow
 
-1. An orchestrator session runs Lakebridge analyze and per-unit transpile
+1. An orchestrator session runs Lakebridge per-unit transpile
    (commands in `demo-ops/ORCHESTRATOR_PROMPT.md`), commits the drafts to
    `migration-run-N`, and runs
    wave 0 (`foundation`: bronze from `/Volumes/<catalog>/bronze/raw`, then

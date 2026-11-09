@@ -15,7 +15,7 @@ Reusable checklist for one migration demo run.
 - [ ] Orchestrator session starts on `migration-run-N` (see
       `ORCHESTRATOR_PROMPT.md`).
 - [ ] `make db-setup` — dev catalog `mig_redshift_dev`, schemas, volume, seed upload.
-- [ ] Lakebridge analyze + per-unit transpile; drafts committed to run branch.
+- [ ] Lakebridge per-unit transpile; drafts committed to run branch.
 - [ ] Wave 0: `foundation` (own session via `demo-ops/FOUNDATION_PROMPT.md`,
       or orchestrator): bronze from `/Volumes/<catalog>/bronze/raw`, then
       `silver.*`, validates.
