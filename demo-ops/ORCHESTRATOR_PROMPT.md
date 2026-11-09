@@ -8,18 +8,13 @@ repository. Read `AGENTS.md`, `.migration/00_context.md` and
 
 1. Create the run integration branch `migration-run-N` from `main` (or use it
    if it already exists).
-2. Run Lakebridge analyze + per-unit transpile yourself (the repo is a pure
-   "before" estate — run the commands live, no wrappers):
+2. Run Lakebridge per-unit transpile yourself (the repo is a pure "before"
+   estate — run the commands live, no wrappers):
 
    ```bash
    databricks labs install lakebridge                 # if `databricks labs lakebridge --help` fails
    databricks labs lakebridge install-transpile
    mkdir -p .migration/lakebridge/transpiled .migration/lakebridge/errors
-   databricks labs lakebridge analyze \
-     --source-directory legacy/redshift \
-     --source-tech Redshift \
-     --report-file .migration/lakebridge/analyze.xlsx \
-     --generate-json true
 
    # optional read-only Redshift discovery (only if AWS creds are present):
    aws redshift-data execute-statement \
@@ -40,9 +35,8 @@ repository. Read `AGENTS.md`, `.migration/00_context.md` and
      --schema-name gold
    ```
 
-   `--source-tech` must be exactly `Redshift` (case-sensitive; any other value
-   makes analyze prompt interactively). Then commit `.migration/lakebridge/`
-   to the run branch. Lakebridge output is a draft, never the merge gate.
+   Then commit `.migration/lakebridge/` to the run branch. Lakebridge output
+   is a draft, never the merge gate.
 3. Run wave 0 (`foundation`): if `databricks/foundation/` is already on the
    run branch (pre-built with `demo-ops/FOUNDATION_PROMPT.md`), run
    `make validate UNIT=foundation` and continue. Otherwise build it yourself:

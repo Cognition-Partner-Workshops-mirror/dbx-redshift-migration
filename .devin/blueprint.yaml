@@ -19,7 +19,7 @@ knowledge:
       # make check (ruff + pytest + manifest checks, no secrets), make seed,
       # make db-setup / db-reset (Databricks catalog setup), make validate
       # UNIT=x (build converted SQL + compare to goldens), make validate-all.
-      # Lakebridge analyze/transpile commands live in
+      # Lakebridge transpile commands live in
       # demo-ops/ORCHESTRATOR_PROMPT.md step 2 (orchestrator runs them inline).
   - name: guardrails
     contents: |
