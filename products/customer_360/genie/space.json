@@ -1,0 +1,141 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {
+        "id": "10000000000000000000000000000001",
+        "question": [
+          "Which region has the most revenue at risk?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000002",
+        "question": [
+          "How many customers are in each health segment?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000003",
+        "question": [
+          "What is net revenue by fiscal quarter?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000004",
+        "question": [
+          "Show me Emerson Silva's profile and segment"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000005",
+        "question": [
+          "Who are the top 10 At-risk customers by net LTV?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000006",
+        "question": [
+          "What is the average order value by channel?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000007",
+        "question": [
+          "What is the return rate and on-time delivery rate by region?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000008",
+        "question": [
+          "How much revenue did we lose to cancellations and returns?"
+        ]
+      }
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {
+        "identifier": "demo_redshift.customer_360.customer_health"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.customer_health_metrics"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.customer_profile"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.order_facts"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.revenue_metrics"
+      }
+    ]
+  },
+  "instructions": {
+    "text_instructions": [
+      {
+        "id": "30000000000000000000000000000001",
+        "content": [
+          "You help account managers understand customer health and revenue. Data is as of 2025-12-31 (a fixed snapshot). Never use CURRENT_DATE or now(): \"today\", \"recent\" and \"this year\" are relative to 2025-12-31.\n",
+          "Revenue and LTV always mean NET revenue over completed orders (status = 'complete'). Gross revenue includes cancelled and returned orders and is the legacy definition, only use it when asked for gross or legacy numbers.\n",
+          "Prefer the metric views for KPIs: revenue_metrics (gross_revenue, net_revenue, revenue_leakage, orders, completed_orders, aov, cancel_rate, return_rate, on_time_delivery_pct) and customer_health_metrics (customers, active_customers, repeat_rate, avg_net_ltv, total_net_ltv, revenue_at_risk). Query them with MEASURE(<measure>) and GROUP BY dimensions.\n",
+          "Fiscal year starts Feb 1: Q1 = Feb-Apr, Q2 = May-Jul, Q3 = Aug-Oct, Q4 = Nov-Jan.\n",
+          "Health segments (customer_health.segment), assigned in this order using R/F/M quintiles over purchasers: Never ordered (no completed orders), Champion (recency score >= 4 and frequency score >= 4), At risk (recency score <= 2 and frequency score >= 3), Loyal (frequency score >= 3), Hibernating (recency score <= 2), Promising (everything else). Revenue at risk = net LTV of At-risk customers.\n",
+          "Customer lookup: match by customer_id, or case-insensitive LIKE on customer_name or email in customer_profile, then join customer_health on customer_id for the segment. Use order_facts for order history, ordered by order_ts DESC.\n",
+          "Regions are codes such as NRTH, SOTH, EAST, WEST, NE, SW. Format money as USD.\n"
+        ]
+      }
+    ],
+    "example_question_sqls": [
+      {
+        "id": "20000000000000000000000000000001",
+        "question": [
+          "Which region has the most revenue at risk?"
+        ],
+        "sql": [
+          "SELECT region, MEASURE(revenue_at_risk) AS revenue_at_risk\n",
+          "FROM demo_redshift.customer_360.customer_health_metrics\n",
+          "GROUP BY region\n",
+          "ORDER BY revenue_at_risk DESC\n"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000002",
+        "question": [
+          "What is net revenue by fiscal quarter?"
+        ],
+        "sql": [
+          "SELECT fiscal_year, fiscal_quarter, MEASURE(net_revenue) AS net_revenue, MEASURE(completed_orders) AS completed_orders\n",
+          "FROM demo_redshift.customer_360.revenue_metrics\n",
+          "GROUP BY fiscal_year, fiscal_quarter\n",
+          "ORDER BY fiscal_year, fiscal_quarter\n"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000003",
+        "question": [
+          "Look up a customer by name or email"
+        ],
+        "sql": [
+          "SELECT p.customer_id, p.customer_name, p.email, p.region, h.segment, p.net_ltv, p.aov, h.recency_days\n",
+          "FROM demo_redshift.customer_360.customer_profile p\n",
+          "JOIN demo_redshift.customer_360.customer_health h USING (customer_id)\n",
+          "WHERE lower(p.customer_name) LIKE lower('%emerson silva%') OR lower(p.email) LIKE lower('%emerson%')\n"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000004",
+        "question": [
+          "Top 10 At-risk customers by net LTV"
+        ],
+        "sql": [
+          "SELECT customer_id, customer_name, region, net_ltv, recency_days\n",
+          "FROM demo_redshift.customer_360.customer_health\n",
+          "WHERE segment = 'At risk'\n",
+          "ORDER BY net_ltv DESC\n",
+          "LIMIT 10\n"
+        ]
+      }
+    ]
+  }
+}
