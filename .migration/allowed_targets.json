@@ -1,1 +1,1 @@
-{"catalogs": ["mig_redshift_dev", "mig_redshift"], "legacy_sources": ["redshift:mig_redshift_src"]}
+{"catalogs": ["mig_redshift_dev", "mig_redshift", "demo_redshift"], "legacy_sources": ["redshift:mig_redshift_src"]}

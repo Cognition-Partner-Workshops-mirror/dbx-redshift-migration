@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    customer_360_build:
+      name: customer_360_build
+      description: Builds demo_redshift.customer_360 tables and metric views from demo_redshift.silver (as of 2025-12-31).
+      max_concurrent_runs: 1
+      tasks:
+        - task_key: schema
+          sql_task:
+            warehouse_id: ${var.warehouse_id}
+            file:
+              path: ../sql/00_schema.sql
+        - task_key: tables
+          depends_on: [{task_key: schema}]
+          sql_task:
+            warehouse_id: ${var.warehouse_id}
+            file:
+              path: ../sql/01_tables.sql
+        - task_key: metrics
+          depends_on: [{task_key: tables}]
+          sql_task:
+            warehouse_id: ${var.warehouse_id}
+            file:
+              path: ../sql/02_metrics.sql

@@ -1,0 +1,19 @@
+resources:
+  apps:
+    customer_lookup:
+      name: customer-lookup
+      description: Customer Lookup - certified customer_360 profiles, orders and an Ask Genie panel
+      source_code_path: ../app
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+        - name: genie-space
+          genie_space:
+            name: Account Manager Assistant
+            space_id: ${var.genie_space_id}
+            permission: CAN_RUN
+      permissions:
+        - level: CAN_USE
+          group_name: users

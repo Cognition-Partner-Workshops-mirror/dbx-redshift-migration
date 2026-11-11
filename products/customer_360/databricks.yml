@@ -1,0 +1,30 @@
+# Customer 360 certified data product (decision D-002). Its own bundle, separate
+# from the migration estate: writes only demo_redshift.customer_360.
+bundle:
+  name: customer-360
+
+variables:
+  warehouse_id:
+    description: SQL warehouse used by the build job, the dashboard and the app
+    default: 6dc4b80538621b7b
+  catalog:
+    default: demo_redshift
+  schema:
+    default: customer_360
+  genie_space_id:
+    description: Account Manager Assistant Genie space (created by genie/manage.py)
+    default: 01f1dd862bcd1c1ca7e4aed81a0846c5
+
+include:
+  - resources/*.yml
+
+targets:
+  demo_redshift:
+    default: true
+    mode: production
+    workspace:
+      host: https://dbc-c22a0245-3975.cloud.databricks.com
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - level: CAN_VIEW
+        group_name: users

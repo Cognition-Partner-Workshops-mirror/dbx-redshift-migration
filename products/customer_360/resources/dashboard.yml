@@ -1,0 +1,7 @@
+resources:
+  dashboards:
+    customer_health_revenue:
+      display_name: Customer Health & Revenue
+      file_path: ../dashboards/customer_health_revenue.lvdash.json
+      warehouse_id: ${var.warehouse_id}
+      embed_credentials: true
