@@ -30,7 +30,7 @@ def literal(value):
         return "NULL"
     if isinstance(value, int):
         return str(value)
-    return "'" + str(value).replace("'", "''").replace("\\", "\\\\") + "'"
+    return "'" + str(value).replace("\\", "\\\\").replace("'", "\\'") + "'"
 
 
 def setup(db):

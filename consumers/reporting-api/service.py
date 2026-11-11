@@ -28,7 +28,7 @@ SELECT carrier, shipments, delivered, in_flight,
 FROM   mart.shipping_sla
 ORDER  BY carrier;
 """
-HEALTH_SQL = """SELECT "schema", "table", tbl_rows
+HEALTH_SQL = """SELECT "schema", "table", tbl_rows, stats_off AS statistics_staleness_pct
 FROM svv_table_info
 WHERE "schema" = 'mart'
 ORDER BY "table";"""

@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from validation.consumer_parity import evaluate, persist, run, setup, volumeRows
+from validation.consumer_parity import evaluate, literal, persist, run, setup, volumeRows
 
 
 class FakeDb:
@@ -21,6 +21,12 @@ class FakeDb:
         if self.error:
             raise RuntimeError(self.error)
         return [("id", "INT"), ("value", "DECIMAL")], self.rows
+
+
+def test_sql_string_escaping():
+    assert literal("O'Reilly\\archive") == "'O\\'Reilly\\\\archive'"
+    assert literal(None) == "NULL"
+    assert literal(42) == "42"
 
 
 @pytest.fixture
