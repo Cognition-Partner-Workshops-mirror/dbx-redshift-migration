@@ -96,3 +96,8 @@ def test_app_helpers():
     assert "'" not in sql.split("WHERE", 1)[1]
     assert "ORDER BY order_ts DESC LIMIT 10" in ORDERS_SQL
     assert FOOTER == "Data as of 2025-12-31 · certified customer_360 metrics"
+
+
+def test_search_escapes_like_wildcards():
+    _, params = lookup.search_query("a_b%c")
+    assert params["pattern"] == "%a\\_b\\%c%"

@@ -18,7 +18,8 @@ def money(value) -> str:
 def search_query(term: str) -> tuple[str, dict[str, str]]:
     """Parameterized customer search by ID, name or email."""
     term = term.strip()
-    params = {"pattern": f"%{term.lower()}%"}
+    literal = term.lower().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    params = {"pattern": f"%{literal}%"}
     where = "lower(p.customer_name) LIKE :pattern OR lower(p.email) LIKE :pattern"
     if term.lstrip("#").isdigit():
         where = f"p.customer_id = CAST(:cid AS BIGINT) OR {where}"
