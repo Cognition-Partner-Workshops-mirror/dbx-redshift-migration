@@ -1,0 +1,133 @@
+name: Consumer reset
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview reset operations without changing branches, PRs, or data
+        type: boolean
+        default: true
+  pull_request:
+    paths:
+      - .github/workflows/consumer-reset.yml
+
+concurrency:
+  group: consumer-reset
+  cancel-in-progress: false
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    environment: consumer-reset
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    env:
+      DRY_RUN: ${{ github.event_name == 'pull_request' || inputs.dry_run }}
+      GH_TOKEN: ${{ github.token }}
+      DATABRICKS_HOST: https://dbc-c22a0245-3975.cloud.databricks.com
+      DATABRICKS_AUTH_TYPE: github-oidc
+      DATABRICKS_CLIENT_ID: 11517e8b-fc42-40cb-80f5-6432f1261619
+      DATABRICKS_TOKEN_AUDIENCE: 6e632eec-b686-4b5b-9346-e9872b2a92a5
+      DATABRICKS_WAREHOUSE_ID: 6dc4b80538621b7b
+      MIG_CATALOG: demo_redshift
+    steps:
+      - name: Check out the reset baseline in detached HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/consumer-cutover-baseline
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install baseline dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -c 'from databricks.sdk.credentials_provider import github_oidc; print("Pinned SDK supports github-oidc")'
+
+      - name: Authenticate and count results before reset
+        id: before
+        run: |
+          python - <<'PY'
+          import os
+          from validation.dbsql import DbSql
+
+          _, rows = DbSql().run("SELECT count(*) FROM demo_redshift.consumer_parity.results")
+          count = int(rows[0][0])
+          print(f"Results before reset: {count}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"count={count}\n")
+          PY
+
+      - name: Run reset or preview
+        id: reset
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=()
+          if [[ "$DRY_RUN" == true ]]; then
+            args+=(--dry-run)
+          elif [[ "$DRY_RUN" != false || "$GITHUB_EVENT_NAME" != workflow_dispatch ]]; then
+            echo 'Refusing reset without an explicit workflow dispatch' >&2
+            exit 1
+          fi
+          bash tools/consumer_reset.sh "${args[@]}" | tee "$RUNNER_TEMP/consumer-reset.log"
+
+      - name: Verify results and branch after a real reset
+        id: after
+        if: ${{ always() && env.DRY_RUN == 'false' && steps.before.outcome == 'success' && steps.reset.outcome != 'skipped' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          from validation.dbsql import DbSql
+
+          _, rows = DbSql().run("SELECT count(*) FROM demo_redshift.consumer_parity.results")
+          count = int(rows[0][0])
+          print(f"Results after reset: {count}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"count={count}\n")
+          assert count == 0, f"Expected empty results table, found {count} rows"
+          PY
+          baseline="$(git rev-parse 'refs/tags/consumer-cutover-baseline^{commit}')"
+          remote="$(git ls-remote --exit-code origin refs/heads/consumer-cutover | cut -f1)"
+          echo "Baseline: $baseline"
+          echo "origin/consumer-cutover: $remote"
+          [[ "$remote" == "$baseline" ]] || {
+            echo 'consumer-cutover does not match the baseline tag' >&2
+            exit 1
+          }
+
+      - name: Write job summary
+        if: always()
+        env:
+          BEFORE_COUNT: ${{ steps.before.outputs.count }}
+          AFTER_COUNT: ${{ steps.after.outputs.count }}
+          RESET_OUTCOME: ${{ steps.reset.outcome }}
+          VERIFY_OUTCOME: ${{ steps.after.outcome }}
+        shell: bash
+        run: |
+          {
+            echo '## Consumer reset'
+            echo "- Dry run: $DRY_RUN (pull requests always preview only)"
+            echo "- Reset step: $RESET_OUTCOME"
+            echo "- Results before: ${BEFORE_COUNT:-unavailable}"
+            echo "- Results after: ${AFTER_COUNT:-not queried}"
+            echo "- Post-reset verification: $VERIFY_OUTCOME"
+            echo '- Scope: close open PRs targeting consumer-cutover and delete their eligible head branches; reset consumer-cutover to consumer-cutover-baseline; clear demo_redshift.consumer_parity.results.'
+            echo '- In dry-run mode these operations are printed, not executed.'
+            if [[ -f "$RUNNER_TEMP/consumer-reset.log" ]]; then
+              echo
+              echo '### Reset script output'
+              echo '```text'
+              cat "$RUNNER_TEMP/consumer-reset.log"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
