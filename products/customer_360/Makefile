@@ -3,8 +3,7 @@ PROFILE ?= DEFAULT
 TARGET ?= demo
 
 deploy: verify-dashboard
-	databricks bundle deploy -t $(TARGET) --profile $(PROFILE)
-	$(MAKE) deploy-genie PROFILE=$(PROFILE)
+	python deploy_app.py deploy --target $(TARGET) --profile $(PROFILE)
 
 deploy-genie:
 	DATABRICKS_CONFIG_PROFILE=$(PROFILE) python genie/manage.py deploy
@@ -25,6 +24,6 @@ verify:
 	DATABRICKS_CONFIG_PROFILE=$(PROFILE) python verify.py
 
 reset:
+	python deploy_app.py destroy --target $(TARGET) --profile $(PROFILE)
 	DATABRICKS_CONFIG_PROFILE=$(PROFILE) python genie/manage.py delete
-	databricks bundle destroy -t $(TARGET) --profile $(PROFILE) --auto-approve
 	DATABRICKS_CONFIG_PROFILE=$(PROFILE) python reset.py

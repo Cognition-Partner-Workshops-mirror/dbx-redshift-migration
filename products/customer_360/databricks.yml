@@ -6,12 +6,33 @@ variables:
     default: demo_redshift
   warehouse_id:
     default: 6dc4b80538621b7b
+  genie_space_id:
+    description: Account Manager Assistant ID populated by deploy_app.py
+    default: ""
 
 targets:
   demo:
     default: true
 
 resources:
+  apps:
+    customer-lookup:
+      name: customer-lookup
+      description: Customer Lookup - certified account intelligence as of 2025-12-31
+      source_code_path: app
+      permissions:
+        - group_name: users
+          level: CAN_USE
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+        - name: genie-space
+          genie_space:
+            name: Account Manager Assistant
+            space_id: ${var.genie_space_id}
+            permission: CAN_RUN
   dashboards:
     customer_health_revenue:
       display_name: Customer Health & Revenue

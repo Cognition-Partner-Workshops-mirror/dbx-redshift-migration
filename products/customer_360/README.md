@@ -46,13 +46,13 @@ From this directory (CLI authenticated and repository requirements installed):
 ```sh
 databricks current-user me
 databricks bundle validate -t demo
-make deploy                         # validate dashboard SQL, bundle deploy + publish
+make deploy                         # validate dashboard SQL, reconcile Genie, deploy bundle + start app
 make build                          # schema -> tables -> metrics
 make verify                         # live reconciliation, metrics and invariants
 make verify-dashboard               # every dashboard dataset via warehouse CLI
 make deploy-genie                   # create/update Account Manager Assistant by title
 make verify-genie                   # three live Conversation API checks, no browser
-make reset                          # DESTRUCTIVE: trash Genie, bundle destroy --auto-approve,
+make reset                          # DESTRUCTIVE: bundle destroy (app/dashboard/job), trash Genie,
                                     # then Statement API DROP SCHEMA ... CASCADE
 ```
 
@@ -105,9 +105,9 @@ reconcile the same space; do not run deployments concurrently. The ID is printed
 with its URL and saved to gitignored `genie/.space_id`. The definition is scoped
 to `demo_redshift.customer_360` and warehouse `6dc4b80538621b7b`, like the dashboard.
 
-`make deploy` deploys the dashboard bundle then reconciles Genie. Tables and
+`make deploy` reconciles Genie then deploys the dashboard/app bundle. Tables and
 metric views must already exist (`make build` on a new environment).
-`make reset` trashes the space by title before destroying the bundle and schema;
+`make reset` destroys the bundle before trashing the space by title and dropping the schema;
 deleting an absent space is a no-op. Genie is API-managed, not a bundle resource,
 so use `make reset`, not only `bundle destroy`, for complete teardown.
 
@@ -118,7 +118,45 @@ the last completed fiscal quarter, and regional risk summing to $1,327,164.70.
 These are live model responses, not a guarantee that every possible question
 will produce correct SQL. No browser automation is used.
 
-## Later steps (not implemented)
+## Customer Lookup app (step 4)
 
-An app remains a separate follow-up step. PR target for this product is
-main; do not merge automatically.
+`app/` contains a Streamlit app displayed as **Customer Lookup**, deployed as
+bundle app resource `customer-lookup`. It uses app authorization: all authorized
+app users share the app service principal's certified data access, not per-user
+row-level identity. Group `users` has CAN_USE. No tokens are stored in code.
+
+The cached SDK client uses `Config()` and the app's injected credentials. Bound
+SQL Statement API parameters support case-insensitive literal name/email search
+and exact customer ID lookup (up to 50 matches). Customer cards join profile and
+health at customer grain; order history is separately limited to the last 10.
+Portfolio counts use `MEASURE(customers)` from `customer_health_metrics`.
+Ask Genie starts an independent conversation per question and displays answer
+text, expandable SQL and result previews. Loading, empty and error states are
+handled without displaying credentials or raw backend errors.
+
+Bundle resources grant the app CAN_USE on the SQL warehouse and CAN_RUN on Genie;
+`app/app.yaml` uses `valueFrom` for both IDs. `deploy_app.py` reconciles Genie,
+passes its ID as `BUNDLE_VAR_genie_space_id`, deploys the bundle, grants the app
+principal USE CATALOG on `demo_redshift` and USE SCHEMA/SELECT only on
+`demo_redshift.customer_360`, then runs `bundle run customer-lookup`. Grants are
+idempotent. No bronze/silver/gold permissions or objects are changed.
+
+Use `make deploy` rather than bare bundle deploy for complete lifecycle handling.
+For direct bundle commands, export `BUNDLE_VAR_genie_space_id` from
+`genie/.space_id`; it is not committed. `make reset` removes the app through
+bundle destruction, then trashes Genie and drops the certified schema.
+
+Offline backend checks:
+`python -m pytest products/customer_360/test_app.py -q` from the repository root.
+To run locally, install `app/requirements.txt`, set `DATABRICKS_WAREHOUSE_ID` and
+`GENIE_SPACE_ID` to the provisioned resource IDs, then run
+`streamlit run app/app.py` from this directory using your existing CLI profile.
+Local runs use your identity; deployed runs use the app principal.
+
+Deployment checks: `databricks apps get customer-lookup` and
+`databricks apps logs customer-lookup`. Verification for this step is CLI/HTTP
+and local backend/framework checks only; the desktop browser is not used.
+
+## Scope
+
+PR target for this product is main; do not merge automatically.
