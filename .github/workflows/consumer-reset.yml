@@ -7,9 +7,6 @@ on:
         description: Preview reset operations without changing branches, PRs, or data
         type: boolean
         default: true
-  pull_request:
-    paths:
-      - .github/workflows/consumer-reset.yml
 
 concurrency:
   group: consumer-reset
@@ -24,7 +21,7 @@ jobs:
       pull-requests: write
       id-token: write
     env:
-      DRY_RUN: ${{ github.event_name == 'pull_request' || inputs.dry_run }}
+      DRY_RUN: ${{ inputs.dry_run }}
       GH_TOKEN: ${{ github.token }}
       DATABRICKS_HOST: https://dbc-c22a0245-3975.cloud.databricks.com
       DATABRICKS_AUTH_TYPE: github-oidc
@@ -116,7 +113,7 @@ jobs:
         run: |
           {
             echo '## Consumer reset'
-            echo "- Dry run: $DRY_RUN (pull requests always preview only)"
+            echo "- Dry run: $DRY_RUN"
             echo "- Reset step: $RESET_OUTCOME"
             echo "- Results before: ${BEFORE_COUNT:-unavailable}"
             echo "- Results after: ${AFTER_COUNT:-not queried}"
