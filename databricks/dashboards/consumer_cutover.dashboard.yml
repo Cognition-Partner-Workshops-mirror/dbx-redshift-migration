@@ -1,0 +1,8 @@
+resources:
+  dashboards:
+    consumer_cutover:
+      display_name: Consumer Cutover Readiness
+      file_path: consumer_cutover.lvdash.json
+      warehouse_id: ${var.warehouse_id}
+      dataset_catalog: ${var.catalog}
+      dataset_schema: consumer_parity

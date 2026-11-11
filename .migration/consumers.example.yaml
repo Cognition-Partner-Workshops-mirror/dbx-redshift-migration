@@ -1,0 +1,15 @@
+# Copy to consumers.yaml during discovery. This is a format example, not an inventory.
+version: 1
+consumers:
+  - id: monthly_revenue
+    consumer: Executive workbook
+    file: consumers/tableau/Retail Executive.twb
+    query: daily_revenue
+    golden_unit: daily_revenue
+    golden_output: report
+# query identifies a TWB datasource caption, TMDL table name, Python constant,
+# notebook cell tag (SQL assignment named query), shell heredoc tag, or ODC Name.
+# For a file entry use kind: file, query: <cell tag>, path: <URI variable name>.
+# golden + keys can replace golden_unit/golden_output. Keys are column names.
+# Use check: smoke instead of a reference for operational queries.
+# All entries require a unique id, consumer label and repository-relative file.

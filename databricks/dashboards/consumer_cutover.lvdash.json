@@ -1,0 +1,435 @@
+{
+  "datasets": [
+    {
+      "name": "naive",
+      "displayName": "Latest naive run",
+      "queryLines": [
+        "WITH runs AS (\n",
+        "  SELECT mode, run_id, MAX(run_at) AS run_at FROM results GROUP BY mode, run_id\n",
+        "), ranked AS (\n",
+        "  SELECT *, ROW_NUMBER() OVER (PARTITION BY mode ORDER BY run_at DESC, run_id DESC) AS rn FROM runs\n",
+        "), latest AS (\n",
+        "  SELECT r.* FROM results r JOIN ranked x ON r.mode = x.mode AND r.run_id = x.run_id WHERE x.rn = 1\n",
+        ")\n",
+        "SELECT COUNT_IF(status = 'PASS') AS passed, COUNT_IF(status = 'SMOKE') AS smoke, COUNT(*) AS total FROM latest WHERE mode = 'naive'"
+      ]
+    },
+    {
+      "name": "current",
+      "displayName": "Latest current run",
+      "queryLines": [
+        "WITH runs AS (\n",
+        "  SELECT mode, run_id, MAX(run_at) AS run_at FROM results GROUP BY mode, run_id\n",
+        "), ranked AS (\n",
+        "  SELECT *, ROW_NUMBER() OVER (PARTITION BY mode ORDER BY run_at DESC, run_id DESC) AS rn FROM runs\n",
+        "), latest AS (\n",
+        "  SELECT r.* FROM results r JOIN ranked x ON r.mode = x.mode AND r.run_id = x.run_id WHERE x.rn = 1\n",
+        ")\n",
+        "SELECT COUNT_IF(status = 'PASS') AS passed, COUNT_IF(status = 'SMOKE') AS smoke, COUNT(*) AS total FROM latest WHERE mode = 'current'"
+      ]
+    },
+    {
+      "name": "details",
+      "displayName": "Latest results by mode",
+      "queryLines": [
+        "WITH runs AS (\n",
+        "  SELECT mode, run_id, MAX(run_at) AS run_at FROM results GROUP BY mode, run_id\n",
+        "), ranked AS (\n",
+        "  SELECT *, ROW_NUMBER() OVER (PARTITION BY mode ORDER BY run_at DESC, run_id DESC) AS rn FROM runs\n",
+        "), latest AS (\n",
+        "  SELECT r.* FROM results r JOIN ranked x ON r.mode = x.mode AND r.run_id = x.run_id WHERE x.rn = 1\n",
+        ")\n",
+        "SELECT mode, consumer, query_id, status, rows_expected, rows_actual, mismatched_rows, detail, run_at\n",
+        "FROM latest ORDER BY mode, consumer, query_id"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "readiness",
+      "displayName": "Readiness",
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1",
+      "layout": [
+        {
+          "widget": {
+            "name": "title",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Consumer Cutover Readiness"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "subtitle",
+            "multilineTextboxSpec": {
+              "lines": [
+                "Latest complete run in each mode • query results and file delivery"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "naive_passed",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "naive",
+                  "fields": [
+                    {
+                      "name": "passed",
+                      "expression": "`passed`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "passed",
+                  "displayName": "passed"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Before · Passed"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "naive_total",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "naive",
+                  "fields": [
+                    {
+                      "name": "total",
+                      "expression": "`total`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total",
+                  "displayName": "total"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Before · Total"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "current_passed",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "current",
+                  "fields": [
+                    {
+                      "name": "passed",
+                      "expression": "`passed`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "passed",
+                  "displayName": "passed"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "After · Passed"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "current_total",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "current",
+                  "fields": [
+                    {
+                      "name": "total",
+                      "expression": "`total`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total",
+                  "displayName": "total"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "After · Total"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 2,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "naive_smoke",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "naive",
+                  "fields": [
+                    {
+                      "name": "smoke",
+                      "expression": "`smoke`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "smoke",
+                  "displayName": "Smoke"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Before · Smoke"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "current_smoke",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "current",
+                  "fields": [
+                    {
+                      "name": "smoke",
+                      "expression": "`smoke`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "smoke",
+                  "displayName": "Smoke"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "After · Smoke"
+              }
+            }
+          },
+          "position": {
+            "x": 10,
+            "y": 2,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "results_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "details",
+                  "fields": [
+                    {
+                      "name": "mode",
+                      "expression": "`mode`"
+                    },
+                    {
+                      "name": "consumer",
+                      "expression": "`consumer`"
+                    },
+                    {
+                      "name": "query_id",
+                      "expression": "`query_id`"
+                    },
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "rows_expected",
+                      "expression": "`rows_expected`"
+                    },
+                    {
+                      "name": "rows_actual",
+                      "expression": "`rows_actual`"
+                    },
+                    {
+                      "name": "mismatched_rows",
+                      "expression": "`mismatched_rows`"
+                    },
+                    {
+                      "name": "detail",
+                      "expression": "`detail`"
+                    },
+                    {
+                      "name": "run_at",
+                      "expression": "`run_at`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "mode",
+                    "displayName": "mode"
+                  },
+                  {
+                    "fieldName": "consumer",
+                    "displayName": "consumer"
+                  },
+                  {
+                    "fieldName": "query_id",
+                    "displayName": "query id"
+                  },
+                  {
+                    "fieldName": "status",
+                    "displayName": "status"
+                  },
+                  {
+                    "fieldName": "rows_expected",
+                    "displayName": "rows expected"
+                  },
+                  {
+                    "fieldName": "rows_actual",
+                    "displayName": "rows actual"
+                  },
+                  {
+                    "fieldName": "mismatched_rows",
+                    "displayName": "mismatched rows"
+                  },
+                  {
+                    "fieldName": "detail",
+                    "displayName": "detail"
+                  },
+                  {
+                    "fieldName": "run_at",
+                    "displayName": "run at"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Latest results · before and after"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 5,
+            "width": 12,
+            "height": 8
+          }
+        }
+      ]
+    }
+  ]
+}

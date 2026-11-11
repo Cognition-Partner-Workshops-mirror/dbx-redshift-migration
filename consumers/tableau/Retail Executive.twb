@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<workbook version="18.1" source-build="2024.3.0" original-version="18.1">
+  <document-format-change-manifest/>
+  <preferences/>
+  <datasources>
+    <datasource name="daily_revenue" caption="daily_revenue" inline="true" version="18.1">
+      <connection class="redshift" server="retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com" port="5439" dbname="mig_redshift_src" username="${REDSHIFT_USER}" authentication="username-password" sslmode="require">
+        <relation name="daily_revenue" type="text">-- BI report: monthly revenue by channel.
+SELECT DATE_TRUNC('month', order_date)::DATE AS order_month,
+       sales_channel,
+       SUM(order_count)                      AS order_count,
+       SUM(revenue)                          AS revenue
+FROM   mart.daily_revenue
+GROUP  BY 1, 2
+ORDER  BY 1, 2;
+</relation>
+      </connection>
+    </datasource>
+    <datasource name="category_mix" caption="category_mix" inline="true" version="18.1">
+      <connection class="redshift" server="retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com" port="5439" dbname="mig_redshift_src" username="${REDSHIFT_USER}" authentication="username-password" sslmode="require">
+        <relation name="category_mix" type="text">-- BI report: category mix as published.
+SELECT category, units_sold, revenue, revenue_share
+FROM   mart.category_mix
+ORDER  BY revenue DESC, category;
+</relation>
+      </connection>
+    </datasource>
+    <datasource name="customer_ltv" caption="customer_ltv" inline="true" version="18.1">
+      <connection class="redshift" server="retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com" port="5439" dbname="mig_redshift_src" username="${REDSHIFT_USER}" authentication="username-password" sslmode="require">
+        <relation name="customer_ltv" type="text">-- BI report: LTV summary per region (region is CHAR(4) — padding matters).
+SELECT region,
+       COUNT(*)        AS customers,
+       SUM(order_count) AS orders,
+       SUM(ltv)        AS total_ltv,
+       AVG(ltv)        AS avg_ltv
+FROM   mart.customer_ltv
+GROUP  BY region
+ORDER  BY region;
+</relation>
+      </connection>
+    </datasource>
+    <datasource name="store_weekly" caption="store_weekly" inline="true" version="18.1">
+      <connection class="redshift" server="retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com" port="5439" dbname="mig_redshift_src" username="${REDSHIFT_USER}" authentication="username-password" sslmode="require">
+        <relation name="store_weekly" type="text">-- BI report: store weekly totals and span.
+SELECT s.store_id,
+       s.region,
+       DATEDIFF(week, MIN(w.week_start), MAX(w.week_start)) + 1 AS active_weeks,
+       SUM(w.order_count)                                        AS order_count,
+       SUM(w.revenue)                                            AS revenue
+FROM   mart.store_weekly w
+JOIN   core.stores s ON s.store_id = w.store_id
+GROUP  BY s.store_id, s.region
+ORDER  BY s.store_id;
+</relation>
+      </connection>
+    </datasource>
+  </datasources>
+  <worksheets/>
+  <windows/>
+</workbook>

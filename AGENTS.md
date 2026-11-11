@@ -1,5 +1,23 @@
 # Migration session guardrails
 
+## Consumer-cutover run (D-004)
+
+For consumer-cutover work, this block supersedes the unit-only restrictions below.
+The setup owner may maintain validation/, tools/, bundle resources, these
+instructions and operational documentation on the baseline feature branch.
+Never modify main, golden/, legacy/, data/seed/ or warehouse bronze/silver/gold.
+
+During the consumer-cutover session, allowed writes are consumers/** (including
+consumers/INVENTORY.md), discovered consumer files elsewhere in the repository,
+.migration/consumers.yaml, .migration/evidence/consumers_*.json, and
+demo_redshift.consumer_parity only. The existing ops/ and shared/ consumer files
+may be migrated in place; unrelated files there remain read-only.
+validation/ and golden/ are read-only for the cutover session. Do not alter the
+runner, comparison rules, reference data or setup resources to obtain a pass.
+bronze/silver/gold are read-only. Use catalog demo_redshift, profile DEFAULT.
+Cutover PRs target consumer-cutover; leave them open and never merge them.
+Only the operator may run consumer-reset. Never run legacy capture or ETL.
+
 These rules apply to every Devin session working in this repository.
 
 Run-specific approved exceptions for `migration-run-2` are recorded in

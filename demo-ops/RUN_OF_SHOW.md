@@ -1,3 +1,20 @@
+# Consumer cutover
+
+- Setup: land the reviewed baseline on `consumer-cutover` (never main), tag that
+  baseline commit `consumer-cutover-baseline` and push the tag. Set
+  `DATABRICKS_CONFIG_PROFILE=DEFAULT`, `DATABRICKS_WAREHOUSE_ID` and
+  `MIG_CATALOG=demo_redshift`. Run `make consumer-setup`. Deploy the dashboard
+  bundle separately after approval; setup does not deploy it.
+- Run: hand `demo-ops/CONSUMER_CUTOVER_PROMPT.md` to a fresh session based on
+  `consumer-cutover`. Watch the naive/current matrices and the latest-run
+  dashboard. Keep the resulting PR open for review.
+- Reset (operator only): switch to an operator branch, export `GH_TOKEN`, run
+  `make consumer-reset ARGS=--dry-run`, review its exact PR/branch actions, then
+  `make consumer-reset`. This closes PRs targeting consumer-cutover, deletes
+  their same-repository heads, resets that branch to the baseline tag and clears
+  only `demo_redshift.consumer_parity.results`. It does not reset your working
+  tree; use a fresh checkout for the next run.
+
 # Run of show
 
 Reusable checklist for one migration demo run.
