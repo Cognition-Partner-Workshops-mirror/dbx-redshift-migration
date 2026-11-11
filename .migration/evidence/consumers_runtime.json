@@ -1,0 +1,319 @@
+{
+  "verification": "Actual HTTP API, shell script and sequential notebook cell execution",
+  "catalog": "demo_redshift",
+  "warehouse_id": "6dc4b80538621b7b",
+  "results": [
+    {
+      "id": "api_executive_summary",
+      "rows": 1,
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "snapshot_label": "runtime",
+            "as_of_date": "runtime",
+            "total_revenue": "runtime",
+            "total_orders": "runtime",
+            "avg_customer_ltv": "runtime",
+            "overall_return_pct": "runtime",
+            "avg_ship_hours": "runtime"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1,
+          "target": 1
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "snapshot_label"
+          ],
+          "matched_rows": 1,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "id": "api_churn_summary",
+      "rows": 4,
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "churn_flag": "runtime",
+            "customers": "runtime",
+            "avg_days_since_order": "runtime"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "churn_flag"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "id": "api_shipping_sla",
+      "rows": 4,
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "carrier": "runtime",
+            "shipments": "runtime",
+            "delivered": "runtime",
+            "in_flight": "runtime",
+            "avg_hours_to_deliver": "runtime",
+            "max_hours_to_deliver": "runtime",
+            "on_time_96h": "runtime"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "carrier"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "id": "api_health",
+      "status": "SMOKE",
+      "rows": 19,
+      "detail": "Real HTTP 200; visible gold inventory; unavailable metrics are null"
+    },
+    {
+      "id": "cron_returns_rate",
+      "rows": 6,
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "category": "runtime",
+            "sold_qty": "runtime",
+            "returned_qty": "runtime",
+            "return_rate_int": "runtime",
+            "return_pct": "runtime"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "category"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "id": "notebook_rfm_segments",
+      "rows": 103,
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "rfm_segment": "runtime",
+            "customers": "runtime",
+            "total_monetary": "runtime",
+            "avg_frequency": "runtime"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 103,
+          "target": 103
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "rfm_segment"
+          ],
+          "matched_rows": 103,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "id": "notebook_cohort_retention",
+      "rows": 65,
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "cohort_month": "runtime",
+            "month_offset": "runtime",
+            "cohort_size": "runtime",
+            "active_buyers": "runtime",
+            "retention_pct": "runtime"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 65,
+          "target": 65
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "cohort_month",
+            "month_offset"
+          ],
+          "matched_rows": 65,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "id": "notebook_finance_monthly",
+      "rows": 12,
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "month": "runtime",
+            "fiscal_year": "runtime",
+            "fiscal_qtr": "runtime",
+            "order_count": "runtime",
+            "revenue": "runtime"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 12,
+          "target": 12
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "month"
+          ],
+          "matched_rows": 12,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "id": "desktop_connections",
+      "status": "INSPECTED",
+      "detail": "XML parsed and properties inspected; native desktop products not executed"
+    }
+  ],
+  "untested": [
+    "Tableau Desktop refresh",
+    "Power BI Desktop refresh",
+    "Excel ODBC refresh"
+  ]
+}

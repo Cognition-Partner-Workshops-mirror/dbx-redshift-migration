@@ -1,0 +1,1004 @@
+{
+  "run_id": "1a9d6463-3b32-4bc8-b0a0-78c184c46997",
+  "run_at": "2026-11-11T04:13:07.528406+00:00",
+  "mode": "naive",
+  "git_sha": "289e6ada722290de792f7bac648d021a509d658b",
+  "catalog": "demo_redshift",
+  "results": [
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_daily_revenue",
+      "golden": "golden/daily_revenue/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 48,
+      "rows_actual": 48,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "order_month": "DATE",
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 48,
+          "target": 48
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "order_month",
+            "sales_channel"
+          ],
+          "matched_rows": 48,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_category_mix",
+      "golden": "golden/category_mix/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 6,
+      "rows_actual": 6,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "category": "STRING",
+            "units_sold": "LONG",
+            "revenue": "DECIMAL",
+            "revenue_share": "DOUBLE"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "category"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_customer_ltv",
+      "golden": "golden/customer_ltv/report.csv",
+      "status": "FAIL",
+      "detail": "[{\"check\": \"row_values\", \"status\": \"FAIL\", \"keys\": [\"region\"], \"matched_rows\": 0, \"mismatched_rows\": 6, \"missing_in_target\": 0, \"extra_in_target\": 0, \"duplicate_keys_in_target\": 0, \"mismatches_by_column\": {\"avg_ltv\": 6}, \"sample_mismatches\": [{\"key\": [\"EAST\"], \"diffs\": {\"avg_ltv\": {\"golden\": \"6935.91\", \"target\": \"6935.910789\"}}}, {\"key\": [\"NE  \"], \"diffs\": {\"avg_ltv\": {\"golden\": \"7118.14\", \"target\": \"7118.146494\"}}}, {\"key\": [\"NRTH\"], \"diffs\": {\"avg_ltv\": {\"golden\": \"7134.68\", \"target\": \"7134.682826\"}}}, {\"key\": [\"SOTH\"], \"diffs\": {\"avg_ltv\": {\"golden\": \"6857.81\", \"target\": \"6857.813301\"}}}, {\"key\": [\"SW  \"], \"diffs\": {\"avg_ltv\": {\"golden\": \"7457.51\", \"target\": \"7457.517261\"}}}, {\"key\": [\"WEST\"], \"diffs\": {\"avg_ltv\": {\"golden\": \"6920.24\", \"target\": \"6920.240985\"}}}], \"sample_missing\": [], \"sample_extra\": []}]",
+      "rows_expected": 6,
+      "rows_actual": 6,
+      "mismatched_rows": 6,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "region": "STRING",
+            "customers": "LONG",
+            "orders": "LONG",
+            "total_ltv": "DECIMAL",
+            "avg_ltv": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "FAIL",
+          "keys": [
+            "region"
+          ],
+          "matched_rows": 0,
+          "mismatched_rows": 6,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {
+            "avg_ltv": 6
+          },
+          "sample_mismatches": [
+            {
+              "key": [
+                "EAST"
+              ],
+              "diffs": {
+                "avg_ltv": {
+                  "golden": "6935.91",
+                  "target": "6935.910789"
+                }
+              }
+            },
+            {
+              "key": [
+                "NE  "
+              ],
+              "diffs": {
+                "avg_ltv": {
+                  "golden": "7118.14",
+                  "target": "7118.146494"
+                }
+              }
+            },
+            {
+              "key": [
+                "NRTH"
+              ],
+              "diffs": {
+                "avg_ltv": {
+                  "golden": "7134.68",
+                  "target": "7134.682826"
+                }
+              }
+            },
+            {
+              "key": [
+                "SOTH"
+              ],
+              "diffs": {
+                "avg_ltv": {
+                  "golden": "6857.81",
+                  "target": "6857.813301"
+                }
+              }
+            },
+            {
+              "key": [
+                "SW  "
+              ],
+              "diffs": {
+                "avg_ltv": {
+                  "golden": "7457.51",
+                  "target": "7457.517261"
+                }
+              }
+            },
+            {
+              "key": [
+                "WEST"
+              ],
+              "diffs": {
+                "avg_ltv": {
+                  "golden": "6920.24",
+                  "target": "6920.240985"
+                }
+              }
+            }
+          ],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_store_weekly",
+      "golden": "golden/store_weekly/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 40,
+      "rows_actual": 40,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "store_id": "INT",
+            "region": "STRING",
+            "active_weeks": "LONG",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 40,
+          "target": 40
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "store_id"
+          ],
+          "matched_rows": 40,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Power BI Finance",
+      "query_id": "powerbi_finance_export",
+      "golden": "golden/finance_export/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 5,
+      "rows_actual": 5,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "fiscal_year": "INT",
+            "fiscal_qtr": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 5,
+          "target": 5
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "fiscal_year",
+            "fiscal_qtr"
+          ],
+          "matched_rows": 5,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Power BI Finance",
+      "query_id": "powerbi_payment_mix",
+      "golden": "golden/payment_mix/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "method_family": "STRING",
+            "payment_count": "LONG",
+            "amount_total": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "method_family"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Power BI Finance",
+      "query_id": "powerbi_promo_lift",
+      "golden": "golden/promo_lift/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "median_order_value": "DECIMAL",
+            "p90_order_value": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "sales_channel"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_executive_summary",
+      "golden": "golden/orchestration/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 1,
+      "rows_actual": 1,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "snapshot_label": "STRING",
+            "as_of_date": "DATE",
+            "total_revenue": "DECIMAL",
+            "total_orders": "LONG",
+            "avg_customer_ltv": "DECIMAL",
+            "overall_return_pct": "DECIMAL",
+            "avg_ship_hours": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1,
+          "target": 1
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "snapshot_label"
+          ],
+          "matched_rows": 1,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_churn_summary",
+      "golden": "golden/churn_flags/report.csv",
+      "status": "FAIL",
+      "detail": "[{\"check\": \"row_values\", \"status\": \"FAIL\", \"keys\": [\"churn_flag\"], \"matched_rows\": 2, \"mismatched_rows\": 2, \"missing_in_target\": 0, \"extra_in_target\": 0, \"duplicate_keys_in_target\": 0, \"mismatches_by_column\": {\"avg_days_since_order\": 2}, \"sample_mismatches\": [{\"key\": [\"active\"], \"diffs\": {\"avg_days_since_order\": {\"golden\": \"22\", \"target\": \"22.569916855631142\"}}}, {\"key\": [\"at_risk\"], \"diffs\": {\"avg_days_since_order\": {\"golden\": \"115\", \"target\": \"115.3\"}}}], \"sample_missing\": [], \"sample_extra\": []}]",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 2,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "churn_flag": "STRING",
+            "customers": "LONG",
+            "avg_days_since_order": "DOUBLE"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "FAIL",
+          "keys": [
+            "churn_flag"
+          ],
+          "matched_rows": 2,
+          "mismatched_rows": 2,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {
+            "avg_days_since_order": 2
+          },
+          "sample_mismatches": [
+            {
+              "key": [
+                "active"
+              ],
+              "diffs": {
+                "avg_days_since_order": {
+                  "golden": "22",
+                  "target": "22.569916855631142"
+                }
+              }
+            },
+            {
+              "key": [
+                "at_risk"
+              ],
+              "diffs": {
+                "avg_days_since_order": {
+                  "golden": "115",
+                  "target": "115.3"
+                }
+              }
+            }
+          ],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_shipping_sla",
+      "golden": "golden/shipping_sla/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "carrier": "STRING",
+            "shipments": "LONG",
+            "delivered": "LONG",
+            "in_flight": "LONG",
+            "avg_hours_to_deliver": "DECIMAL",
+            "max_hours_to_deliver": "LONG",
+            "on_time_96h": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "carrier"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_health",
+      "golden": null,
+      "status": "ERROR",
+      "detail": "Databricks SQL failed: [TABLE_OR_VIEW_NOT_FOUND] The table or view `svv_table_info` cannot be found. Verify the spelling and correctness of the schema and catalog.\nSearch path: [`system`.`session`, `system`.`builtin`, `system`.`ai`, `demo_redshift`.`default`].\nIf you did not qualify the name with a schema, verify the current_schema() output, or qualify the name with the correct schema and catalog.\nTo tolerate the error on drop use DROP VIEW IF EXISTS or DROP TABLE IF EXISTS. SQLSTATE: 42P01; line 2 pos 5\nSELECT \"schema\", \"table\", tbl_rows, stats_off AS statistics_staleness_pct\nFROM svv_table_info\nWHERE \"schema\" = 'mart'\nORDER BY \"table\";",
+      "rows_expected": null,
+      "rows_actual": null,
+      "mismatched_rows": null
+    },
+    {
+      "consumer": "Customer Segments Notebook",
+      "query_id": "notebook_rfm_segments",
+      "golden": "golden/rfm_segments/report.csv",
+      "status": "FAIL",
+      "detail": "[{\"check\": \"row_values\", \"status\": \"FAIL\", \"keys\": [\"rfm_segment\"], \"matched_rows\": 20, \"mismatched_rows\": 83, \"missing_in_target\": 0, \"extra_in_target\": 0, \"duplicate_keys_in_target\": 0, \"mismatches_by_column\": {\"avg_frequency\": 83}, \"sample_mismatches\": [{\"key\": [\"111\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"21\", \"target\": \"21.29824561403509\"}}}, {\"key\": [\"112\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"19\", \"target\": \"19.333333333333332\"}}}, {\"key\": [\"113\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"18\", \"target\": \"18.555555555555557\"}}}, {\"key\": [\"122\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"16\", \"target\": \"16.347826086956523\"}}}, {\"key\": [\"123\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"16\", \"target\": \"16.22222222222222\"}}}, {\"key\": [\"124\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"15\", \"target\": \"15.9\"}}}, {\"key\": [\"131\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"13\", \"target\": \"13.666666666666666\"}}}, {\"key\": [\"132\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"14\", \"target\": \"14.571428571428571\"}}}, {\"key\": [\"133\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"13\", \"target\": \"13.875\"}}}, {\"key\": [\"134\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"14\", \"target\": \"14.0625\"}}}, {\"key\": [\"135\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"13\", \"target\": \"13.5\"}}}, {\"key\": [\"143\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"11\", \"target\": \"11.866666666666667\"}}}, {\"key\": [\"144\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"11\", \"target\": \"11.703703703703704\"}}}, {\"key\": [\"145\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"11\", \"target\": \"11.285714285714286\"}}}, {\"key\": [\"153\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"9\", \"target\": \"9.5\"}}}, {\"key\": [\"154\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"9\", \"target\": \"9.428571428571429\"}}}, {\"key\": [\"155\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"8\", \"target\": \"8.3\"}}}, {\"key\": [\"211\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"20\", \"target\": \"20.41509433962264\"}}}, {\"key\": [\"212\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"19\", \"target\": \"19.46153846153846\"}}}, {\"key\": [\"213\"], \"diffs\": {\"avg_frequency\": {\"golden\": \"19\", \"target\": \"19.666666666666668\"}}}], \"sample_missing\": [], \"sample_extra\": []}]",
+      "rows_expected": 103,
+      "rows_actual": 103,
+      "mismatched_rows": 83,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "rfm_segment": "STRING",
+            "customers": "LONG",
+            "total_monetary": "DECIMAL",
+            "avg_frequency": "DOUBLE"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 103,
+          "target": 103
+        },
+        {
+          "check": "row_values",
+          "status": "FAIL",
+          "keys": [
+            "rfm_segment"
+          ],
+          "matched_rows": 20,
+          "mismatched_rows": 83,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {
+            "avg_frequency": 83
+          },
+          "sample_mismatches": [
+            {
+              "key": [
+                "111"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "21",
+                  "target": "21.29824561403509"
+                }
+              }
+            },
+            {
+              "key": [
+                "112"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "19",
+                  "target": "19.333333333333332"
+                }
+              }
+            },
+            {
+              "key": [
+                "113"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "18",
+                  "target": "18.555555555555557"
+                }
+              }
+            },
+            {
+              "key": [
+                "122"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "16",
+                  "target": "16.347826086956523"
+                }
+              }
+            },
+            {
+              "key": [
+                "123"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "16",
+                  "target": "16.22222222222222"
+                }
+              }
+            },
+            {
+              "key": [
+                "124"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "15",
+                  "target": "15.9"
+                }
+              }
+            },
+            {
+              "key": [
+                "131"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "13",
+                  "target": "13.666666666666666"
+                }
+              }
+            },
+            {
+              "key": [
+                "132"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "14",
+                  "target": "14.571428571428571"
+                }
+              }
+            },
+            {
+              "key": [
+                "133"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "13",
+                  "target": "13.875"
+                }
+              }
+            },
+            {
+              "key": [
+                "134"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "14",
+                  "target": "14.0625"
+                }
+              }
+            },
+            {
+              "key": [
+                "135"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "13",
+                  "target": "13.5"
+                }
+              }
+            },
+            {
+              "key": [
+                "143"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "11",
+                  "target": "11.866666666666667"
+                }
+              }
+            },
+            {
+              "key": [
+                "144"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "11",
+                  "target": "11.703703703703704"
+                }
+              }
+            },
+            {
+              "key": [
+                "145"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "11",
+                  "target": "11.285714285714286"
+                }
+              }
+            },
+            {
+              "key": [
+                "153"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "9",
+                  "target": "9.5"
+                }
+              }
+            },
+            {
+              "key": [
+                "154"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "9",
+                  "target": "9.428571428571429"
+                }
+              }
+            },
+            {
+              "key": [
+                "155"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "8",
+                  "target": "8.3"
+                }
+              }
+            },
+            {
+              "key": [
+                "211"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "20",
+                  "target": "20.41509433962264"
+                }
+              }
+            },
+            {
+              "key": [
+                "212"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "19",
+                  "target": "19.46153846153846"
+                }
+              }
+            },
+            {
+              "key": [
+                "213"
+              ],
+              "diffs": {
+                "avg_frequency": {
+                  "golden": "19",
+                  "target": "19.666666666666668"
+                }
+              }
+            }
+          ],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Customer Segments Notebook",
+      "query_id": "notebook_cohort_retention",
+      "golden": "golden/cohort_retention/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 65,
+      "rows_actual": 65,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "cohort_month": "DATE",
+            "month_offset": "INT",
+            "cohort_size": "LONG",
+            "active_buyers": "LONG",
+            "retention_pct": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 65,
+          "target": 65
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "cohort_month",
+            "month_offset"
+          ],
+          "matched_rows": 65,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Finance Reconciliation Notebook",
+      "query_id": "notebook_finance_monthly",
+      "golden": "golden/finance_export/finance_monthly.csv",
+      "status": "FAIL",
+      "detail": "unreachable file source: s3://retail-finance-delivery-usw2/finance_export/monthly/",
+      "rows_expected": 12,
+      "rows_actual": null,
+      "mismatched_rows": null
+    },
+    {
+      "consumer": "KPI Digest Cron",
+      "query_id": "cron_returns_rate",
+      "golden": "golden/returns_rate/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 6,
+      "rows_actual": 6,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "category": "STRING",
+            "sold_qty": "LONG",
+            "returned_qty": "LONG",
+            "return_rate_int": "LONG",
+            "return_pct": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "category"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Excel Geo Rollup",
+      "query_id": "excel_geo_rollup",
+      "golden": "golden/geo_rollup/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 21,
+      "rows_actual": 21,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "grouping_id": "INT",
+            "region": "STRING",
+            "state": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 21,
+          "target": 21
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "grouping_id",
+            "region",
+            "state"
+          ],
+          "matched_rows": 21,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ]
+}
