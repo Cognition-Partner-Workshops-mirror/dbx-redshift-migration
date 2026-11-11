@@ -1,4 +1,4 @@
-# Customer 360 — step 1
+# Customer 360
 
 An independent `customer-360` Databricks Asset Bundle. Reads `silver` and legacy
 `gold` in the selected catalog and writes **only** `customer_360`. The approved
@@ -50,14 +50,17 @@ make deploy                         # validate dashboard SQL, bundle deploy + pu
 make build                          # schema -> tables -> metrics
 make verify                         # live reconciliation, metrics and invariants
 make verify-dashboard               # every dashboard dataset via warehouse CLI
-make reset                          # DESTRUCTIVE: bundle destroy --auto-approve,
+make deploy-genie                   # create/update Account Manager Assistant by title
+make verify-genie                   # three live Conversation API checks, no browser
+make reset                          # DESTRUCTIVE: trash Genie, bundle destroy --auto-approve,
                                     # then Statement API DROP SCHEMA ... CASCADE
 ```
 
 `PROFILE=DEFAULT` and `TARGET=demo` may be passed to make. Catalog/warehouse
 variables have the approved defaults; alternative catalog writes require prior
 approval. Reset is intentionally hard-scoped to `demo_redshift.customer_360`.
-Reset deletes this bundle's dashboard and job and the product schema, never bronze/silver/gold.
+Reset deletes the Genie space, this bundle's dashboard and job and the product
+schema, never bronze/silver/gold.
 
 ## Leadership dashboard (step 2)
 
@@ -86,8 +89,36 @@ Regenerate the JSON with `make dashboard-json` after changing `build_dashboard.p
 before deployment, then checks a Q1/web/EAST slice. `make reset` removes the
 dashboard through bundle destroy before dropping the product schema.
 
+## Account Manager Assistant (step 3)
+
+`genie/space.json` is the versioned, parsed serialized-space definition: five
+certified sources, eight sample questions, four example SQL assets and merged
+business instructions. Revenue/LTV always mean completed-order net value; the
+snapshot date, fiscal boundaries, RFM precedence and customer lookup guidance
+are explicit. No migrated gold tables are exposed.
+
+`genie/manage.py deploy` uses the Genie API through the repository's pinned
+Databricks SDK. It paginates spaces and creates or updates by exact title;
+duplicate titles fail closed. It creates a parent folder under the authenticated
+user's workspace home if needed and grants `users` CAN_RUN. Deploy twice to
+reconcile the same space; do not run deployments concurrently. The ID is printed
+with its URL and saved to gitignored `genie/.space_id`. The definition is scoped
+to `demo_redshift.customer_360` and warehouse `6dc4b80538621b7b`, like the dashboard.
+
+`make deploy` deploys the dashboard bundle then reconciles Genie. Tables and
+metric views must already exist (`make build` on a new environment).
+`make reset` trashes the space by title before destroying the bundle and schema;
+deleting an absent space is a no-op. Genie is API-managed, not a bundle resource,
+so use `make reset`, not only `bundle destroy`, for complete teardown.
+
+`make verify-genie` starts three independent conversations via API, prints the
+generated SQL and previews, and saves full evidence in gitignored
+`genie/verification.local.json`. It checks certified source use, FY2025 Q3 for
+the last completed fiscal quarter, and regional risk summing to $1,327,164.70.
+These are live model responses, not a guarantee that every possible question
+will produce correct SQL. No browser automation is used.
+
 ## Later steps (not implemented)
 
-Add a Genie space with these semantic definitions and an app as separate follow-up
-steps. No Genie or app is created by this bundle. PR target for this product is
+An app remains a separate follow-up step. PR target for this product is
 main; do not merge automatically.

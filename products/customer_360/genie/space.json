@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {"id": "10000000000000000000000000000001", "question": ["Which At risk customers in the WEST have the highest net LTV?"]},
+      {"id": "10000000000000000000000000000002", "question": ["Show me everything about customer Morgan Nguyen (morgan.nguyen1@example.com)."]},
+      {"id": "10000000000000000000000000000003", "question": ["What was net revenue by channel last fiscal quarter?"]},
+      {"id": "10000000000000000000000000000004", "question": ["How much revenue is at risk by region?"]},
+      {"id": "10000000000000000000000000000005", "question": ["Which customers haven't ordered in 90 days but spent over $5k?"]},
+      {"id": "10000000000000000000000000000006", "question": ["What are net revenue, true AOV and completed orders by region?"]},
+      {"id": "10000000000000000000000000000007", "question": ["How many customers are in each health segment?"]},
+      {"id": "10000000000000000000000000000008", "question": ["Show the most recent completed orders for morgan.nguyen1@example.com."]}
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {"identifier": "demo_redshift.customer_360.customer_health"},
+      {"identifier": "demo_redshift.customer_360.customer_health_metrics"},
+      {"identifier": "demo_redshift.customer_360.customer_profile"},
+      {"identifier": "demo_redshift.customer_360.order_facts"},
+      {"identifier": "demo_redshift.customer_360.revenue_metrics"}
+    ]
+  },
+  "instructions": {
+    "text_instructions": [
+      {"id": "30000000000000000000000000000001", "content": [
+        "You assist account managers with certified customer intelligence. All data is a fixed snapshot as of DATE'2025-12-31'. Never use the system clock. Revenue and LTV mean NET recognized revenue from completed orders only, in USD; cancelled and returned orders recognize zero. Gross spend is not revenue.\n",
+        "Prefer revenue_metrics and customer_health_metrics with MEASURE(measure_name) for aggregate KPIs, GROUP BY the selected dimensions. Use fully qualified demo_redshift.customer_360 sources only. Do not SUM a metric-view measure directly. Customer health is a lifetime snapshot, not quarter/channel-filterable. Active customers completed an order in the last 90 days. On-time delivery measure is already percent 0-100; other rates are fractions.\n",
+        "Fiscal year starts February 1 and is labeled by start year: Q1 Feb-Apr, Q2 May-Jul, Q3 Aug-Oct, Q4 Nov-Jan. At 2025-12-31 the last fully completed fiscal quarter is FY2025 Q3, 2025-08-01 through 2025-10-31. January 2025 belongs to FY2024 Q4.\n",
+        "Join customer_profile p and customer_health h by customer_id for named customer lists. Profile has contact information, preferred store, net_ltv, completed_orders, aov and last_completed_order_date. Health has recency_days, frequency, monetary, r_tile/f_tile/m_tile, health_segment and revenue_at_risk. Order_facts is one row per order; join on customer_id for history. Avoid fan-out: never aggregate profile LTV after joining orders.\n",
+        "Health precedence: Never ordered (frequency=0, no completed orders), Champion (r_tile>=4 AND f_tile>=4), At risk (r_tile<=2 AND f_tile>=3), Loyal (f_tile>=3), Hibernating (r_tile<=2), Promising otherwise. At risk precedes Loyal. Tiles are deterministic quintiles among purchasers, higher is better. Revenue at risk is net LTV only for the At risk segment; use the stored segment, do not redefine it using a 90-day cutoff.\n",
+        "Look up customers by case-insensitive name or email in customer_profile. Names need not be unique: return customer_id/email and ask for disambiguation when needed; an email match is more precise. For 'everything', include profile and health; summarize order history rather than multiplying rows. Morgan Nguyen with email morgan.nguyen1@example.com is a real example.\n",
+        "'Haven't ordered in 90 days' means recency_days > 90 since the last COMPLETED order; exclude Never ordered when asking for previous spend. 'Spent over $5k' means net_ltv > 5000. Explain snapshot date, net definitions, filters and NULL/no-data cases. Never invent missing results. Return actionable customer lists with identifiers and contact details when requested."
+      ]}
+    ],
+    "example_question_sqls": [
+      {"id": "20000000000000000000000000000001", "question": ["Which At risk customers in the WEST have the highest net LTV?"], "sql": ["SELECT p.customer_id, p.name, p.email, p.region, p.net_ltv, h.recency_days, h.health_segment FROM demo_redshift.customer_360.customer_profile p JOIN demo_redshift.customer_360.customer_health h USING (customer_id) WHERE h.health_segment = 'At risk' AND p.region = 'WEST' ORDER BY p.net_ltv DESC, p.customer_id LIMIT 20"]},
+      {"id": "20000000000000000000000000000002", "question": ["How much revenue is at risk by region?"], "sql": ["SELECT region, MEASURE(revenue_at_risk) AS revenue_at_risk FROM demo_redshift.customer_360.customer_health_metrics GROUP BY region ORDER BY revenue_at_risk DESC"]},
+      {"id": "20000000000000000000000000000003", "question": ["What was net revenue by channel last fiscal quarter?"], "sql": ["SELECT sales_channel, MEASURE(net_revenue) AS net_revenue FROM demo_redshift.customer_360.revenue_metrics WHERE fiscal_year = 2025 AND fiscal_quarter = 'Q3' GROUP BY sales_channel ORDER BY net_revenue DESC"]},
+      {"id": "20000000000000000000000000000004", "question": ["Which customers haven't ordered in 90 days but spent over $5k?"], "sql": ["SELECT p.customer_id, p.name, p.email, p.net_ltv, h.recency_days, h.health_segment FROM demo_redshift.customer_360.customer_profile p JOIN demo_redshift.customer_360.customer_health h USING (customer_id) WHERE h.recency_days > 90 AND p.net_ltv > 5000 ORDER BY p.net_ltv DESC, p.customer_id"]}
+    ]
+  }
+}
