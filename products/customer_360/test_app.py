@@ -51,6 +51,7 @@ def test_customer_card_and_order_queries():
     service.orders(342)
     sql = client.statement_execution.execute_statement.call_args.kwargs["statement"]
     assert "LIMIT 10" in sql and "gross_amount, net_amount" in sql
+    assert "order_ts" in sql and "ORDER BY order_ts DESC, order_id DESC" in sql
     client.statement_execution.execute_statement.return_value = response()
     assert service.customer(9999) is None
     assert service.orders(9999) == []

@@ -10,6 +10,8 @@ Mason's scope exception; this product does not repair or overwrite legacy marts.
 
 * `order_facts`: one row/order, discounted line spend = quantity × (unit price −
   discount). Gross includes all statuses; net includes only `complete`.
+  Source `order_ts` is preserved for chronological history; recent orders sort
+  by timestamp descending, with order ID as the deterministic tie-breaker.
   Fiscal year is the **start year**, February 1–January 31; Q1 is Feb–Apr.
   Items means unit quantity. Shipping uses decimal elapsed seconds/3600 from
   ship to delivery, taking the slowest shipment per order. Missing/incomplete

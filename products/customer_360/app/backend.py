@@ -50,9 +50,9 @@ class Backend:
 
     def orders(self, customer_id):
         return self.query(
-            "SELECT order_id, order_date, status, sales_channel, gross_amount, net_amount "
+            "SELECT order_id, order_ts, order_date, status, sales_channel, gross_amount, net_amount "
             "FROM demo_redshift.customer_360.order_facts WHERE customer_id = :customer_id "
-            "ORDER BY order_date DESC, order_id DESC LIMIT 10",
+            "ORDER BY order_ts DESC, order_id DESC LIMIT 10",
             [StatementParameterListItem(name="customer_id", value=str(customer_id), type="BIGINT")])
 
     def portfolio(self):

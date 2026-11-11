@@ -51,6 +51,10 @@ def main():
                  f"SELECT COUNT(*) FROM {prefix}order_facts JOIN invalid USING (order_id) "
                  "WHERE hours_to_deliver IS NOT NULL OR delivered_within_96h IS NOT NULL")
     assert rows == [["0"]], "Any invalid shipment must exclude the entire order"
+    rows = query(client, f"SELECT COUNT(*) FROM {prefix}order_facts f "
+                 "JOIN demo_redshift.silver.orders s USING (order_id) "
+                 "WHERE NOT (f.order_ts <=> s.order_ts)")
+    assert rows == [["0"]], "Order history must retain the exact source timestamp"
     query(client, f"SELECT MEASURE(on_time_delivery_pct) AS on_time_delivery_pct "
           f"FROM {prefix}revenue_metrics")
     rows = query(client, f"SELECT COUNT(*) FROM {prefix}customer_health "

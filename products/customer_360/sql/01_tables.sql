@@ -15,7 +15,7 @@ WITH lines AS (
               AS hours_to_deliver
   FROM silver.shipments GROUP BY order_id
 )
-SELECT o.order_id, o.customer_id, CAST(o.order_ts AS DATE) AS order_date,
+SELECT o.order_id, o.customer_id, o.order_ts, CAST(o.order_ts AS DATE) AS order_date,
        CAST(date_trunc('MONTH', o.order_ts) AS DATE) AS order_month,
        year(add_months(CAST(o.order_ts AS DATE), -1)) AS fiscal_year,
        concat('Q', quarter(add_months(CAST(o.order_ts AS DATE), -1))) AS fiscal_quarter,
@@ -130,6 +130,7 @@ FROM comparisons;
 
 ALTER TABLE customer_360.order_facts ALTER COLUMN order_id COMMENT 'Unique order identifier; table grain.';
 ALTER TABLE customer_360.order_facts ALTER COLUMN customer_id COMMENT 'Customer identifier.';
+ALTER TABLE customer_360.order_facts ALTER COLUMN order_ts COMMENT 'Source order timestamp used for chronological order history.';
 ALTER TABLE customer_360.order_facts ALTER COLUMN order_date COMMENT 'Calendar order date.';
 ALTER TABLE customer_360.order_facts ALTER COLUMN order_month COMMENT 'First day of order calendar month.';
 ALTER TABLE customer_360.order_facts ALTER COLUMN fiscal_year COMMENT 'Fiscal start year; Feb 1 through Jan 31.';
