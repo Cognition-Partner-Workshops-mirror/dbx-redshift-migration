@@ -66,6 +66,22 @@ def extract(text, file, query, path=None):
 
 def connectionIsDatabricks(text):
     """Require a migrated connection marker before executing a current query."""
+    try:
+        notebook = json.loads(text)
+    except (ValueError, TypeError):
+        notebook = None
+    if isinstance(notebook, dict) and "cells" in notebook:
+        text = "\n".join("".join(c.get("source", [])) for c in notebook["cells"])
+    text = re.sub(r"<!--.*?-->|/\*.*?\*/", "", text, flags=re.DOTALL)
+    text = re.sub(r"(?m)^\s*//[^\n]*|--[^\n]*|#[^\n]*", "", text)
     lowered = text.lower()
     markers = ("databricks", "spark", "sql.connect", "sql_connector", "dbsql")
-    return any(marker in lowered for marker in markers) and "redshift" not in lowered
+    redshift = (
+        r"\bclass\s*=\s*['\"]redshift['\"]",
+        r"\bdriver\s*=\s*\{?[^;\n]*redshift",
+        r"\bamazonredshift\.database\s*\(",
+        r"\b(?:import\s+redshift_connector|from\s+redshift_connector\s+import)\b",
+        r"\bredshift_connector\.connect\s*\(",
+        r"[\w.-]+\.redshift(?:-serverless)?\.amazonaws\.com\b",
+    )
+    return any(marker in lowered for marker in markers) and not any(re.search(p, lowered) for p in redshift)

@@ -40,3 +40,19 @@ def test_invalid_and_empty():
     assert extract('SQL = ""', "query.py", "SQL") == ""
     assert connectionIsDatabricks("from databricks import sql")
     assert not connectionIsDatabricks("redshift_connector.connect()")
+
+
+@pytest.mark.parametrize("comment", ["-- migrated from Redshift", "# migrated from Redshift",
+                                      "<!-- migrated from Redshift -->", "// migrated from Redshift"])
+def test_historical_comments(comment):
+    assert connectionIsDatabricks("from databricks import sql\n" + comment)
+
+
+@pytest.mark.parametrize("connection", [
+    'class="redshift"', 'Driver={Amazon Redshift (x64)};',
+    'AmazonRedshift.Database("warehouse", "retail")', 'import redshift_connector',
+    'from redshift_connector import connect', 'redshift_connector.connect()',
+    'PGHOST=retail-dw.123.us-west-2.redshift-serverless.amazonaws.com',
+])
+def test_remaining_redshift_connections(connection):
+    assert not connectionIsDatabricks("from databricks import sql\n" + connection)
