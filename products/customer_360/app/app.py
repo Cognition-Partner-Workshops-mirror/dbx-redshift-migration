@@ -69,12 +69,13 @@ with lookup_tab:
             idx = st.selectbox(f"{len(matches)} match(es)", range(len(labels)), format_func=lambda i: labels[i])
             c = matches.iloc[idx]
             st.subheader(f"#{c.customer_id} {c.customer_name}")
-            m = st.columns(5)
+            m = st.columns(3)
             m[0].metric("Segment", c.segment)
             m[1].metric("Net LTV", money(c.net_ltv))
             m[2].metric("AOV", money(c.aov))
-            m[3].metric("Recency (days)", "—" if c.recency_days is None else c.recency_days)
-            m[4].metric("Completed orders", c.completed_orders)
+            m = st.columns(3)
+            m[0].metric("Recency (days)", "—" if c.recency_days is None else c.recency_days)
+            m[1].metric("Completed orders", c.completed_orders)
             md(
                 f"**Email:** {c.email} · **Phone:** {c.phone} · **Region:** {c.region} · "
                 f"**Business:** {'yes' if c.is_business == 'true' else 'no'} · **Signed up:** {c.signup_date}  \n"
