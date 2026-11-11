@@ -99,5 +99,5 @@ def test_app_helpers():
 
 
 def test_search_escapes_like_wildcards():
-    _, params = lookup.search_query("a_b%c")
+    _, params = search_query("a_b%c")
     assert params["pattern"] == "%a\\_b\\%c%"
