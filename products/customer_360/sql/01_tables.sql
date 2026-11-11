@@ -9,7 +9,8 @@ WITH lines AS (
   FROM silver.order_items GROUP BY order_id
 ), delivery AS (
   SELECT order_id,
-         CASE WHEN COUNT(*) = COUNT(delivered_ts)
+         CASE WHEN COUNT(*) = COUNT(delivered_ts) AND COUNT(*) = COUNT(ship_ts)
+                   AND MIN(timestampdiff(SECOND, ship_ts, delivered_ts)) >= 0
               THEN MAX(timestampdiff(SECOND, ship_ts, delivered_ts)) / 3600.0 END
               AS hours_to_deliver
   FROM silver.shipments GROUP BY order_id
@@ -142,8 +143,8 @@ ALTER TABLE customer_360.order_facts ALTER COLUMN net_amount COMMENT 'Gross amou
 ALTER TABLE customer_360.order_facts ALTER COLUMN is_cancelled COMMENT 'True when order status is cancelled.';
 ALTER TABLE customer_360.order_facts ALTER COLUMN is_returned COMMENT 'True when order status is returned.';
 ALTER TABLE customer_360.order_facts ALTER COLUMN items COMMENT 'Total ordered unit quantity.';
-ALTER TABLE customer_360.order_facts ALTER COLUMN delivered_within_96h COMMENT 'All shipments delivered within 96 elapsed hours; NULL if undelivered.';
-ALTER TABLE customer_360.order_facts ALTER COLUMN hours_to_deliver COMMENT 'Slowest shipment elapsed seconds / 3600; decimal hours, NULL if incomplete.';
+ALTER TABLE customer_360.order_facts ALTER COLUMN delivered_within_96h COMMENT 'All shipments delivered within 96 elapsed hours; NULL if incomplete or any shipment duration is negative.';
+ALTER TABLE customer_360.order_facts ALTER COLUMN hours_to_deliver COMMENT 'Slowest shipment elapsed seconds / 3600; decimal hours, NULL if timestamps are missing or any shipment duration is negative.';
 ALTER TABLE customer_360.customer_profile ALTER COLUMN customer_id COMMENT 'Unique registered customer identifier; table grain.';
 ALTER TABLE customer_360.customer_profile ALTER COLUMN name COMMENT 'Customer first and last name.';
 ALTER TABLE customer_360.customer_profile ALTER COLUMN email COMMENT 'Source customer email address.';

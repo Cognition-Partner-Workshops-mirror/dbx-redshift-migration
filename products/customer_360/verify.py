@@ -42,6 +42,17 @@ def main():
     rows = query(client, f"SELECT COUNT(*) FROM {prefix}order_facts "
                  "WHERE (status <> 'complete' AND net_amount <> 0) OR region <> RTRIM(region)")
     assert rows == [["0"]]
+    rows = query(client, f"SELECT COUNT(*) FROM {prefix}order_facts "
+                 "WHERE hours_to_deliver < 0 OR "
+                 "(hours_to_deliver IS NULL AND delivered_within_96h IS NOT NULL)")
+    assert rows == [["0"]], "Invalid delivery hours must not enter the on-time denominator"
+    rows = query(client, "WITH invalid AS (SELECT DISTINCT order_id FROM demo_redshift.silver.shipments "
+                 "WHERE ship_ts IS NULL OR delivered_ts IS NULL OR delivered_ts < ship_ts) "
+                 f"SELECT COUNT(*) FROM {prefix}order_facts JOIN invalid USING (order_id) "
+                 "WHERE hours_to_deliver IS NOT NULL OR delivered_within_96h IS NOT NULL")
+    assert rows == [["0"]], "Any invalid shipment must exclude the entire order"
+    query(client, f"SELECT MEASURE(on_time_delivery_pct) AS on_time_delivery_pct "
+          f"FROM {prefix}revenue_metrics")
     rows = query(client, f"SELECT COUNT(*) FROM {prefix}customer_health "
                  "WHERE (frequency = 0 AND (r_tile IS NOT NULL OR recency_days IS NOT NULL "
                  "OR health_segment <> 'Never ordered')) "

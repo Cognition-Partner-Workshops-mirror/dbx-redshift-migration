@@ -55,7 +55,7 @@ measures:
     comment: Returned-status orders / all orders, fraction 0-1. Not the unit return rate in legacy_vs_certified.
   - name: on_time_delivery_pct
     expr: 100.0 * TRY_DIVIDE(COUNT_IF(delivered_within_96h), COUNT(hours_to_deliver))
-    comment: Percent of delivered orders whose slowest shipment arrived within 96 decimal hours of shipping. Undelivered excluded.
+    comment: Percent of valid delivered orders whose slowest shipment arrived within 96 decimal hours of shipping. Incomplete or negative shipment durations excluded.
 $$;
 
 CREATE OR REPLACE VIEW customer_health_metrics

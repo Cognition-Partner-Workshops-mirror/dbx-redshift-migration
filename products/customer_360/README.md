@@ -13,7 +13,8 @@ Mason's scope exception; this product does not repair or overwrite legacy marts.
   Fiscal year is the **start year**, February 1–January 31; Q1 is Feb–Apr.
   Items means unit quantity. Shipping uses decimal elapsed seconds/3600 from
   ship to delivery, taking the slowest shipment per order. Missing/incomplete
-  delivery is NULL, excluded from on-time denominator (96 hours inclusive).
+  delivery or any negative shipment duration makes the order's delivery hours
+  and on-time flag NULL, excluded from the on-time denominator (96 hours inclusive).
 * `customer_profile`: all registered customers, trimmed region, raw contact
   fields, preferred store, order history and completed-order AOV. Never
   purchasers retain zero LTV and NULL AOV. Top category is ranked by complete
