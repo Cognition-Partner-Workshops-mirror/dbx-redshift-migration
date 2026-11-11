@@ -1,0 +1,21 @@
+table payment_mix
+	column method_family
+		dataType: string
+		sourceColumn: method_family
+
+	column payment_count
+		dataType: int64
+		sourceColumn: payment_count
+
+	column amount_total
+		dataType: double
+		sourceColumn: amount_total
+
+	partition payment_mix = m
+		mode: import
+		source =
+			let
+				Source = Warehouse,
+				Rows = Value.NativeQuery(Source, "-- BI report: payment family mix.#(lf)SELECT method_family,#(lf)       SUM(payment_count) AS payment_count,#(lf)       SUM(amount_total)  AS amount_total#(lf)FROM   mart.payment_mix#(lf)GROUP  BY method_family#(lf)ORDER  BY method_family;#(lf)", null, [EnableFolding=true])
+			in
+				Rows

@@ -1,5 +1,15 @@
 .PHONY: check seed db-setup db-reset validate validate-all legacy-all capture-golden
 
+.PHONY: consumer-setup consumer-parity consumer-reset
+consumer-setup:
+	python -m validation.consumer_parity --setup
+
+consumer-parity:
+	python -m validation.consumer_parity --mode $(MODE)
+
+consumer-reset:
+	bash tools/consumer_reset.sh $(ARGS)
+
 check:
 	ruff check . && pytest && python tools/check_manifest.py
 

@@ -12,6 +12,7 @@ variables:
 
 include:
   - orchestration/nightly.job.yml
+  - dashboards/consumer_cutover.dashboard.yml
 
 targets:
   dev:

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:odc="urn:schemas-microsoft-com:office:odc">
+<head><title>Geo Rollup</title><xml>
+<odc:OfficeDataConnection><odc:Name>Geo Rollup</odc:Name><odc:Connection odc:Type="ODBC">
+<odc:ConnectionString>Driver={Amazon Redshift (x64)};Server=retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com;Port=5439;Database=mig_redshift_src;UID=${REDSHIFT_USER};PWD=${REDSHIFT_PASSWORD};SSLMode=require;</odc:ConnectionString>
+<odc:CommandType>SQL</odc:CommandType><odc:CommandText>-- BI report: the rollup as published (NULL grouping columns included).
+SELECT grouping_id, region, state, order_count, revenue
+FROM   mart.geo_rollup
+ORDER  BY grouping_id, region, state;
+</odc:CommandText>
+</odc:Connection></odc:OfficeDataConnection></xml></head><body>Geo Rollup</body></html>
