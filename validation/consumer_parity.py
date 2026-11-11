@@ -83,6 +83,22 @@ def volumeRows(client, uri):
     return [(c, "STRING") for c in header], [[None if v == "\\N" else v for v in r] for r in reader]
 
 
+def isPublishedReport(sql, root):
+    def normalized(value):
+        return " ".join(re.sub(r"--[^\n]*|/\*.*?\*/", "", value, flags=re.DOTALL).split())
+
+    candidate = normalized(sql)
+    for report in (root / "legacy/redshift").rglob("report.sql"):
+        source = report.read_text()
+        if candidate in (normalized(source), normalized(source.replace("mart.", "gold.").replace("core.", "silver."))):
+            return True
+    return False
+
+
+def successful(results):
+    return all(r["status"] in ("PASS", "SMOKE") for r in results)
+
+
 def evaluate(entry, mode, db, root=ROOT, baseline="consumer-cutover-baseline", reader=readSource):
     record = {"consumer": entry["consumer"], "query_id": entry["id"], "golden": None,
               "status": "ERROR", "detail": "", "rows_expected": None, "rows_actual": None,
@@ -91,6 +107,8 @@ def evaluate(entry, mode, db, root=ROOT, baseline="consumer-cutover-baseline", r
         text = reader(root, entry["file"], mode, baseline)
         value = extract(text, entry["file"], entry.get("query"), entry.get("path"))
         isFile = entry.get("kind") == "file" or "path" in entry
+        if entry.get("check") == "smoke" and not isFile and isPublishedReport(value, root):
+            raise ValueError("published reports require a golden comparison, not a smoke check")
         if not isFile and mode == "current":
             connectionText = text
             if entry["file"].endswith(".tmdl"):
@@ -124,7 +142,7 @@ def evaluate(entry, mode, db, root=ROOT, baseline="consumer-cutover-baseline", r
             columns, rows = db.run(value)
         record["rows_actual"] = len(rows)
         if entry.get("check") == "smoke":
-            record.update(status="PASS", detail="query executed successfully")
+            record.update(status="SMOKE", detail="query executed successfully; no output comparison")
         else:
             tolFor, _ = toleranceLookup(loadYaml(root / "validation/tolerances.yaml"), unit, output)
             result = compareOutput(gc, gr, columns, rows, keys, tolFor)
@@ -200,7 +218,7 @@ def main():
         return
     contract = loadYaml(args.contract)
     evidence = run(contract["consumers"], args.mode, db, baseline=args.baseline)
-    raise SystemExit(0 if all(r["status"] == "PASS" for r in evidence["results"]) else 1)
+    raise SystemExit(0 if successful(evidence["results"]) else 1)
 
 
 if __name__ == "__main__":

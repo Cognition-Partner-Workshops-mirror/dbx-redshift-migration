@@ -11,7 +11,7 @@
         "), latest AS (\n",
         "  SELECT r.* FROM results r JOIN ranked x ON r.mode = x.mode AND r.run_id = x.run_id WHERE x.rn = 1\n",
         ")\n",
-        "SELECT COUNT_IF(status = 'PASS') AS passed, COUNT(*) AS total FROM latest WHERE mode = 'naive'"
+        "SELECT COUNT_IF(status = 'PASS') AS passed, COUNT_IF(status = 'SMOKE') AS smoke, COUNT(*) AS total FROM latest WHERE mode = 'naive'"
       ]
     },
     {
@@ -25,7 +25,7 @@
         "), latest AS (\n",
         "  SELECT r.* FROM results r JOIN ranked x ON r.mode = x.mode AND r.run_id = x.run_id WHERE x.rn = 1\n",
         ")\n",
-        "SELECT COUNT_IF(status = 'PASS') AS passed, COUNT(*) AS total FROM latest WHERE mode = 'current'"
+        "SELECT COUNT_IF(status = 'PASS') AS passed, COUNT_IF(status = 'SMOKE') AS smoke, COUNT(*) AS total FROM latest WHERE mode = 'current'"
       ]
     },
     {
@@ -119,7 +119,7 @@
           "position": {
             "x": 0,
             "y": 2,
-            "width": 3,
+            "width": 2,
             "height": 3
           }
         },
@@ -157,9 +157,9 @@
             }
           },
           "position": {
-            "x": 3,
+            "x": 2,
             "y": 2,
-            "width": 3,
+            "width": 2,
             "height": 3
           }
         },
@@ -199,7 +199,7 @@
           "position": {
             "x": 6,
             "y": 2,
-            "width": 3,
+            "width": 2,
             "height": 3
           }
         },
@@ -237,9 +237,89 @@
             }
           },
           "position": {
-            "x": 9,
+            "x": 8,
             "y": 2,
-            "width": 3,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "naive_smoke",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "naive",
+                  "fields": [
+                    {
+                      "name": "smoke",
+                      "expression": "`smoke`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "smoke",
+                  "displayName": "Smoke"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Before · Smoke"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "current_smoke",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "current",
+                  "fields": [
+                    {
+                      "name": "smoke",
+                      "expression": "`smoke`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "smoke",
+                  "displayName": "Smoke"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "After · Smoke"
+              }
+            }
+          },
+          "position": {
+            "x": 10,
+            "y": 2,
+            "width": 2,
             "height": 3
           }
         },

@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from validation.consumer_parity import evaluate, literal, persist, run, setup, volumeRows
+from validation.consumer_parity import evaluate, literal, matrix, persist, run, setup, successful, volumeRows
 
 
 class FakeDb:
@@ -62,7 +62,11 @@ def test_naive_only_swaps_schema(tmp_path, contract):
 
 def test_smoke_and_connection(tmp_path, contract):
     entry = {**contract, "check": "smoke"}
-    assert evaluate(entry, "current", FakeDb([]), tmp_path)["status"] == "PASS"
+    result = evaluate(entry, "current", FakeDb([]), tmp_path)
+    assert result["status"] == "SMOKE"
+    assert "| SMOKE |" in matrix([result])
+    assert successful([result])
+    assert not successful([{"status": "FAIL"}])
     (tmp_path / entry["file"]).write_text('SQL = "SELECT 1"\n# redshift')
     assert evaluate(entry, "current", FakeDb(), tmp_path)["status"] == "ERROR"
 
@@ -100,3 +104,25 @@ def test_persistence_and_run(tmp_path, contract, monkeypatch):
 def test_reject_writes(tmp_path, contract):
     reader = lambda *args: 'SQL = "DELETE FROM mart.orders"'
     assert evaluate(contract, "naive", FakeDb(), tmp_path, reader=reader)["status"] == "ERROR"
+
+
+@pytest.mark.parametrize("mode,schema", [("naive", "mart"), ("current", "gold")])
+def test_reject_published_smoke(tmp_path, contract, mode, schema):
+    reports = tmp_path / "legacy/redshift/units/orders"
+    reports.mkdir(parents=True)
+    (reports / "report.sql").write_text("SELECT *\nFROM mart.orders;")
+    reader = lambda *args: f'from databricks import sql\nSQL = "SELECT  * FROM {schema}.orders;"'
+    db = FakeDb()
+    result = evaluate({**contract, "check": "smoke"}, mode, db, tmp_path, reader=reader)
+    assert result["status"] == "ERROR"
+    assert "published reports" in result["detail"]
+    assert db.statements == []
+
+
+def test_smoke_evidence_and_storage(tmp_path, contract, monkeypatch):
+    monkeypatch.setattr("validation.consumer_parity.subprocess.check_output", lambda *a, **kw: "abc123\n")
+    db = FakeDb([])
+    evidence = run([{**contract, "check": "smoke"}], "current", db, tmp_path)
+    assert evidence["results"][0]["status"] == "SMOKE"
+    assert "SMOKE" in (tmp_path / ".migration/evidence/consumers_current.json").read_text()
+    assert "'SMOKE'" in db.statements[-1]
