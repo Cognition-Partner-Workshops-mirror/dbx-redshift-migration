@@ -5,6 +5,7 @@ import os
 import streamlit as st
 from backend import Backend
 from databricks.sdk.errors import DatabricksError
+from presentation import literal_dollars
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ try:
         segments = backend().portfolio()
     if segments:
         for column, segment in zip(st.columns(len(segments)), segments, strict=True):
-            column.metric(segment["health_segment"], f"{int(segment['customers']):,}")
+            column.metric(literal_dollars(segment["health_segment"]), f"{int(segment['customers']):,}")
     else:
         st.info("No portfolio data available.")
 except (DatabricksError, RuntimeError, TimeoutError, ValueError, KeyError) as error:
@@ -68,20 +69,20 @@ if matches is not None:
             if card is None:
                 st.warning("This customer is no longer available. Search again.")
             else:
-                st.subheader(card["name"])
+                st.subheader(literal_dollars(card["name"]))
                 colors = {"Champion": "green", "Loyal": "blue", "At risk": "orange",
                           "Hibernating": "red", "Promising": "violet", "Never ordered": "gray"}
                 segment = card["health_segment"]
-                st.markdown(f":{colors.get(segment, 'gray')}[**{segment}**]")
+                st.markdown(f":{colors.get(segment, 'gray')}[**{literal_dollars(segment)}**]")
                 left, middle, right = st.columns(3)
                 with left:
-                    st.write("**Email:**", card["email"] or "—")
-                    st.write("**Phone:**", card["phone"] or "—")
-                    st.write("**Region:**", card["region"] or "—")
+                    st.write("**Email:**", literal_dollars(card["email"] or "—"))
+                    st.write("**Phone:**", literal_dollars(card["phone"] or "—"))
+                    st.write("**Region:**", literal_dollars(card["region"] or "—"))
                     st.write("**Account type:**", "Business" if str(card["is_business"]).lower() == "true" else "Consumer")
-                    st.write("**Signup date:**", card["signup_date"] or "—")
-                    st.write("**Preferred store:**", card["preferred_store_name"] or "—")
-                    st.write("**Store city:**", card["preferred_store_city"] or "—")
+                    st.write("**Signup date:**", literal_dollars(card["signup_date"] or "—"))
+                    st.write("**Preferred store:**", literal_dollars(card["preferred_store_name"] or "—"))
+                    st.write("**Store city:**", literal_dollars(card["preferred_store_city"] or "—"))
                 with middle:
                     st.metric("Net lifetime value", money(card["net_ltv"]))
                     st.metric("Completed orders", card["completed_orders"])
@@ -89,8 +90,8 @@ if matches is not None:
                 with right:
                     st.metric("Recency · days since completed order",
                               card["recency_days"] if card["recency_days"] is not None else "No completed orders")
-                    st.write("**Returns:**", card["return_count"])
-                    st.write("**Top category:**", card["top_category"] or "—")
+                    st.write("**Returns:**", literal_dollars(card["return_count"]))
+                    st.write("**Top category:**", literal_dollars(card["top_category"] or "—"))
                     if segment == "At risk":
                         st.metric("Revenue at risk", money(card["revenue_at_risk"]))
                 st.subheader("Recent orders")
@@ -117,10 +118,10 @@ if ask:
         failure("Genie", error)
 if "answer" in st.session_state:
     answer = st.session_state.answer
-    st.write(answer["text"])
+    st.write(literal_dollars(answer["text"]))
     for result in answer["queries"]:
         if result["description"]:
-            st.write(result["description"])
+            st.write(literal_dollars(result["description"]))
         with st.expander("Generated SQL"):
             st.code(result["sql"], language="sql")
         if result["rows"]:

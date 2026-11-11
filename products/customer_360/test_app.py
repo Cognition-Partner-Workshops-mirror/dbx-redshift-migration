@@ -4,8 +4,19 @@ from unittest.mock import MagicMock
 
 import pytest
 from app.backend import Backend
+from app.presentation import literal_dollars
 from databricks.sdk.service.sql import StatementState
 from deploy_app import grant_access
+
+
+def test_genie_answer_dollar_amounts_are_literal():
+    answer = "Revenue at risk: SOTH $292,691.46 and SW $115,725.36."
+    assert literal_dollars(answer) == r"Revenue at risk: SOTH \$292,691.46 and SW \$115,725.36."
+
+
+@pytest.mark.parametrize("value", ["", "No results", r"Already escaped \$12.00", None, 42])
+def test_literal_dollars_preserves_other_values(value):
+    assert literal_dollars(value) == value
 
 
 def response(rows=(), columns=("customer_id",), state=StatementState.SUCCEEDED):
