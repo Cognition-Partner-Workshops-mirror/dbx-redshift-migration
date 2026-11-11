@@ -49,7 +49,10 @@ def connect():
     config = Config()
     return sql.connect(
         server_hostname=config.host.removeprefix("https://").rstrip("/"),
-        http_path=os.environ.get("DATABRICKS_HTTP_PATH", "/sql/1.0/warehouses/6dc4b80538621b7b"),
+        http_path=os.environ.get(
+            "DATABRICKS_HTTP_PATH",
+            f"/sql/1.0/warehouses/{os.environ.get('DATABRICKS_WAREHOUSE_ID', '6dc4b80538621b7b')}",
+        ),
         credentials_provider=lambda: config.authenticate,
         catalog="demo_redshift",
         schema="gold",
