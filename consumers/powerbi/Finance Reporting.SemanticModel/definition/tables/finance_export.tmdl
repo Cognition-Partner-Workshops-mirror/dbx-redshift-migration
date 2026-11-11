@@ -20,6 +20,6 @@ table finance_export
 		source =
 			let
 				Source = Warehouse,
-				Rows = Value.NativeQuery(Source, "-- BI report: fiscal-year revenue summary.#(lf)SELECT fiscal_year, fiscal_qtr,#(lf)       SUM(order_count) AS order_count,#(lf)       SUM(revenue)     AS revenue#(lf)FROM   mart.finance_monthly#(lf)GROUP  BY fiscal_year, fiscal_qtr#(lf)ORDER  BY fiscal_year, fiscal_qtr;#(lf)", null, [EnableFolding=true])
+				Rows = Value.NativeQuery(Source, "-- BI report: fiscal-year revenue summary.#(lf)SELECT fiscal_year, fiscal_qtr,#(lf)       SUM(order_count) AS order_count,#(lf)       SUM(revenue)     AS revenue#(lf)FROM   gold.finance_monthly#(lf)GROUP  BY fiscal_year, fiscal_qtr#(lf)ORDER  BY fiscal_year, fiscal_qtr;#(lf)", null, [EnableFolding=true])
 			in
 				Rows

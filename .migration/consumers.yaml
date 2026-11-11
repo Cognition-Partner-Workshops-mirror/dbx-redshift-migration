@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "consumers": [
+    {
+      "id": "daily_revenue",
+      "consumer": "Tableau Executive",
+      "file": "consumers/tableau/Retail Executive.twb",
+      "query": "daily_revenue",
+      "golden_unit": "daily_revenue",
+      "golden_output": "report"
+    },
+    {
+      "id": "category_mix",
+      "consumer": "Tableau Executive",
+      "file": "consumers/tableau/Retail Executive.twb",
+      "query": "category_mix",
+      "golden_unit": "category_mix",
+      "golden_output": "report"
+    },
+    {
+      "id": "customer_ltv",
+      "consumer": "Tableau Executive",
+      "file": "consumers/tableau/Retail Executive.twb",
+      "query": "customer_ltv",
+      "golden_unit": "customer_ltv",
+      "golden_output": "report"
+    },
+    {
+      "id": "store_weekly",
+      "consumer": "Tableau Executive",
+      "file": "consumers/tableau/Retail Executive.twb",
+      "query": "store_weekly",
+      "golden_unit": "store_weekly",
+      "golden_output": "report"
+    },
+    {
+      "id": "finance_export",
+      "consumer": "Power BI Finance",
+      "file": "consumers/powerbi/Finance Reporting.SemanticModel/definition/tables/finance_export.tmdl",
+      "query": "finance_export",
+      "golden_unit": "finance_export",
+      "golden_output": "report"
+    },
+    {
+      "id": "payment_mix",
+      "consumer": "Power BI Finance",
+      "file": "consumers/powerbi/Finance Reporting.SemanticModel/definition/tables/payment_mix.tmdl",
+      "query": "payment_mix",
+      "golden_unit": "payment_mix",
+      "golden_output": "report"
+    },
+    {
+      "id": "promo_lift",
+      "consumer": "Power BI Finance",
+      "file": "consumers/powerbi/Finance Reporting.SemanticModel/definition/tables/promo_lift.tmdl",
+      "query": "promo_lift",
+      "golden_unit": "promo_lift",
+      "golden_output": "report"
+    },
+    {
+      "id": "exec_summary",
+      "consumer": "Reporting API",
+      "file": "consumers/reporting-api/service.py",
+      "query": "EXEC_SUMMARY_SQL",
+      "golden_unit": "orchestration",
+      "golden_output": "report"
+    },
+    {
+      "id": "churn_flags",
+      "consumer": "Reporting API",
+      "file": "consumers/reporting-api/service.py",
+      "query": "CHURN_SUMMARY_SQL",
+      "golden_unit": "churn_flags",
+      "golden_output": "report"
+    },
+    {
+      "id": "shipping_sla",
+      "consumer": "Reporting API",
+      "file": "consumers/reporting-api/service.py",
+      "query": "SHIPPING_SLA_SQL",
+      "golden_unit": "shipping_sla",
+      "golden_output": "report"
+    },
+    {
+      "id": "health",
+      "consumer": "Reporting API",
+      "file": "consumers/reporting-api/service.py",
+      "query": "HEALTH_SQL",
+      "check": "smoke"
+    },
+    {
+      "id": "rfm_segments",
+      "consumer": "Customer Analytics",
+      "file": "consumers/notebooks/customer_segments.ipynb",
+      "query": "rfm_segments",
+      "golden_unit": "rfm_segments",
+      "golden_output": "report"
+    },
+    {
+      "id": "cohort_retention",
+      "consumer": "Customer Analytics",
+      "file": "consumers/notebooks/customer_segments.ipynb",
+      "query": "cohort_retention",
+      "golden_unit": "cohort_retention",
+      "golden_output": "report"
+    },
+    {
+      "id": "finance_monthly_file",
+      "consumer": "Finance Reconciliation",
+      "file": "consumers/notebooks/finance_reconciliation.ipynb",
+      "query": "finance_monthly",
+      "golden_unit": "finance_export",
+      "golden_output": "finance_monthly",
+      "kind": "file",
+      "path": "export_path"
+    },
+    {
+      "id": "returns_rate",
+      "consumer": "KPI Digest",
+      "file": "ops/cron/kpi_digest.sh",
+      "query": "RETURNS_RATE_SQL",
+      "golden_unit": "returns_rate",
+      "golden_output": "report"
+    },
+    {
+      "id": "geo_rollup",
+      "consumer": "Excel Geography",
+      "file": "shared/excel/Geo Rollup.odc",
+      "query": "Geo Rollup",
+      "golden_unit": "geo_rollup",
+      "golden_output": "report"
+    }
+  ]
+}

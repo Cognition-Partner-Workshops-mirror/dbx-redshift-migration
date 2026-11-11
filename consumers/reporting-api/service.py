@@ -11,27 +11,27 @@ logger = logging.getLogger(__name__)
 EXEC_SUMMARY_SQL = """-- BI report: the exec summary as published.
 SELECT snapshot_label, as_of_date, total_revenue, total_orders,
        avg_customer_ltv, overall_return_pct, avg_ship_hours
-FROM   mart.exec_summary
+FROM   gold.exec_summary
 ORDER  BY snapshot_label;
 """
 CHURN_SUMMARY_SQL = """-- BI report: churn flag distribution.
 SELECT churn_flag,
        COUNT(*)                  AS customers,
-       AVG(days_since_order)     AS avg_days_since_order
-FROM   mart.churn_flags
+       CAST(AVG(days_since_order) AS BIGINT)     AS avg_days_since_order
+FROM   gold.churn_flags
 GROUP  BY churn_flag
 ORDER  BY churn_flag;
 """
 SHIPPING_SLA_SQL = """-- BI report: carrier SLA as published.
 SELECT carrier, shipments, delivered, in_flight,
        avg_hours_to_deliver, max_hours_to_deliver, on_time_96h
-FROM   mart.shipping_sla
+FROM   gold.shipping_sla
 ORDER  BY carrier;
 """
-HEALTH_SQL = """SELECT "schema", "table", tbl_rows, stats_off AS statistics_staleness_pct
-FROM svv_table_info
-WHERE "schema" = 'mart'
-ORDER BY "table";"""
+HEALTH_SQL = """SELECT table_schema, table_name, last_altered
+FROM demo_redshift.information_schema.tables
+WHERE table_schema = 'gold'
+ORDER BY table_name;"""
 
 QUERIES = {
     "/executive-summary": EXEC_SUMMARY_SQL,
@@ -42,15 +42,17 @@ QUERIES = {
 
 
 def connect():
-    import redshift_connector
+    from databricks.sdk.core import Config
 
-    return redshift_connector.connect(
-        host=os.environ.get("REDSHIFT_HOST", "retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com"),
-        port=int(os.environ.get("REDSHIFT_PORT", "5439")),
-        database=os.environ.get("REDSHIFT_DATABASE", "mig_redshift_src"),
-        user=os.environ["REDSHIFT_USER"],
-        password=os.environ["REDSHIFT_PASSWORD"],
-        ssl=True,
+    from databricks import sql
+
+    config = Config()
+    return sql.connect(
+        server_hostname=config.host.removeprefix("https://").rstrip("/"),
+        http_path=os.environ.get("DATABRICKS_HTTP_PATH", "/sql/1.0/warehouses/6dc4b80538621b7b"),
+        credentials_provider=lambda: config.authenticate,
+        catalog="demo_redshift",
+        schema="gold",
     )
 
 

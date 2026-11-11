@@ -1,2 +1,7 @@
-expression Warehouse = AmazonRedshift.Database("retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com:5439", "mig_redshift_src")
+expression Warehouse =
+	let
+		Source = Databricks.Catalogs("dbc-c22a0245-3975.cloud.databricks.com", "/sql/1.0/warehouses/6dc4b80538621b7b", [Catalog="demo_redshift", Database="gold"]),
+		Catalog = Source{[Name="demo_redshift", Kind="Database"]}[Data]
+	in
+		Catalog
 	annotation PBI_ResultType = Navigation

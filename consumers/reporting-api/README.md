@@ -1,5 +1,5 @@
 # Retail Reporting API
 
-Run `python consumers/reporting-api/service.py`. Configure `REDSHIFT_HOST`, `REDSHIFT_PORT`, `REDSHIFT_DATABASE`, `REDSHIFT_USER`, and `REDSHIFT_PASSWORD` in the service environment. Credentials are supplied by the deployment secret store. TLS is required.
+Run `python consumers/reporting-api/service.py`. Install `databricks-sql-connector` and `databricks-sdk`. Configure Databricks unified authentication through `DATABRICKS_CONFIG_PROFILE` or the deployment identity; optionally set `DATABRICKS_HOST` and `DATABRICKS_HTTP_PATH`. Credentials remain in the identity provider or secret store.
 
-GET routes: `/executive-summary`, `/churn-summary`, `/shipping-sla`, `/health`. The health route returns the mart table inventory, estimated row counts and statistics staleness percentages used by the warehouse freshness monitor. Warehouse errors return HTTP 503.
+GET routes: `/executive-summary`, `/churn-summary`, `/shipping-sla`, `/health`. The health route returns gold table inventory and `last_altered` timestamps from Unity Catalog. Warehouse errors return HTTP 503.

@@ -1,14 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
-export PGHOST="${REDSHIFT_HOST:-retail-dw.482716309154.us-west-2.redshift-serverless.amazonaws.com}"
-export PGPORT="${REDSHIFT_PORT:-5439}"
-export PGDATABASE="${REDSHIFT_DATABASE:-mig_redshift_src}"
-export PGUSER="${REDSHIFT_USER:?REDSHIFT_USER is required}"
-export PGPASSWORD="${REDSHIFT_PASSWORD:?REDSHIFT_PASSWORD is required}"
-export PGSSLMODE=require
-psql --no-psqlrc --csv --set ON_ERROR_STOP=1 <<'RETURNS_RATE_SQL'
+query="$(cat <<'RETURNS_RATE_SQL'
 -- BI report: returns rate as published.
 SELECT category, sold_qty, returned_qty, return_rate_int, return_pct
-FROM   mart.returns_rate
+FROM   gold.returns_rate
 ORDER  BY return_pct DESC, category;
 RETURNS_RATE_SQL
+)"
+python - "$query" <<'PY'
+import csv
+import os
+import sys
+from databricks import sql
+from databricks.sdk.core import Config
+
+config = Config()
+with sql.connect(
+    server_hostname=config.host.removeprefix("https://").rstrip("/"),
+    http_path=os.environ.get("DATABRICKS_HTTP_PATH", "/sql/1.0/warehouses/6dc4b80538621b7b"),
+    credentials_provider=lambda: config.authenticate,
+    catalog="demo_redshift", schema="gold",
+) as connection:
+    with connection.cursor() as cursor:
+        cursor.execute(sys.argv[1])
+        writer = csv.writer(sys.stdout)
+        writer.writerow(column[0] for column in cursor.description)
+        writer.writerows(cursor.fetchall())
+PY
