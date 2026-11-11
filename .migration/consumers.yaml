@@ -1,0 +1,18 @@
+version: 1
+consumers:
+  - {id: tableau_daily_revenue, consumer: Tableau Executive, file: consumers/tableau/Retail Executive.twb, query: daily_revenue, golden_unit: daily_revenue}
+  - {id: tableau_category_mix, consumer: Tableau Executive, file: consumers/tableau/Retail Executive.twb, query: category_mix, golden_unit: category_mix}
+  - {id: tableau_customer_ltv, consumer: Tableau Executive, file: consumers/tableau/Retail Executive.twb, query: customer_ltv, golden_unit: customer_ltv}
+  - {id: tableau_store_weekly, consumer: Tableau Executive, file: consumers/tableau/Retail Executive.twb, query: store_weekly, golden_unit: store_weekly}
+  - {id: powerbi_finance_export, consumer: Power BI Finance, file: consumers/powerbi/Finance Reporting.SemanticModel/definition/tables/finance_export.tmdl, query: finance_export, golden_unit: finance_export}
+  - {id: powerbi_payment_mix, consumer: Power BI Finance, file: consumers/powerbi/Finance Reporting.SemanticModel/definition/tables/payment_mix.tmdl, query: payment_mix, golden_unit: payment_mix}
+  - {id: powerbi_promo_lift, consumer: Power BI Finance, file: consumers/powerbi/Finance Reporting.SemanticModel/definition/tables/promo_lift.tmdl, query: promo_lift, golden_unit: promo_lift}
+  - {id: api_executive_summary, consumer: Reporting API, file: consumers/reporting-api/service.py, query: EXEC_SUMMARY_SQL, golden_unit: orchestration}
+  - {id: api_churn_summary, consumer: Reporting API, file: consumers/reporting-api/service.py, query: CHURN_SUMMARY_SQL, golden_unit: churn_flags}
+  - {id: api_shipping_sla, consumer: Reporting API, file: consumers/reporting-api/service.py, query: SHIPPING_SLA_SQL, golden_unit: shipping_sla}
+  - {id: api_health, consumer: Reporting API, file: consumers/reporting-api/service.py, query: HEALTH_SQL, check: smoke}
+  - {id: notebook_rfm_segments, consumer: Customer Segments Notebook, file: consumers/notebooks/customer_segments.ipynb, query: rfm_segments, golden_unit: rfm_segments}
+  - {id: notebook_cohort_retention, consumer: Customer Segments Notebook, file: consumers/notebooks/customer_segments.ipynb, query: cohort_retention, golden_unit: cohort_retention}
+  - {id: notebook_finance_monthly, consumer: Finance Reconciliation Notebook, file: consumers/notebooks/finance_reconciliation.ipynb, query: finance_monthly, kind: file, path: export_path, golden_unit: finance_export, golden_output: finance_monthly}
+  - {id: cron_returns_rate, consumer: KPI Digest Cron, file: ops/cron/kpi_digest.sh, query: RETURNS_RATE_SQL, golden_unit: returns_rate}
+  - {id: excel_geo_rollup, consumer: Excel Geo Rollup, file: shared/excel/Geo Rollup.odc, query: Geo Rollup, golden_unit: geo_rollup}
