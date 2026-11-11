@@ -176,9 +176,13 @@ def matrix(results):
     for r in results:
         detail = r["detail"].replace("|", "\\|").replace("\n", " ")
         if r.get("checks") and r["status"] != "PASS":
-            values = next(c for c in r["checks"] if c["check"] == "row_values")
-            detail = json.dumps({k: values.get(k) for k in
-                                 ("mismatched_rows", "mismatches_by_column", "missing_in_target", "extra_in_target")})
+            columns = next((c for c in r["checks"] if c["check"] == "columns" and c["status"] == "FAIL"), None)
+            if columns:
+                detail = json.dumps({k: columns[k] for k in ("missing", "extra")})
+            else:
+                values = next(c for c in r["checks"] if c["check"] == "row_values")
+                detail = json.dumps({k: values.get(k) for k in
+                                     ("mismatched_rows", "mismatches_by_column", "missing_in_target", "extra_in_target")})
         lines.append(f'| {r["consumer"]} | {r["query_id"]} | {r["status"]} | '
                      f'{r["rows_expected"]} | {r["rows_actual"]} | {detail[:400]} |')
     return "\n".join(lines)

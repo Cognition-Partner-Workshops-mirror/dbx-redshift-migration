@@ -126,3 +126,15 @@ def test_smoke_evidence_and_storage(tmp_path, contract, monkeypatch):
     assert evidence["results"][0]["status"] == "SMOKE"
     assert "SMOKE" in (tmp_path / ".migration/evidence/consumers_current.json").read_text()
     assert "'SMOKE'" in db.statements[-1]
+
+
+@pytest.mark.parametrize("missing,extra", [(["revenue"], []), ([], ["unexpected"]),
+                                         (["revenue"], ["unexpected"])])
+def test_matrix_column_failures(missing, extra):
+    result = {"consumer": "Reporting", "query_id": "orders", "status": "FAIL", "detail": "",
+              "rows_expected": 1, "rows_actual": 1, "checks": [
+                  {"check": "columns", "status": "FAIL", "missing": missing, "extra": extra},
+                  {"check": "row_values", "status": "FAIL", "detail": "skipped: missing columns"}]}
+    rendered = matrix([result])
+    assert json.dumps({"missing": missing, "extra": extra}) in rendered
+    assert "mismatched_rows" not in rendered
