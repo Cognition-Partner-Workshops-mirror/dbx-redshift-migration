@@ -1,0 +1,45 @@
+bundle:
+  name: customer-360
+
+variables:
+  catalog:
+    default: demo_redshift
+  warehouse_id:
+    default: 6dc4b80538621b7b
+
+targets:
+  demo:
+    default: true
+
+resources:
+  jobs:
+    customer_360_build:
+      name: customer_360_build
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+      permissions:
+        - group_name: users
+          level: CAN_VIEW
+        - group_name: users
+          level: CAN_MANAGE_RUN
+      tasks:
+        - task_key: schema
+          sql_task:
+            warehouse_id: ${var.warehouse_id}
+            file:
+              path: sql/00_schema.sql
+        - task_key: tables
+          depends_on:
+            - task_key: schema
+          sql_task:
+            warehouse_id: ${var.warehouse_id}
+            file:
+              path: sql/01_tables.sql
+        - task_key: metrics
+          depends_on:
+            - task_key: tables
+          sql_task:
+            warehouse_id: ${var.warehouse_id}
+            file:
+              path: sql/02_metrics.sql
