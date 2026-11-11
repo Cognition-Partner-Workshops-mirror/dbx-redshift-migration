@@ -1,0 +1,1685 @@
+{
+  "datasets": [
+    {
+      "name": "revenue_summary",
+      "displayName": "Revenue Summary",
+      "queryLines": [
+        "SELECT MEASURE(net_revenue) AS net_revenue, MEASURE(revenue_leakage) AS revenue_leakage, MEASURE(aov) AS aov, MEASURE(on_time_delivery_pct) / 100.0 AS on_time_delivery FROM demo_redshift.customer_360.revenue_metrics WHERE (:fiscal_quarter = 'All' OR fiscal_quarter = :fiscal_quarter) AND (:sales_channel = 'All' OR sales_channel = :sales_channel) AND (:region = 'All' OR region = :region) \n"
+      ],
+      "parameters": [
+        {
+          "keyword": "fiscal_quarter",
+          "displayName": "Fiscal Quarter",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "sales_channel",
+          "displayName": "Sales Channel",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "region",
+          "displayName": "Region",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "monthly_revenue",
+      "displayName": "Monthly Revenue",
+      "queryLines": [
+        "SELECT order_month, MEASURE(gross_revenue) AS gross_revenue, MEASURE(net_revenue) AS net_revenue FROM demo_redshift.customer_360.revenue_metrics WHERE (:fiscal_quarter = 'All' OR fiscal_quarter = :fiscal_quarter) AND (:sales_channel = 'All' OR sales_channel = :sales_channel) AND (:region = 'All' OR region = :region) GROUP BY ALL ORDER BY order_month\n"
+      ],
+      "parameters": [
+        {
+          "keyword": "fiscal_quarter",
+          "displayName": "Fiscal Quarter",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "sales_channel",
+          "displayName": "Sales Channel",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "region",
+          "displayName": "Region",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "channel_revenue",
+      "displayName": "Channel Revenue",
+      "queryLines": [
+        "SELECT sales_channel, MEASURE(net_revenue) AS net_revenue FROM demo_redshift.customer_360.revenue_metrics WHERE (:fiscal_quarter = 'All' OR fiscal_quarter = :fiscal_quarter) AND (:sales_channel = 'All' OR sales_channel = :sales_channel) AND (:region = 'All' OR region = :region) GROUP BY ALL ORDER BY net_revenue DESC\n"
+      ],
+      "parameters": [
+        {
+          "keyword": "fiscal_quarter",
+          "displayName": "Fiscal Quarter",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "sales_channel",
+          "displayName": "Sales Channel",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "region",
+          "displayName": "Region",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "region_revenue",
+      "displayName": "Region Revenue",
+      "queryLines": [
+        "SELECT region, MEASURE(net_revenue) AS net_revenue FROM demo_redshift.customer_360.revenue_metrics WHERE (:fiscal_quarter = 'All' OR fiscal_quarter = :fiscal_quarter) AND (:sales_channel = 'All' OR sales_channel = :sales_channel) AND (:region = 'All' OR region = :region) GROUP BY ALL ORDER BY net_revenue DESC\n"
+      ],
+      "parameters": [
+        {
+          "keyword": "fiscal_quarter",
+          "displayName": "Fiscal Quarter",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "sales_channel",
+          "displayName": "Sales Channel",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "keyword": "region",
+          "displayName": "Region",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "health_summary",
+      "displayName": "Health Summary",
+      "queryLines": [
+        "SELECT MEASURE(active_customers) AS active_customers, MEASURE(revenue_at_risk) AS revenue_at_risk FROM demo_redshift.customer_360.customer_health_metrics WHERE (:region = 'All' OR region = :region) \n"
+      ],
+      "parameters": [
+        {
+          "keyword": "region",
+          "displayName": "Region",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "health_mix",
+      "displayName": "Health Mix",
+      "queryLines": [
+        "SELECT health_segment, MEASURE(customers) AS customers FROM demo_redshift.customer_360.customer_health_metrics WHERE (:region = 'All' OR region = :region) GROUP BY ALL ORDER BY customers DESC\n"
+      ],
+      "parameters": [
+        {
+          "keyword": "region",
+          "displayName": "Region",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "regional_risk",
+      "displayName": "Regional Risk",
+      "queryLines": [
+        "SELECT region, MEASURE(revenue_at_risk) AS revenue_at_risk FROM demo_redshift.customer_360.customer_health_metrics WHERE (:region = 'All' OR region = :region) GROUP BY ALL ORDER BY revenue_at_risk DESC\n"
+      ],
+      "parameters": [
+        {
+          "keyword": "region",
+          "displayName": "Region",
+          "dataType": "STRING",
+          "defaultSelection": {
+            "values": {
+              "dataType": "STRING",
+              "values": [
+                {
+                  "value": "All"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "legacy_comparison",
+      "displayName": "Legacy Comparison",
+      "queryLines": [
+        "SELECT kpi, legacy_value, certified_value, difference, explanation FROM demo_redshift.customer_360.legacy_vs_certified ORDER BY kpi\n"
+      ]
+    },
+    {
+      "name": "normalized_comparison",
+      "displayName": "Normalized Comparison",
+      "queryLines": [
+        "WITH base AS (SELECT kpi, legacy_value, certified_value FROM demo_redshift.customer_360.legacy_vs_certified WHERE kpi IN ('total_revenue', 'aov', 'avg_customer_ltv')) SELECT kpi, 'Legacy' AS series, 1.0 AS relative_value FROM base UNION ALL SELECT kpi, 'Certified' AS series, TRY_DIVIDE(certified_value, legacy_value) AS relative_value FROM base ORDER BY kpi, series\n"
+      ]
+    },
+    {
+      "name": "options_fiscal_quarter",
+      "displayName": "Options Fiscal Quarter",
+      "queryLines": [
+        "SELECT 'All' AS fiscal_quarter UNION ALL SELECT DISTINCT fiscal_quarter FROM demo_redshift.customer_360.revenue_metrics GROUP BY ALL ORDER BY fiscal_quarter\n"
+      ]
+    },
+    {
+      "name": "options_sales_channel",
+      "displayName": "Options Sales Channel",
+      "queryLines": [
+        "SELECT 'All' AS sales_channel UNION ALL SELECT DISTINCT sales_channel FROM demo_redshift.customer_360.revenue_metrics GROUP BY ALL ORDER BY sales_channel\n"
+      ]
+    },
+    {
+      "name": "options_region",
+      "displayName": "Options Region",
+      "queryLines": [
+        "SELECT 'All' AS region UNION ALL SELECT DISTINCT region FROM demo_redshift.customer_360.revenue_metrics GROUP BY ALL ORDER BY region\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "executive_overview",
+      "displayName": "Executive overview",
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1",
+      "layout": [
+        {
+          "widget": {
+            "name": "executive_title",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Customer Health & Revenue"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "executive_subtitle",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**As of 31 Dec 2025** \u00b7 Net revenue recognizes complete orders only. Gross includes cancelled and returned orders."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_scope",
+            "multilineTextboxSpec": {
+              "lines": [
+                "Quarter & channel filter revenue. Region also filters customer health. Health is a lifetime snapshot; legacy comparisons stay all-company."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_net_revenue",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "revenue_summary",
+                  "fields": [
+                    {
+                      "name": "net_revenue",
+                      "expression": "`net_revenue`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "net_revenue",
+                  "displayName": "Net revenue",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Net revenue",
+                "showDescription": true,
+                "description": "Complete orders only"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_revenue_leakage",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "revenue_summary",
+                  "fields": [
+                    {
+                      "name": "revenue_leakage",
+                      "expression": "`revenue_leakage`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "revenue_leakage",
+                  "displayName": "Revenue leakage",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue leakage",
+                "showDescription": true,
+                "description": "Cancelled + returned spend"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 3,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_aov",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "revenue_summary",
+                  "fields": [
+                    {
+                      "name": "aov",
+                      "expression": "`aov`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "aov",
+                  "displayName": "True AOV",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "True AOV",
+                "showDescription": true,
+                "description": "Net revenue / completed orders"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 3,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_active_customers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "health_summary",
+                  "fields": [
+                    {
+                      "name": "active_customers",
+                      "expression": "`active_customers`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "active_customers",
+                  "displayName": "Active customers",
+                  "format": {
+                    "type": "number",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Active customers",
+                "showDescription": true,
+                "description": "Completed purchase within 90 days \u00b7 snapshot"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_revenue_at_risk",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "health_summary",
+                  "fields": [
+                    {
+                      "name": "revenue_at_risk",
+                      "expression": "`revenue_at_risk`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "revenue_at_risk",
+                  "displayName": "Revenue at risk",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue at risk",
+                "showDescription": true,
+                "description": "At-risk customer lifetime value \u00b7 snapshot"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 6,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_on_time_delivery",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "revenue_summary",
+                  "fields": [
+                    {
+                      "name": "on_time_delivery",
+                      "expression": "`on_time_delivery`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "on_time_delivery",
+                  "displayName": "On-time delivery",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "On-time delivery",
+                "showDescription": true,
+                "description": "Delivered within 96h \u00b7 undelivered excluded"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 6,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "monthly_trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "monthly_revenue",
+                  "fields": [
+                    {
+                      "name": "order_month",
+                      "expression": "`order_month`"
+                    },
+                    {
+                      "name": "gross_revenue",
+                      "expression": "`gross_revenue`"
+                    },
+                    {
+                      "name": "net_revenue",
+                      "expression": "`net_revenue`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "order_month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "gross_revenue",
+                      "displayName": "Gross revenue",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "USD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 2
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "net_revenue",
+                      "displayName": "Net revenue",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "USD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 2
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue recognition gap by month (USD)",
+                "showDescription": true,
+                "description": "Gross spend vs certified net revenue"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 12,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "by_channel",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "channel_revenue",
+                  "fields": [
+                    {
+                      "name": "sales_channel",
+                      "expression": "`sales_channel`"
+                    },
+                    {
+                      "name": "net_revenue",
+                      "expression": "`net_revenue`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "net_revenue",
+                  "displayName": "Net revenue by channel",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sales_channel",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Net revenue by channel",
+                "showDescription": false,
+                "description": ""
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "by_region",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "region_revenue",
+                  "fields": [
+                    {
+                      "name": "region",
+                      "expression": "`region`"
+                    },
+                    {
+                      "name": "net_revenue",
+                      "expression": "`net_revenue`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "net_revenue",
+                  "displayName": "Net revenue by region",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "region",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Net revenue by region",
+                "showDescription": false,
+                "description": ""
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 14,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "segment_mix",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "health_mix",
+                  "fields": [
+                    {
+                      "name": "health_segment",
+                      "expression": "`health_segment`"
+                    },
+                    {
+                      "name": "customers",
+                      "expression": "`customers`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "customers",
+                  "displayName": "Customer health mix \u00b7 snapshot",
+                  "format": {
+                    "type": "number",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "health_segment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Customer health mix \u00b7 snapshot",
+                "showDescription": false,
+                "description": ""
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 19,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "risk_by_region",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "regional_risk",
+                  "fields": [
+                    {
+                      "name": "region",
+                      "expression": "`region`"
+                    },
+                    {
+                      "name": "revenue_at_risk",
+                      "expression": "`revenue_at_risk`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "revenue_at_risk",
+                  "displayName": "Revenue at risk by region \u00b7 snapshot",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "region",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue at risk by region \u00b7 snapshot",
+                "showDescription": false,
+                "description": ""
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 19,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "legacy_vs_certified",
+      "displayName": "Legacy vs certified",
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1",
+      "layout": [
+        {
+          "widget": {
+            "name": "comparison_title",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Legacy vs certified"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "comparison_scope",
+            "multilineTextboxSpec": {
+              "lines": [
+                "All-company reconciliation \u00b7 filters do not apply. Monetary KPIs are USD; return rate is a fraction. Q1 isolates the calendar fix at equal gross scope."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "comparison_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "legacy_comparison",
+                  "fields": [
+                    {
+                      "name": "kpi",
+                      "expression": "`kpi`"
+                    },
+                    {
+                      "name": "legacy_value",
+                      "expression": "`legacy_value`"
+                    },
+                    {
+                      "name": "certified_value",
+                      "expression": "`certified_value`"
+                    },
+                    {
+                      "name": "difference",
+                      "expression": "`difference`"
+                    },
+                    {
+                      "name": "explanation",
+                      "expression": "`explanation`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "kpi",
+                    "displayName": "KPI"
+                  },
+                  {
+                    "fieldName": "legacy_value",
+                    "displayName": "Legacy"
+                  },
+                  {
+                    "fieldName": "certified_value",
+                    "displayName": "Certified"
+                  },
+                  {
+                    "fieldName": "difference",
+                    "displayName": "Certified \u2212 legacy"
+                  },
+                  {
+                    "fieldName": "explanation",
+                    "displayName": "Why it changed"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Five KPI corrections",
+                "showDescription": true,
+                "description": "Difference = certified minus legacy"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "comparison_bars",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "normalized_comparison",
+                  "fields": [
+                    {
+                      "name": "kpi",
+                      "expression": "`kpi`"
+                    },
+                    {
+                      "name": "series",
+                      "expression": "`series`"
+                    },
+                    {
+                      "name": "relative_value",
+                      "expression": "`relative_value`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "kpi",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "relative_value",
+                  "displayName": "Relative to legacy",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 1
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "series",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "Legacy",
+                        "color": "#94A3B8"
+                      },
+                      {
+                        "value": "Certified",
+                        "color": "#087E8B"
+                      }
+                    ]
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue, AOV and LTV \u00b7 legacy = 100%",
+                "showDescription": true,
+                "description": "Normalized for comparison across different dollar scales"
+              },
+              "mark": {
+                "layout": "group"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "global_filters",
+      "displayName": "Global filters",
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1",
+      "layout": [
+        {
+          "widget": {
+            "name": "filter_fiscal_quarter",
+            "queries": [
+              {
+                "name": "options",
+                "query": {
+                  "datasetName": "options_fiscal_quarter",
+                  "fields": [
+                    {
+                      "name": "fiscal_quarter",
+                      "expression": "`fiscal_quarter`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "revenue_summary",
+                "query": {
+                  "datasetName": "revenue_summary",
+                  "parameters": [
+                    {
+                      "name": "fiscal_quarter",
+                      "keyword": "fiscal_quarter"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "monthly_revenue",
+                "query": {
+                  "datasetName": "monthly_revenue",
+                  "parameters": [
+                    {
+                      "name": "fiscal_quarter",
+                      "keyword": "fiscal_quarter"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "channel_revenue",
+                "query": {
+                  "datasetName": "channel_revenue",
+                  "parameters": [
+                    {
+                      "name": "fiscal_quarter",
+                      "keyword": "fiscal_quarter"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "region_revenue",
+                "query": {
+                  "datasetName": "region_revenue",
+                  "parameters": [
+                    {
+                      "name": "fiscal_quarter",
+                      "keyword": "fiscal_quarter"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "fiscal_quarter",
+                    "queryName": "options"
+                  },
+                  {
+                    "parameterName": "fiscal_quarter",
+                    "queryName": "revenue_summary"
+                  },
+                  {
+                    "parameterName": "fiscal_quarter",
+                    "queryName": "monthly_revenue"
+                  },
+                  {
+                    "parameterName": "fiscal_quarter",
+                    "queryName": "channel_revenue"
+                  },
+                  {
+                    "parameterName": "fiscal_quarter",
+                    "queryName": "region_revenue"
+                  }
+                ]
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "All"
+                      }
+                    ]
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Fiscal Quarter"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_sales_channel",
+            "queries": [
+              {
+                "name": "options",
+                "query": {
+                  "datasetName": "options_sales_channel",
+                  "fields": [
+                    {
+                      "name": "sales_channel",
+                      "expression": "`sales_channel`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "revenue_summary",
+                "query": {
+                  "datasetName": "revenue_summary",
+                  "parameters": [
+                    {
+                      "name": "sales_channel",
+                      "keyword": "sales_channel"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "monthly_revenue",
+                "query": {
+                  "datasetName": "monthly_revenue",
+                  "parameters": [
+                    {
+                      "name": "sales_channel",
+                      "keyword": "sales_channel"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "channel_revenue",
+                "query": {
+                  "datasetName": "channel_revenue",
+                  "parameters": [
+                    {
+                      "name": "sales_channel",
+                      "keyword": "sales_channel"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "region_revenue",
+                "query": {
+                  "datasetName": "region_revenue",
+                  "parameters": [
+                    {
+                      "name": "sales_channel",
+                      "keyword": "sales_channel"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "sales_channel",
+                    "queryName": "options"
+                  },
+                  {
+                    "parameterName": "sales_channel",
+                    "queryName": "revenue_summary"
+                  },
+                  {
+                    "parameterName": "sales_channel",
+                    "queryName": "monthly_revenue"
+                  },
+                  {
+                    "parameterName": "sales_channel",
+                    "queryName": "channel_revenue"
+                  },
+                  {
+                    "parameterName": "sales_channel",
+                    "queryName": "region_revenue"
+                  }
+                ]
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "All"
+                      }
+                    ]
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Sales Channel"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_region",
+            "queries": [
+              {
+                "name": "options",
+                "query": {
+                  "datasetName": "options_region",
+                  "fields": [
+                    {
+                      "name": "region",
+                      "expression": "`region`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "revenue_summary",
+                "query": {
+                  "datasetName": "revenue_summary",
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "keyword": "region"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "monthly_revenue",
+                "query": {
+                  "datasetName": "monthly_revenue",
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "keyword": "region"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "channel_revenue",
+                "query": {
+                  "datasetName": "channel_revenue",
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "keyword": "region"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "region_revenue",
+                "query": {
+                  "datasetName": "region_revenue",
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "keyword": "region"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "health_summary",
+                "query": {
+                  "datasetName": "health_summary",
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "keyword": "region"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "health_mix",
+                "query": {
+                  "datasetName": "health_mix",
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "keyword": "region"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "regional_risk",
+                "query": {
+                  "datasetName": "regional_risk",
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "keyword": "region"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "region",
+                    "queryName": "options"
+                  },
+                  {
+                    "parameterName": "region",
+                    "queryName": "revenue_summary"
+                  },
+                  {
+                    "parameterName": "region",
+                    "queryName": "monthly_revenue"
+                  },
+                  {
+                    "parameterName": "region",
+                    "queryName": "channel_revenue"
+                  },
+                  {
+                    "parameterName": "region",
+                    "queryName": "region_revenue"
+                  },
+                  {
+                    "parameterName": "region",
+                    "queryName": "health_summary"
+                  },
+                  {
+                    "parameterName": "region",
+                    "queryName": "health_mix"
+                  },
+                  {
+                    "parameterName": "region",
+                    "queryName": "regional_risk"
+                  }
+                ]
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "All"
+                      }
+                    ]
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Region"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        }
+      ]
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F7FA",
+        "dark": "#14212C"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#1C2D3B"
+      },
+      "widgetBorderColor": {
+        "light": "#FFFFFF",
+        "dark": "#1C2D3B"
+      },
+      "fontColor": {
+        "light": "#18344B",
+        "dark": "#E7F0F7"
+      },
+      "selectionColor": {
+        "light": "#087E8B",
+        "dark": "#61CAD4"
+      },
+      "visualizationColors": [
+        "#94A3B8",
+        "#087E8B",
+        "#D97732",
+        "#496AB0",
+        "#A15B94",
+        "#527C68"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    }
+  }
+}

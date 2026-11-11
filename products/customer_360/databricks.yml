@@ -12,6 +12,15 @@ targets:
     default: true
 
 resources:
+  dashboards:
+    customer_health_revenue:
+      display_name: Customer Health & Revenue
+      warehouse_id: ${var.warehouse_id}
+      file_path: dashboards/customer_health_revenue.lvdash.json
+      embed_credentials: true
+      permissions:
+        - group_name: users
+          level: CAN_RUN
   jobs:
     customer_360_build:
       name: customer_360_build

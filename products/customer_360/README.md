@@ -46,9 +46,10 @@ From this directory (CLI authenticated and repository requirements installed):
 ```sh
 databricks current-user me
 databricks bundle validate -t demo
-make deploy                         # bundle deploy
+make deploy                         # validate dashboard SQL, bundle deploy + publish
 make build                          # schema -> tables -> metrics
 make verify                         # live reconciliation, metrics and invariants
+make verify-dashboard               # every dashboard dataset via warehouse CLI
 make reset                          # DESTRUCTIVE: bundle destroy --auto-approve,
                                     # then Statement API DROP SCHEMA ... CASCADE
 ```
@@ -56,10 +57,37 @@ make reset                          # DESTRUCTIVE: bundle destroy --auto-approve
 `PROFILE=DEFAULT` and `TARGET=demo` may be passed to make. Catalog/warehouse
 variables have the approved defaults; alternative catalog writes require prior
 approval. Reset is intentionally hard-scoped to `demo_redshift.customer_360`.
-Reset deletes only this bundle's job and the product schema, never bronze/silver/gold.
+Reset deletes this bundle's dashboard and job and the product schema, never bronze/silver/gold.
+
+## Leadership dashboard (step 2)
+
+`dashboards/customer_health_revenue.lvdash.json` is managed by the bundle resource
+`customer_health_revenue`: **Customer Health & Revenue**. Bundle deployment publishes
+it with embedded publisher credentials on the configured SQL warehouse. Group
+`users` has `CAN_RUN` (including view access). Bundle destroy trashes the dashboard.
+The dashboard queries fully qualified `demo_redshift.customer_360` objects; changing
+the bundle catalog variable does not retarget the dashboard SQL.
+
+Page 1 shows six leadership KPIs, monthly gross versus net revenue, channel and
+region revenue, customer health mix, and regional revenue at risk. Page 2 explains
+the five legacy corrections, with revenue/AOV/LTV normalized to legacy = 100%.
+Currency is USD; on-time delivery is displayed as a percentage.
+
+Global single-select filters default to **All**. Fiscal quarter and channel apply
+to revenue datasets **before** metric aggregation, preserving correct AOV and
+on-time denominators. Region also applies to all customer-health datasets.
+Lifetime customer health has no fiscal-quarter/channel dimensions, so those two
+filters intentionally do not change the health snapshot. The precomputed legacy
+comparison stays all-company and unfiltered. Both pages state this scope visibly.
+Active customers means completed purchase within 90 days of 2025-12-31.
+
+Regenerate the JSON with `make dashboard-json` after changing `build_dashboard.py`.
+`make deploy` runs every exact dataset query with default parameters via CLI
+before deployment, then checks a Q1/web/EAST slice. `make reset` removes the
+dashboard through bundle destroy before dropping the product schema.
 
 ## Later steps (not implemented)
 
-Add dashboard resources consuming metric views, a Genie space with these semantic
-definitions, and an app as separate follow-up steps. No dashboard, Genie or app is
-created by this bundle. PR target for this product is main; do not merge automatically.
+Add a Genie space with these semantic definitions and an app as separate follow-up
+steps. No Genie or app is created by this bundle. PR target for this product is
+main; do not merge automatically.
