@@ -20,6 +20,6 @@ table promo_lift
 		source =
 			let
 				Source = Warehouse,
-				Rows = Value.NativeQuery(Source, "-- BI report: channel order-value distribution as published.#(lf)SELECT sales_channel, order_count, median_order_value, p90_order_value#(lf)FROM   mart.promo_lift#(lf)ORDER  BY sales_channel;#(lf)", null, [EnableFolding=true])
+				Rows = Value.NativeQuery(Source, "-- BI report: channel order-value distribution as published.#(lf)SELECT sales_channel, order_count, median_order_value, p90_order_value#(lf)FROM   gold.promo_lift#(lf)ORDER  BY sales_channel;#(lf)", null, [EnableFolding=true])
 			in
 				Rows

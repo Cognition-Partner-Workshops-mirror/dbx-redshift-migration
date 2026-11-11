@@ -16,6 +16,6 @@ table payment_mix
 		source =
 			let
 				Source = Warehouse,
-				Rows = Value.NativeQuery(Source, "-- BI report: payment family mix.#(lf)SELECT method_family,#(lf)       SUM(payment_count) AS payment_count,#(lf)       SUM(amount_total)  AS amount_total#(lf)FROM   mart.payment_mix#(lf)GROUP  BY method_family#(lf)ORDER  BY method_family;#(lf)", null, [EnableFolding=true])
+				Rows = Value.NativeQuery(Source, "-- BI report: payment family mix.#(lf)SELECT method_family,#(lf)       SUM(payment_count) AS payment_count,#(lf)       SUM(amount_total)  AS amount_total#(lf)FROM   gold.payment_mix#(lf)GROUP  BY method_family#(lf)ORDER  BY method_family;#(lf)", null, [EnableFolding=true])
 			in
 				Rows

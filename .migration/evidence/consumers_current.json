@@ -1,0 +1,724 @@
+{
+  "run_id": "ed27e7c4-1336-4d3f-b6c5-c26416116d27",
+  "run_at": "2026-11-11T04:17:35.368401+00:00",
+  "mode": "current",
+  "git_sha": "b8590285b3b419fd3dcb9e84beb533dbfef7972f",
+  "catalog": "demo_redshift",
+  "results": [
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_daily_revenue",
+      "golden": "golden/daily_revenue/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 48,
+      "rows_actual": 48,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "order_month": "DATE",
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 48,
+          "target": 48
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "order_month",
+            "sales_channel"
+          ],
+          "matched_rows": 48,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_category_mix",
+      "golden": "golden/category_mix/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 6,
+      "rows_actual": 6,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "category": "STRING",
+            "units_sold": "LONG",
+            "revenue": "DECIMAL",
+            "revenue_share": "DOUBLE"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "category"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_customer_ltv",
+      "golden": "golden/customer_ltv/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 6,
+      "rows_actual": 6,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "region": "STRING",
+            "customers": "LONG",
+            "orders": "LONG",
+            "total_ltv": "DECIMAL",
+            "avg_ltv": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "region"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Tableau Executive",
+      "query_id": "tableau_store_weekly",
+      "golden": "golden/store_weekly/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 40,
+      "rows_actual": 40,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "store_id": "INT",
+            "region": "STRING",
+            "active_weeks": "LONG",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 40,
+          "target": 40
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "store_id"
+          ],
+          "matched_rows": 40,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Power BI Finance",
+      "query_id": "powerbi_finance_export",
+      "golden": "golden/finance_export/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 5,
+      "rows_actual": 5,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "fiscal_year": "INT",
+            "fiscal_qtr": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 5,
+          "target": 5
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "fiscal_year",
+            "fiscal_qtr"
+          ],
+          "matched_rows": 5,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Power BI Finance",
+      "query_id": "powerbi_payment_mix",
+      "golden": "golden/payment_mix/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "method_family": "STRING",
+            "payment_count": "LONG",
+            "amount_total": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "method_family"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Power BI Finance",
+      "query_id": "powerbi_promo_lift",
+      "golden": "golden/promo_lift/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "sales_channel": "STRING",
+            "order_count": "LONG",
+            "median_order_value": "DECIMAL",
+            "p90_order_value": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "sales_channel"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_executive_summary",
+      "golden": "golden/orchestration/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 1,
+      "rows_actual": 1,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "snapshot_label": "STRING",
+            "as_of_date": "DATE",
+            "total_revenue": "DECIMAL",
+            "total_orders": "LONG",
+            "avg_customer_ltv": "DECIMAL",
+            "overall_return_pct": "DECIMAL",
+            "avg_ship_hours": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 1,
+          "target": 1
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "snapshot_label"
+          ],
+          "matched_rows": 1,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_churn_summary",
+      "golden": "golden/churn_flags/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "churn_flag": "STRING",
+            "customers": "LONG",
+            "avg_days_since_order": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "churn_flag"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_shipping_sla",
+      "golden": "golden/shipping_sla/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 4,
+      "rows_actual": 4,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "carrier": "STRING",
+            "shipments": "LONG",
+            "delivered": "LONG",
+            "in_flight": "LONG",
+            "avg_hours_to_deliver": "DECIMAL",
+            "max_hours_to_deliver": "LONG",
+            "on_time_96h": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 4,
+          "target": 4
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "carrier"
+          ],
+          "matched_rows": 4,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Reporting API",
+      "query_id": "api_health",
+      "golden": null,
+      "status": "SMOKE",
+      "detail": "query executed successfully; no output comparison",
+      "rows_expected": null,
+      "rows_actual": 19,
+      "mismatched_rows": null
+    },
+    {
+      "consumer": "Customer Segments Notebook",
+      "query_id": "notebook_rfm_segments",
+      "golden": "golden/rfm_segments/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 103,
+      "rows_actual": 103,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "rfm_segment": "STRING",
+            "customers": "LONG",
+            "total_monetary": "DECIMAL",
+            "avg_frequency": "LONG"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 103,
+          "target": 103
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "rfm_segment"
+          ],
+          "matched_rows": 103,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Customer Segments Notebook",
+      "query_id": "notebook_cohort_retention",
+      "golden": "golden/cohort_retention/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 65,
+      "rows_actual": 65,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "cohort_month": "DATE",
+            "month_offset": "INT",
+            "cohort_size": "LONG",
+            "active_buyers": "LONG",
+            "retention_pct": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 65,
+          "target": 65
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "cohort_month",
+            "month_offset"
+          ],
+          "matched_rows": 65,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Finance Reconciliation Notebook",
+      "query_id": "notebook_finance_monthly",
+      "golden": "golden/finance_export/finance_monthly.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 12,
+      "rows_actual": 12,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "month": "STRING",
+            "fiscal_year": "STRING",
+            "fiscal_qtr": "STRING",
+            "order_count": "STRING",
+            "revenue": "STRING"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 12,
+          "target": 12
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "month"
+          ],
+          "matched_rows": 12,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "KPI Digest Cron",
+      "query_id": "cron_returns_rate",
+      "golden": "golden/returns_rate/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 6,
+      "rows_actual": 6,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "category": "STRING",
+            "sold_qty": "LONG",
+            "returned_qty": "LONG",
+            "return_rate_int": "LONG",
+            "return_pct": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 6,
+          "target": 6
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "category"
+          ],
+          "matched_rows": 6,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    },
+    {
+      "consumer": "Excel Geo Rollup",
+      "query_id": "excel_geo_rollup",
+      "golden": "golden/geo_rollup/report.csv",
+      "status": "PASS",
+      "detail": "matched",
+      "rows_expected": 21,
+      "rows_actual": 21,
+      "mismatched_rows": 0,
+      "checks": [
+        {
+          "check": "columns",
+          "status": "PASS",
+          "missing": [],
+          "extra": [],
+          "target_types": {
+            "grouping_id": "INT",
+            "region": "STRING",
+            "state": "STRING",
+            "order_count": "LONG",
+            "revenue": "DECIMAL"
+          }
+        },
+        {
+          "check": "row_count",
+          "status": "PASS",
+          "golden": 21,
+          "target": 21
+        },
+        {
+          "check": "row_values",
+          "status": "PASS",
+          "keys": [
+            "grouping_id",
+            "region",
+            "state"
+          ],
+          "matched_rows": 21,
+          "mismatched_rows": 0,
+          "missing_in_target": 0,
+          "extra_in_target": 0,
+          "duplicate_keys_in_target": 0,
+          "mismatches_by_column": {},
+          "sample_mismatches": [],
+          "sample_missing": [],
+          "sample_extra": []
+        }
+      ]
+    }
+  ]
+}
