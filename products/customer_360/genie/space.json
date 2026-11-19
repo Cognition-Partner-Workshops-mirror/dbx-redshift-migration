@@ -1,0 +1,124 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {
+        "id": "10000000000000000000000000000001",
+        "question": [
+          "Which regions have the most revenue at risk?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000002",
+        "question": [
+          "Show the profile and health of customer #342."
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000003",
+        "question": [
+          "How many customers are in each health segment?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000004",
+        "question": [
+          "Show monthly net revenue by sales channel."
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000005",
+        "question": [
+          "What is the average net lifetime value by region?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000006",
+        "question": [
+          "How many customers are active in WEST?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000007",
+        "question": [
+          "Who are the highest-value at-risk customers in WEST?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000008",
+        "question": [
+          "What was the on-time delivery rate by sales channel?"
+        ]
+      }
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {
+        "identifier": "demo_redshift.customer_360.customer_health"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.customer_health_metrics"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.customer_profile"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.order_facts"
+      },
+      {
+        "identifier": "demo_redshift.customer_360.revenue_metrics"
+      }
+    ]
+  },
+  "instructions": {
+    "example_question_sqls": [
+      {
+        "id": "20000000000000000000000000000001",
+        "question": [
+          "Which regions have the most revenue at risk?"
+        ],
+        "sql": [
+          "SELECT region, MEASURE(revenue_at_risk) AS revenue_at_risk FROM demo_redshift.customer_360.customer_health_metrics GROUP BY region ORDER BY revenue_at_risk DESC"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000002",
+        "question": [
+          "Show the profile and health of customer #342."
+        ],
+        "sql": [
+          "SELECT p.customer_id, p.first_name, p.last_name, p.region, h.segment, p.net_ltv, p.aov, h.recency_days FROM demo_redshift.customer_360.customer_profile p JOIN demo_redshift.customer_360.customer_health h USING (customer_id) WHERE p.customer_id = 342"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000003",
+        "question": [
+          "How many customers are in each health segment?"
+        ],
+        "sql": [
+          "SELECT segment, MEASURE(customers) AS customers FROM demo_redshift.customer_360.customer_health_metrics GROUP BY segment ORDER BY customers DESC, segment"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000004",
+        "question": [
+          "Show monthly net revenue by sales channel."
+        ],
+        "sql": [
+          "SELECT order_month, channel, MEASURE(net_revenue) AS net_revenue FROM demo_redshift.customer_360.revenue_metrics GROUP BY order_month, channel ORDER BY order_month, channel"
+        ]
+      }
+    ],
+    "text_instructions": [
+      {
+        "id": "30000000000000000000000000000001",
+        "content": [
+          "The retail snapshot is as of 2025-12-31. Use only the certified customer_360 sources. Prefer MEASURE() on revenue_metrics and customer_health_metrics for every aggregate KPI. Revenue and LTV mean net on completed orders, unless gross is explicitly requested. Use the existing revenue_at_risk measure for regional exposure. Customer health region is the customer's home region. Order revenue region is the order store region.\n",
+          "Health segmentation uses completed-order recency, frequency and monetary value. Apply this precedence: Never ordered (zero completed orders), Champion (R >= 4 and F >= 4), At risk (R <= 2 and F >= 3), Loyal (F >= 3), Hibernating (R <= 2), Promising (remaining purchasers). Revenue at risk is the net LTV of customers in At risk. Active customers placed a completed order within 90 days of the snapshot.\n",
+          "For individual lookups use customer_profile, optionally joining customer_health by customer_id. Match names and emails case-insensitively. Use order_facts for customer orders with order_ts descending and order_id descending as a tie-breaker. Label currency as USD and rates as percentages."
+        ]
+      }
+    ]
+  }
+}
