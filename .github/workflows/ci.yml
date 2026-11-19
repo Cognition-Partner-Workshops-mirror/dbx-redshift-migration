@@ -13,3 +13,4 @@ jobs:
           python-version: "3.10"
       - run: pip install -r requirements.txt
       - run: make check
+      - run: make -C products/customer_360 test
